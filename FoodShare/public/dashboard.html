@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+
+<style>
+body{
+  font-family:"Poppins",Arial;
+  background:#f5f7fb;
+  padding:40px;
+}
+
+h2{ color:#1e6bb8; }
+
+button{
+  padding:12px 20px;
+  margin-right:10px;
+  border:none;
+  border-radius:18px;
+  background:linear-gradient(135deg,#45d1c3,#1e6bb8);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.approve{ background:#4caf50; }
+.reject{ background:#f44336; }
+
+.card{
+  background:white;
+  padding:20px;
+  margin-top:20px;
+  border-radius:16px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.15);
+}
+</style>
+</head>
+
+<body>
+
+<h2>👨‍💼 Admin Dashboard</h2>
+
+<button onclick="loadAcceptors()">🏠 Acceptors</button>
+
+<div id="output"></div>
+
+<script>
+function loadAcceptors(){
+  fetch("/acceptors")
+    .then(res => res.json())
+    .then(data => {
+      const out = document.getElementById("output");
+      out.innerHTML = "";
+
+      data.forEach((a, index) => {
+        out.innerHTML += `
+          <div class="card">
+            <h3>🏠 ${a.name}</h3>
+            <p>📍 Location: ${a.location}</p>
+            <p>🍽 Food Needed: ${a.food}</p>
+            <p>📦 Quantity: ${a.quantity}</p>
+            <p>Status: <b>${a.status}</b></p>
+
+            <button class="approve" onclick="updateStatus(${index}, 'Approved', '${a.food}')">
+              Approve
+            </button>
+
+            <button class="reject" onclick="updateStatus(${index}, 'Rejected')">
+              Reject
+            </button>
+
+            <div id="match-${index}"></div>
+          </div>
+        `;
+      });
+    });
+}
+
+function updateStatus(index, status, food){
+  fetch("/acceptor-status", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ index, status })
+  })
+  .then(() => {
+    if(status === "Approved"){
+      loadMatches(index, food);
+    } else {
+      loadAcceptors();
+    }
+  });
+}
+
+function loadMatches(index, food){
+  fetch("/matches/" + food)
+    .then(res => res.json())
+    .then(data => {
+      const div = document.getElementById("match-" + index);
+
+      if(data.length === 0){
+        div.innerHTML = "<p>❌ No matching restaurants</p>";
+        return;
+      }
+
+      div.innerHTML = "<h4>✅ Matching Restaurants</h4>";
+
+      data.forEach(r => {
+        div.innerHTML += `
+          <p>🏨 ${r.name} – ${r.location} (${r.quantity})</p>
+        `;
+      });
+    });
+}
+</script>
+
+</body>
+</html>
