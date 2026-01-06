@@ -731,18 +731,108 @@
       });
     }
 
+    let userLat, userLon;
+    let liveHotels = [];
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of earth in km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return (R * c).toFixed(1);
+    }
+
     function filterRestaurants() {
-      const searchTerm = document.getElementById("searchRestaurants").value.toLowerCase();
-      const filtered = allRestaurants.filter(r => {
-        return r.name.toLowerCase().includes(searchTerm) ||
-          r.location.toLowerCase().includes(searchTerm) ||
-          (r.food && r.food.toLowerCase().includes(searchTerm)) ||
-          (r.items && r.items.some(item =>
-            (item.food && item.food.toLowerCase().includes(searchTerm)) ||
-            (item.itemName && item.itemName.toLowerCase().includes(searchTerm))
-          ));
-      });
-      displayRestaurants(filtered);
+      const searchTerm = document.getElementById("searchRestaurants").value.trim().toLowerCase();
+
+      // Filter DB Restaurants
+      const filteredDB = allRestaurants.filter(r =>
+        r.name.toLowerCase().includes(searchTerm) ||
+        r.location.toLowerCase().includes(searchTerm) ||
+        (r.food && r.food.toLowerCase().includes(searchTerm))
+      );
+
+      // Filter Live Hotels
+      const filteredLive = liveHotels.filter(h =>
+        h.name.toLowerCase().includes(searchTerm) ||
+        h.type.toLowerCase().includes(searchTerm)
+      );
+
+      displayResults(filteredDB, filteredLive);
+
+      // Map Focus Logic: If search has content, fly to the first/best match
+      if (searchTerm.length >= 2) {
+        if (filteredLive.length > 0) {
+          const match = filteredLive[0];
+          map.flyTo([match.lat, match.lon], 17, { animate: true, duration: 1.5 });
+        } else if (filteredDB.length > 0 && filteredDB[0].location.includes("Coordinates:")) {
+          const coords = filteredDB[0].location.match(/Coordinates: ([\d.-]+),([\d.-]+)/);
+          if (coords) map.flyTo([parseFloat(coords[1]), parseFloat(coords[2])], 17, { animate: true, duration: 1.5 });
+        }
+      }
+    }
+
+    function displayResults(dbData, liveData) {
+      const listDiv = document.getElementById("restaurantsList");
+      listDiv.innerHTML = "";
+
+      // 1. Show LIVE Nearby first (Sorted by distance)
+      if (liveData.length > 0) {
+        const liveSection = document.createElement("div");
+        liveSection.innerHTML = `<h3 style="color: #fff; margin: 30px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">⚡ Live Real-Time Donors (Ordered by Distance)</h3>`;
+        const grid = document.createElement("div");
+        grid.style.display = "grid";
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(300px, 1fr))";
+        grid.style.gap = "20px";
+
+        liveData.forEach(h => {
+          const dist = userLat ? calculateDistance(userLat, userLon, h.lat, h.lon) : "Unknown";
+          const card = document.createElement("div");
+          card.className = "restaurant-card";
+          card.style.background = "rgba(255, 255, 255, 0.95)";
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="background: #e74c3c; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;">NEARBY 📍</span>
+              <span style="color: #667eea; font-weight: 800; font-size: 12px;">${dist} km away</span>
+            </div>
+            <h3>${h.name}</h3>
+            <p><strong>Type:</strong> ${h.type}</p>
+            <button onclick="requestFromMap('${h.name}', '${h.lat},${h.lon}')" style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: 2px solid #667eea; background: transparent; color: #667eea; font-weight: 700; cursor: pointer;">Request Surplus</button>
+          `;
+          grid.appendChild(card);
+        });
+        liveSection.appendChild(grid);
+        listDiv.appendChild(liveSection);
+      }
+
+      // 2. Show Verified DB Restaurants
+      if (dbData.length > 0) {
+        const dbSection = document.createElement("div");
+        dbSection.innerHTML = `<h3 style="color: #fff; margin: 40px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">✅ Verified Internal Donors</h3>`;
+        const grid = document.createElement("div");
+        grid.style.display = "grid";
+        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
+        grid.style.gap = "20px";
+
+        dbData.forEach(r => {
+          const card = document.createElement("div");
+          card.className = "restaurant-card";
+          card.innerHTML = `<h3>🏨 ${r.name}</h3><span class="badge">Verified</span><p>📍 ${r.location}</p><button onclick="requestFromDatabase('${r.name}', '${r.location}')" style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: none; background: #667eea; color: white; font-weight: 700; cursor: pointer;">Select Donor</button>`;
+          grid.appendChild(card);
+        });
+        dbSection.appendChild(grid);
+        listDiv.appendChild(dbSection);
+      }
+    }
+
+    function requestFromDatabase(name, loc) {
+      switchTab('form', { target: document.querySelectorAll('.tab-button')[1] });
+      document.getElementById("food").value = `Surplus food from ${name}`;
+      document.getElementById("location").value = loc;
+      document.querySelector(".form-container").scrollIntoView({ behavior: 'smooth' });
     }
 
     let map;
@@ -750,89 +840,48 @@
     let nearbyMarkers = [];
 
     function initMap() {
-      map = L.map('map').setView([20.5937, 78.9629], 5); // Default to India view
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
+      map = L.map('map').setView([20.5937, 78.9629], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
-          const { latitude, longitude } = position.coords;
-          const userLoc = [latitude, longitude];
+          userLat = position.coords.latitude;
+          userLon = position.coords.longitude;
+          const userLoc = [userLat, userLon];
           map.setView(userLoc, 15);
-
-          userMarker = L.marker(userLoc).addTo(map)
-            .bindPopup("<b>🏠 Your Location</b><br>Searching for nearby donors...").openPopup();
-
-          document.getElementById("nearby-status").textContent = "✅ Location detected! Finding real-time donors nearby...";
-          findNearbyHotels(latitude, longitude);
-        }, () => {
-          document.getElementById("nearby-status").textContent = "⚠️ Location access denied. Showing all donors.";
+          userMarker = L.marker(userLoc).addTo(map).bindPopup("<b>🏠 Your Location</b>").openPopup();
+          findNearbyHotels(userLat, userLon);
         });
       }
     }
 
     async function findNearbyHotels(lat, lon) {
-      // Using Overpass API to find real restaurants/hotels nearby
       const query = `[out:json];(node["amenity"~"restaurant|fast_food|cafe|hotel|food_court"](around:5000, ${lat}, ${lon}););out body;`;
       const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
       try {
         const response = await fetch(url);
         const data = await response.json();
-        const listDiv = document.getElementById("restaurantsList");
 
-        if (data.elements.length > 0) {
-          const liveSection = document.createElement("div");
-          liveSection.innerHTML = `<h3 style="color: #fff; margin: 30px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">⚡ Live Nearby Real-Time Donors (${data.elements.length})</h3>`;
+        liveHotels = data.elements.map(el => ({
+          name: el.tags.name || "Real-Time Donor",
+          type: el.tags.amenity || "Food Establishment",
+          lat: el.lat,
+          lon: el.lon,
+          dist: calculateDistance(lat, lon, el.lat, el.lon)
+        })).sort((a, b) => a.dist - b.dist);
 
-          const grid = document.createElement("div");
-          grid.style.display = "grid";
-          grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(300px, 1fr))";
-          grid.style.gap = "20px";
-          grid.style.marginBottom = "40px";
+        // Plot Markers
+        liveHotels.forEach(h => {
+          const marker = L.marker([h.lat, h.lon]).addTo(map);
+          marker.bindPopup(`<b>🏨 ${h.name}</b><br><button onclick="requestFromMap('${h.name}', '${h.lat},${h.lon}')">Request</button>`);
+          nearbyMarkers.push(marker);
+        });
 
-          data.elements.forEach(el => {
-            const name = el.tags.name || "Real-Time Food Donor";
-            const type = el.tags.amenity || "Establishment";
-
-            const marker = L.marker([el.lat, el.lon]).addTo(map);
-            marker.bindPopup(`
-              <div style="font-family: 'Poppins', sans-serif; min-width: 150px;">
-                <b style="color: #667eea; font-size: 14px;">🏨 ${name}</b><br>
-                <span style="color: #666; font-size: 12px;">Type: ${type}</span><br>
-                <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="margin-top:10px; padding:8px 12px; background:linear-gradient(135deg, #667eea, #764ba2); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; width:100%; font-size: 12px;">Select & Request</button>
-              </div>
-            `);
-            nearbyMarkers.push(marker);
-
-            const card = document.createElement("div");
-            card.className = "restaurant-card";
-            card.style.background = "rgba(255, 255, 255, 0.95)";
-            card.style.border = "none";
-            card.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
-            card.innerHTML = `
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="background: #667eea; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;">LIVE MAP 🔴</span>
-                <span style="color: #999; font-size: 11px;">📍 ~5km away</span>
-              </div>
-              <h3 style="color: #333; margin-bottom: 5px;">${name}</h3>
-              <p style="color: #666; font-size: 13px;"><strong>Type:</strong> ${type}</p>
-              <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
-                <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #667eea; background: transparent; color: #667eea; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">Request Surplus Food</button>
-              </div>
-            `;
-            grid.appendChild(card);
-          });
-
-          liveSection.appendChild(grid);
-          listDiv.prepend(liveSection);
-          document.getElementById("nearby-status").innerHTML = `🎁 Success! Found <b>${data.elements.length}</b> real-time hotels & restaurants nearby.`;
-        }
-      } catch (err) {
-        console.error("Error fetching nearby hotels:", err);
-      }
+        displayResults(allRestaurants, liveHotels);
+      } catch (err) { console.error(err); }
     }
+
 
     function requestFromMap(hotelName, coord) {
       // Switch back to the registration tab
