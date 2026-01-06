@@ -1,395 +1,393 @@
-<!DOCTYPE html>
-<html>
+<title>Acceptor Portal</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<head>
-  <title>Acceptor Portal</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+  body {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
     }
 
-    body {
-      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      min-height: 100vh;
-      padding: 40px 20px;
+    50% {
+      background-position: 100% 50%;
     }
 
-    @keyframes gradientShift {
-      0% {
-        background-position: 0% 50%;
-      }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
     }
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
     }
 
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
+  }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    .tab-container {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: slideUp 0.6s ease;
-    }
+  .tab-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: slideUp 0.6s ease;
+  }
 
-    .tab-button {
-      padding: 14px 32px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      color: #667eea;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-    }
+  .tab-button {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
 
-    .tab-button:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
-    }
+  .tab-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+  }
 
-    .tab-button.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      color: white;
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-    }
+  .tab-button.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    color: white;
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+  }
 
-    .tab-content {
-      display: none;
-      animation: slideUp 0.5s ease;
-    }
+  .tab-content {
+    display: none;
+    animation: slideUp 0.5s ease;
+  }
 
-    .tab-content.active {
-      display: block;
-    }
+  .tab-content.active {
+    display: block;
+  }
 
-    /* Form Styles */
-    .form-container {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-      padding: 50px;
-      max-width: 500px;
-      margin: 0 auto;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 0.8s ease;
-    }
+  /* Form Styles */
+  .form-container {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    padding: 50px;
+    max-width: 500px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    animation: slideUp 0.8s ease;
+  }
 
-    h2 {
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 35px;
-      text-align: center;
-      font-size: 32px;
-      font-weight: 700;
-    }
+  h2 {
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 35px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+  }
 
-    .form-group {
-      margin-bottom: 18px;
-      display: flex;
-      flex-direction: column;
-    }
+  .form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+  }
 
-    label {
-      font-weight: 600;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
+  label {
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
 
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      font-size: 14px;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(5px);
-    }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+  }
 
-    input:focus,
-    textarea:focus,
-    select:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.95);
-    }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.95);
+  }
 
-    input.error,
-    textarea.error {
-      border-color: #e74c3c;
-      box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
-    }
+  input.error,
+  textarea.error {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
+  }
 
-    .error-msg {
-      color: #e74c3c;
-      font-size: 12px;
-      margin-top: 5px;
-      display: none;
-      animation: slideUp 0.3s ease;
-    }
+  .error-msg {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+    animation: slideUp 0.3s ease;
+  }
 
-    .error-msg.show {
-      display: block;
-    }
+  .error-msg.show {
+    display: block;
+  }
 
-    button {
-      padding: 14px 28px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      background-size: 200% 200%;
-      color: white;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
+  button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 200%;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
 
-    button:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: left 0.5s ease;
-      z-index: 1;
-    }
+  button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
 
-    button:hover:before {
-      left: 100%;
-    }
+  button:hover:before {
+    left: 100%;
+  }
 
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-      background-position: 200% center;
-    }
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+    background-position: 200% center;
+  }
 
-    button:active {
-      transform: translateY(-1px);
-    }
+  button:active {
+    transform: translateY(-1px);
+  }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
 
-    #msg {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 600;
-      display: none;
-      animation: slideUp 0.5s ease;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-    }
+  #msg {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+    animation: slideUp 0.5s ease;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
 
-    #msg.success {
-      display: block;
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 230, 130, 0.2) 100%);
-      color: #2e7d32;
-      border: 2px solid rgba(76, 175, 80, 0.5);
-    }
+  #msg.success {
+    display: block;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 230, 130, 0.2) 100%);
+    color: #2e7d32;
+    border: 2px solid rgba(76, 175, 80, 0.5);
+  }
 
-    #msg.error {
-      display: block;
-      background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
-      color: #c62828;
-      border: 2px solid rgba(231, 76, 60, 0.5);
-    }
+  #msg.error {
+    display: block;
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
+    color: #c62828;
+    border: 2px solid rgba(231, 76, 60, 0.5);
+  }
 
-    /* Restaurants List Styles */
-    .restaurants-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  /* Restaurants List Styles */
+  .restaurants-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    .search-section {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 0.7s ease;
-    }
+  .search-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    animation: slideUp 0.7s ease;
+  }
 
-    .search-section input {
-      padding: 12px 18px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 10px;
-      font-size: 14px;
-      flex: 1;
-      min-width: 200px;
-      background: rgba(255, 255, 255, 0.8);
-      transition: all 0.3s ease;
-    }
+  .search-section input {
+    padding: 12px 18px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 10px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+  }
 
-    .search-section input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-      background: rgba(255, 255, 255, 0.95);
-    }
+  .search-section input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+  }
 
 
 
-    #restaurantsList {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
+  #restaurantsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
 
-    .restaurant-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s;
-      border-left: 5px solid #ff9800;
-    }
+  .restaurant-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    border-left: 5px solid #ff9800;
+  }
 
-    .restaurant-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
+  .restaurant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
 
-    .restaurant-card h3 {
-      color: #333;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
+  .restaurant-card h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
 
-    .restaurant-card p {
-      color: #666;
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
+  .restaurant-card p {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
 
-    .restaurant-card .badge {
-      display: inline-block;
-      padding: 5px 12px;
-      background: #fff3e0;
-      color: #ff6f00;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 10px;
-      margin-right: 8px;
-    }
+  .restaurant-card .badge {
+    display: inline-block;
+    padding: 5px 12px;
+    background: #fff3e0;
+    color: #ff6f00;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-right: 8px;
+  }
 
-    .restaurant-card .food-items {
-      background: #f9f9f9;
-      padding: 12px;
-      border-radius: 6px;
-      margin: 10px 0;
-    }
+  .restaurant-card .food-items {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
 
-    .restaurant-card .food-items h4 {
-      color: #333;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+  .restaurant-card .food-items h4 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
 
-    .restaurant-card .food-items ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+  .restaurant-card .food-items ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    .restaurant-card .food-items li {
-      padding: 4px 0;
-      color: #666;
-      font-size: 13px;
-    }
+  .restaurant-card .food-items li {
+    padding: 4px 0;
+    color: #666;
+    font-size: 13px;
+  }
 
-    .empty-message {
-      text-align: center;
-      padding: 40px;
-      background: white;
-      border-radius: 12px;
-      color: #999;
-    }
+  .empty-message {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    color: #999;
+  }
 
-    .loading-msg {
-      text-align: center;
-      padding: 40px;
-      color: white;
-      font-size: 18px;
-    }
-  </style>
+  .loading-msg {
+    text-align: center;
+    padding: 40px;
+    color: white;
+    font-size: 18px;
+  }
+</style>
 </head>
 
 <body>
@@ -468,6 +466,14 @@
           <input type="text" id="searchRestaurants" placeholder="🔍 Search by restaurant name, location, or food..."
             onkeyup="filterRestaurants()">
         </div>
+
+        <div id="map-container"
+          style="height: 400px; width: 100%; border-radius: 15px; margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.3); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+          <div id="map" style="height: 100%;"></div>
+        </div>
+        <div id="nearby-status"
+          style="text-align: center; margin-bottom: 15px; font-size: 14px; color: #fff; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+          📍 Detecting your location to find nearby donors...</div>
 
         <div id="restaurantsList">
           <div class="loading-msg">Loading restaurants...</div>
@@ -717,9 +723,78 @@
       displayRestaurants(filtered);
     }
 
+    let map;
+    let userMarker;
+    let nearbyMarkers = [];
+
+    function initMap() {
+      map = L.map('map').setView([20.5937, 78.9629], 5); // Default to India view
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const { latitude, longitude } = position.coords;
+          const userLoc = [latitude, longitude];
+          map.setView(userLoc, 15);
+
+          userMarker = L.marker(userLoc).addTo(map)
+            .bindPopup("<b>🏠 Your Location</b><br>Searching for nearby donors...").openPopup();
+
+          document.getElementById("nearby-status").textContent = "✅ Location detected! Finding real-time donors nearby...";
+          findNearbyHotels(latitude, longitude);
+        }, () => {
+          document.getElementById("nearby-status").textContent = "⚠️ Location access denied. Showing all donors.";
+        });
+      }
+    }
+
+    async function findNearbyHotels(lat, lon) {
+      // Using Overpass API to find real restaurants/hotels nearby
+      const query = `[out:json];(node["amenity"~"restaurant|fast_food|cafe|hotel|food_court"](around:5000, ${lat}, ${lon}););out body;`;
+      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        data.elements.forEach(el => {
+          const marker = L.marker([el.lat, el.lon]).addTo(map);
+          const name = el.tags.name || "Unnamed Restaurant";
+          const type = el.tags.amenity || "Food Establishment";
+
+          marker.bindPopup(`
+            <b>🏨 ${name}</b><br>
+            Type: ${type}<br>
+            <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="margin-top:5px; padding:5px 10px; background:#667eea; color:white; border:none; border-radius:5px; cursor:pointer; font-size:11px;">Request Surplus</button>
+          `);
+          nearbyMarkers.push(marker);
+        });
+
+        if (data.elements.length > 0) {
+          document.getElementById("nearby-status").innerHTML = `🎁 Found <b>${data.elements.length}</b> live establishments nearby! Click markers to request.`;
+        }
+      } catch (err) {
+        console.error("Error fetching nearby hotels:", err);
+      }
+    }
+
+    function requestFromMap(hotelName, coord) {
+      // Switch back to the registration tab
+      switchTab('form', { target: document.querySelector('.tab-button') });
+
+      document.getElementById("food").value = `Surplus food from ${hotelName}`;
+      document.getElementById("location").value = `Coordinates: ${coord}`;
+
+      // Scroll to the form
+      document.querySelector(".form-container").scrollIntoView({ behavior: 'smooth' });
+      showMessage(`📝 Details for ${hotelName} auto-filled! Please complete your request.`, "success");
+    }
+
     window.addEventListener("load", () => {
-      // Load restaurants when page loads
       loadRestaurants();
+      initMap();
     });
   </script>
 
