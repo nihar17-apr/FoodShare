@@ -12,7 +12,7 @@
   }
 
   body {
-    background: #02001a;
+    background: #0a0015;
     min-height: 100vh;
     overflow-x: hidden;
     color: white;
@@ -29,7 +29,7 @@
     }
   }
 
-  /* Cinematic Aurora Background */
+  /* Stunning Animated Gradient Background */
   .aurora-bg {
     position: fixed;
     top: 0;
@@ -37,65 +37,124 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    filter: blur(100px);
-    opacity: 0.6;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0015 0%, #1a0a2e 25%, #16213e 50%, #0a0015 100%);
+  }
+
+  /* Animated gradient overlay */
+  .aurora-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg at 50% 50%,
+        transparent 0deg,
+        rgba(255, 0, 128, 0.1) 60deg,
+        transparent 120deg,
+        rgba(0, 255, 255, 0.1) 180deg,
+        transparent 240deg,
+        rgba(138, 43, 226, 0.15) 300deg,
+        transparent 360deg);
+    animation: rotateBg 30s linear infinite;
+  }
+
+  @keyframes rotateBg {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .blob {
     position: absolute;
-    width: 600px;
-    height: 600px;
     border-radius: 50%;
-    filter: blur(80px);
-    animation: drift 40s infinite alternate;
+    filter: blur(60px);
+    mix-blend-mode: screen;
+    animation: float 20s ease-in-out infinite;
   }
 
   .blob-1 {
-    background: #00f2fe;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #ff006e 0%, transparent 70%);
     top: -10%;
     left: -10%;
-    animation-duration: 50s;
+    animation-duration: 25s;
   }
 
   .blob-2 {
-    background: #7028ff;
-    top: 10%;
-    right: -10%;
-    animation-duration: 60s;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #8338ec 0%, transparent 70%);
+    top: 20%;
+    right: -15%;
+    animation-duration: 30s;
     animation-delay: -5s;
   }
 
   .blob-3 {
-    background: #f093fb;
-    bottom: -10%;
-    left: 10%;
-    animation-duration: 45s;
-    animation-delay: -2s;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #3a86ff 0%, transparent 70%);
+    bottom: -5%;
+    left: 20%;
+    animation-duration: 22s;
+    animation-delay: -10s;
   }
 
   .blob-4 {
-    background: #4facfe;
-    bottom: 10%;
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, #00f5d4 0%, transparent 70%);
+    bottom: 20%;
     right: 10%;
-    animation-duration: 55s;
+    animation-duration: 28s;
+    animation-delay: -15s;
+  }
+
+  .blob-5 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #fb5607 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-duration: 35s;
     animation-delay: -8s;
   }
 
-  @keyframes drift {
-    0% {
-      transform: translate(0, 0) scale(1);
-    }
+  .blob-6 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #ffbe0b 0%, transparent 70%);
+    top: 10%;
+    left: 40%;
+    animation-duration: 32s;
+    animation-delay: -12s;
+  }
 
-    33% {
-      transform: translate(100px, 150px) scale(1.2);
-    }
+  @keyframes float {
 
-    66% {
-      transform: translate(-50px, 200px) scale(0.8);
-    }
-
+    0%,
     100% {
-      transform: translate(0, 0) scale(1);
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    25% {
+      transform: translate(50px, -80px) scale(1.1) rotate(90deg);
+    }
+
+    50% {
+      transform: translate(-30px, 60px) scale(0.9) rotate(180deg);
+    }
+
+    75% {
+      transform: translate(80px, 40px) scale(1.05) rotate(270deg);
     }
   }
 
@@ -485,6 +544,8 @@
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
     <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+    <div class="blob blob-6"></div>
   </div>
   <div class="container">
     <!-- Tab Buttons -->
