@@ -831,6 +831,8 @@
 
     function filterRestaurants() {
       const searchTerm = document.getElementById("searchRestaurants").value.toLowerCase();
+
+      // Filter database restaurants
       const filtered = allRestaurants.filter(r => {
         return r.name.toLowerCase().includes(searchTerm) ||
           r.location.toLowerCase().includes(searchTerm) ||
@@ -841,6 +843,17 @@
           ));
       });
       displayRestaurants(filtered);
+
+      // Also filter live nearby restaurant cards
+      const liveCards = document.querySelectorAll('.restaurant-card');
+      liveCards.forEach(card => {
+        const cardText = card.textContent.toLowerCase();
+        if (searchTerm === '' || cardText.includes(searchTerm)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
 
     let map;
