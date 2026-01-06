@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 ================================ */
 let restaurants = [];
 let acceptors = [];
+let deliveryPersons = [];
 let activityLogs = [];
 
 // Admin credentials
@@ -126,6 +127,50 @@ app.post("/add-acceptor", (req, res) => {
 });
 
 /* ===============================
+   DELIVERY PORTAL
+================================ */
+app.post("/add-delivery", (req, res) => {
+  try {
+    const { name, email, phone, location, vehicleType, licenseNumber } = req.body;
+
+    if (!name || !email || !phone || !location || !vehicleType) {
+      return res.status(400).json({ error: "Required fields are missing" });
+    }
+
+    const deliveryPerson = {
+      _id: Date.now().toString(),
+      name,
+      email,
+      phone,
+      location,
+      vehicleType,
+      licenseNumber,
+      isVerified: false,
+      status: "Available",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    deliveryPersons.push(deliveryPerson);
+
+    // Log activity
+    activityLogs.push({
+      _id: Date.now().toString(),
+      actorType: "Delivery",
+      actorName: name,
+      actorEmail: email,
+      action: "Registered for Delivery",
+      details: `Vehicle: ${vehicleType}`,
+      timestamp: new Date()
+    });
+
+    res.status(201).json({ message: "✅ Delivery person added successfully", data: deliveryPerson });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ===============================
    PUBLIC ROUTES (Verified Only)
 ================================ */
 app.get("/restaurants", (req, res) => {
@@ -152,6 +197,10 @@ app.get("/admin/activities", (req, res) => {
   res.json(sorted);
 });
 
+app.get("/admin/deliveries", (req, res) => {
+  res.json(deliveryPersons);
+});
+
 app.get("/get-restaurant/:id", (req, res) => {
   const r = restaurants.find(x => x._id === req.params.id);
   if (!r) return res.status(404).json({ error: "Restaurant not found" });
@@ -162,6 +211,12 @@ app.get("/get-acceptor/:id", (req, res) => {
   const a = acceptors.find(x => x._id === req.params.id);
   if (!a) return res.status(404).json({ error: "Acceptor not found" });
   res.json(a);
+});
+
+app.get("/get-delivery/:id", (req, res) => {
+  const d = deliveryPersons.find(x => x._id === req.params.id);
+  if (!d) return res.status(404).json({ error: "Delivery person not found" });
+  res.json(d);
 });
 
 /* ===============================
@@ -185,6 +240,15 @@ app.put("/verify-acceptor/:id", (req, res) => {
   res.json({ message: "✅ Acceptor verified", data: a });
 });
 
+app.put("/verify-delivery/:id", (req, res) => {
+  const d = deliveryPersons.find(x => x._id === req.params.id);
+  if (d) {
+    d.isVerified = true;
+    d.updatedAt = new Date();
+  }
+  res.json({ message: "✅ Delivery person verified", data: d });
+});
+
 /* ===============================
    DELETE ROUTES
 ================================ */
@@ -198,6 +262,12 @@ app.delete("/delete-acceptor/:id", (req, res) => {
   const acceptor = acceptors.find(x => x._id === req.params.id);
   acceptors = acceptors.filter(x => x._id !== req.params.id);
   res.json({ message: "✅ Acceptor deleted", data: acceptor });
+});
+
+app.delete("/delete-delivery/:id", (req, res) => {
+  const dp = deliveryPersons.find(x => x._id === req.params.id);
+  deliveryPersons = deliveryPersons.filter(x => x._id !== req.params.id);
+  res.json({ message: "✅ Delivery person deleted", data: dp });
 });
 
 /* ===============================

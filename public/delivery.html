@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Delivery Portal</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.8s ease, pulse 3s ease-in-out infinite;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+            background-position: 200% center;
+        }
+
+        #msg {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        #msg.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+            display: block;
+        }
+
+        #msg.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c62828;
+            border: 1px solid #c62828;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>🚚 Delivery Portal</h2>
+
+        <form id="deliveryForm" onsubmit="submitDelivery(event)">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input id="name" type="text" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input id="email" type="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input id="phone" type="tel" placeholder="(123) 456-7890" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Preferred Location/Area *</label>
+                <input id="location" type="text" placeholder="e.g., Downtown, North Side" required>
+            </div>
+
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type *</label>
+                <select id="vehicleType" required>
+                    <option value="">Select a vehicle</option>
+                    <option value="Bike">Bike/Motorcycle</option>
+                    <option value="Car">Car</option>
+                    <option value="Van">Van</option>
+                    <option value="Bicycle">Bicycle</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="licenseNumber">License Number (Optional)</label>
+                <input id="licenseNumber" type="text" placeholder="Enter license number if applicable">
+            </div>
+
+            <button type="submit">Register as Delivery Partner</button>
+        </form>
+
+        <div id="msg"></div>
+        <p style="text-align: center; margin-top: 20px;"><a href="index.html"
+                style="color: #667eea; text-decoration: none; font-weight: 600;">← Back to Home</a></p>
+    </div>
+
+    <script>
+        function showMessage(message, type) {
+            const msgEl = document.getElementById("msg");
+            msgEl.textContent = message;
+            msgEl.className = type;
+            setTimeout(() => { msgEl.className = ""; msgEl.style.display = "none"; }, 5000);
+        }
+
+        function submitDelivery(event) {
+            event.preventDefault();
+
+            const data = {
+                name: document.getElementById("name").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                location: document.getElementById("location").value.trim(),
+                vehicleType: document.getElementById("vehicleType").value,
+                licenseNumber: document.getElementById("licenseNumber").value.trim()
+            };
+
+            const submitBtn = document.querySelector("button[type='submit']");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+
+            fetch("/add-delivery", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Server error");
+                    return res.json();
+                })
+                .then(response => {
+                    showMessage("✅ Registration submitted! Please wait for admin verification.", "success");
+                    document.getElementById("deliveryForm").reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Register as Delivery Partner";
+                })
+                .catch(error => {
+                    showMessage("❌ Error: " + error.message, "error");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Register as Delivery Partner";
+                });
+        }
+    </script>
+
+</body>
+
+</html>

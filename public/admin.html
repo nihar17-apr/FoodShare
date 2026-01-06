@@ -831,6 +831,7 @@
     <div class="button-group">
       <button class="active" onclick="loadRestaurants()">🍴 Restaurants</button>
       <button onclick="loadAcceptors()">🏠 Acceptors</button>
+      <button onclick="loadDeliveries()">🚚 Deliveries</button>
       <button onclick="loadActivityLogs()">📜 Activity Logs</button>
     </div>
 
@@ -859,6 +860,10 @@
       <div class="stat-card">
         <h4>Total Quantity</h4>
         <div class="number" id="quantityCount">0</div>
+      </div>
+      <div class="stat-card">
+        <h4>Delivery Partners</h4>
+        <div class="number" id="deliveryCount">0</div>
       </div>
     </div>
 
@@ -983,9 +988,26 @@
         });
     }
 
+    function loadDeliveries() {
+      currentType = "delivery";
+      updateActiveButton(2);
+      document.getElementById("output").innerHTML = '<div class="loading">Loading delivery partners...</div>';
+
+      fetch("/admin/deliveries")
+        .then(res => res.json())
+        .then(data => {
+          allData = data;
+          updateStats();
+          showData(data, "delivery");
+        })
+        .catch(err => {
+          document.getElementById("output").innerHTML = `<div class="empty-state"><h3>Error loading deliveries</h3></div>`;
+        });
+    }
+
     function loadActivityLogs() {
       currentType = "activity";
-      updateActiveButton(2);
+      updateActiveButton(3);
       document.getElementById("output").innerHTML = '<div class="loading">Loading activity logs...</div>';
 
       fetch("/admin/activities")
@@ -1064,6 +1086,13 @@
           }
         })
         .catch(err => console.error("Error updating acceptor stats:", err));
+
+      fetch("/admin/deliveries")
+        .then(res => res.json())
+        .then(deliveries => {
+          document.getElementById("deliveryCount").textContent = deliveries.length;
+        })
+        .catch(err => console.error(err));
     }
 
     function showData(data, type) {
@@ -1138,7 +1167,7 @@
 
         const createdDate = d.createdAt ? new Date(d.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
 
-        const icon = type === "restaurant" ? "🏨" : "🏠";
+        const icon = type === "restaurant" ? "🏨" : (type === "acceptor" ? "🏠" : "🚚");
 
         out.innerHTML += `
       <div class="card">
@@ -1146,7 +1175,7 @@
           <div>
             <h3 style="margin: 0 0 10px 0;">${icon} ${d.name}</h3>
             ${verifiedBadge}
-            ${membershipBadge}
+            ${type !== 'delivery' ? membershipBadge : ''}
           </div>
           <span style="font-size: 12px; color: #999; background: rgba(0,0,0,0.05); padding: 6px 12px; border-radius: 6px;">📅 ${createdDate}</span>
         </div>
@@ -1156,6 +1185,8 @@
           ${email}
           ${phone}
           ${rating}
+          ${d.vehicleType ? `<p><strong>🚲 Vehicle:</strong> ${d.vehicleType}</p>` : ''}
+          ${d.status ? `<p><strong>🚦 Status:</strong> ${d.status}</p>` : ''}
         </div>
         ${itemsDisplay}
         <div class="actions">
@@ -1359,6 +1390,24 @@
         html += `
       <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; font-weight: 600; color: #1e6bb8;">
         Total Quantity: ${totalQty} portions
+      </div>
+    </div>
+    `;
+      } else if (type === "delivery") {
+        html += `
+    <div class="detail-section">
+      <h3>🚲 Vehicle & Status</h3>
+      <div class="detail-item">
+        <strong>Vehicle Type:</strong>
+        <span>${data.vehicleType}</span>
+      </div>
+      <div class="detail-item">
+        <strong>License Number:</strong>
+        <span>${data.licenseNumber || 'Not provided'}</span>
+      </div>
+      <div class="detail-item">
+        <strong>Status:</strong>
+        <span>${data.status}</span>
       </div>
     </div>
     `;
