@@ -503,6 +503,10 @@
       // Load restaurants when switching to restaurants tab
       if (tabName === 'restaurants') {
         loadRestaurants();
+        // Fix for Leaflet map grey area issue
+        setTimeout(() => {
+          if (map) map.invalidateSize();
+        }, 300);
       }
     }
 
@@ -758,22 +762,54 @@
       try {
         const response = await fetch(url);
         const data = await response.json();
-
-        data.elements.forEach(el => {
-          const marker = L.marker([el.lat, el.lon]).addTo(map);
-          const name = el.tags.name || "Unnamed Restaurant";
-          const type = el.tags.amenity || "Food Establishment";
-
-          marker.bindPopup(`
-            <b>🏨 ${name}</b><br>
-            Type: ${type}<br>
-            <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="margin-top:5px; padding:5px 10px; background:#667eea; color:white; border:none; border-radius:5px; cursor:pointer; font-size:11px;">Request Surplus</button>
-          `);
-          nearbyMarkers.push(marker);
-        });
+        const listDiv = document.getElementById("restaurantsList");
 
         if (data.elements.length > 0) {
-          document.getElementById("nearby-status").innerHTML = `🎁 Found <b>${data.elements.length}</b> live establishments nearby! Click markers to request.`;
+          const liveSection = document.createElement("div");
+          liveSection.innerHTML = `<h3 style="color: #fff; margin: 30px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">⚡ Live Nearby Real-Time Donors (${data.elements.length})</h3>`;
+
+          const grid = document.createElement("div");
+          grid.style.display = "grid";
+          grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(300px, 1fr))";
+          grid.style.gap = "20px";
+          grid.style.marginBottom = "40px";
+
+          data.elements.forEach(el => {
+            const name = el.tags.name || "Real-Time Food Donor";
+            const type = el.tags.amenity || "Establishment";
+
+            const marker = L.marker([el.lat, el.lon]).addTo(map);
+            marker.bindPopup(`
+              <div style="font-family: 'Poppins', sans-serif; min-width: 150px;">
+                <b style="color: #667eea; font-size: 14px;">🏨 ${name}</b><br>
+                <span style="color: #666; font-size: 12px;">Type: ${type}</span><br>
+                <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="margin-top:10px; padding:8px 12px; background:linear-gradient(135deg, #667eea, #764ba2); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; width:100%; font-size: 12px;">Select & Request</button>
+              </div>
+            `);
+            nearbyMarkers.push(marker);
+
+            const card = document.createElement("div");
+            card.className = "restaurant-card";
+            card.style.background = "rgba(255, 255, 255, 0.95)";
+            card.style.border = "none";
+            card.style.boxShadow = "0 10px 20px rgba(0,0,0,0.1)";
+            card.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="background: #667eea; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;">LIVE MAP 🔴</span>
+                <span style="color: #999; font-size: 11px;">📍 ~5km away</span>
+              </div>
+              <h3 style="color: #333; margin-bottom: 5px;">${name}</h3>
+              <p style="color: #666; font-size: 13px;"><strong>Type:</strong> ${type}</p>
+              <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                <button onclick="requestFromMap('${name}', '${el.lat},${el.lon}')" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #667eea; background: transparent; color: #667eea; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">Request Surplus Food</button>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          liveSection.appendChild(grid);
+          listDiv.prepend(liveSection);
+          document.getElementById("nearby-status").innerHTML = `🎁 Success! Found <b>${data.elements.length}</b> real-time hotels & restaurants nearby.`;
         }
       } catch (err) {
         console.error("Error fetching nearby hotels:", err);

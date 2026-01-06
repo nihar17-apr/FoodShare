@@ -1060,14 +1060,16 @@
         const icon = log.actorType === 'Restaurant' ? '🍴' : (log.actorType === 'Acceptor' ? '🏠' : '🚚');
         card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div>
-          <h3>${icon} ${log.actorName}</h3>
-          <p><strong>Action:</strong> <span style="color: #667eea; font-weight: 600;">${log.action}</span></p>
-          <p><strong>Details:</strong> ${log.details}</p>
-          <p><strong>Email:</strong> ${log.actorEmail || 'N/A'}</p>
-          <span class="badge">🕒 ${date}</span>
+        <div style="flex: 1;">
+          <h3 style="margin-bottom: 5px;">${icon} ${log.actorName}</h3>
+          <p><strong>Action:</strong> <span style="color: #667eea; font-weight: 700; background: rgba(102, 126, 234, 0.1); padding: 2px 8px; border-radius: 4px;">${log.action}</span></p>
+          <p style="margin: 8px 0; color: #555;"><strong>Details:</strong> ${log.details}</p>
+          <div style="display: flex; gap: 15px; font-size: 13px; color: #888;">
+            <span>📧 ${log.actorEmail || 'N/A'}</span>
+            <span>🕒 ${date}</span>
+          </div>
         </div>
-        <button onclick="deleteActivity('${log._id}')" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;">Delete Log</button>
+        <button onclick="deleteActivity('${log._id}')" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s ease;">Delete Log</button>
       </div>
     `;
         out.appendChild(card);
@@ -1185,7 +1187,10 @@
           itemsDisplay = '<div class="items-list"><strong>📦 Food Items Submitted:</strong><div style="margin-top: 10px;">';
           d.items.forEach(item => {
             const category = item.category ? ` <span class="category">${item.category}</span>` : '';
-            itemsDisplay += `<div class="item-entry">• <strong>${item.food || item.itemName}</strong> - <span style="color: #667eea; font-weight: 600;">${item.quantity} portions</span>${category}</div>`;
+            const qty = parseInt(item.quantity) || 0;
+            const stockColor = qty === 0 ? "#e74c3c" : (qty < 10 ? "#f39c12" : "#667eea");
+            const stockStatus = qty === 0 ? " (OUT OF STOCK)" : (qty < 10 ? " (LOW STOCK)" : "");
+            itemsDisplay += `<div class="item-entry">• <strong>${item.food || item.itemName}</strong> - <span style="color: ${stockColor}; font-weight: 700;">${qty} portions</span>${stockStatus}${category}</div>`;
           });
           itemsDisplay += '</div></div>';
         } else if (type === "restaurant" && d.food) {
@@ -1504,8 +1509,11 @@
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
           })
-          .then(() => {
-            showMessage(`✅ ${modalData.type} verified successfully!`, "success");
+          .then(data => {
+            let msg = `✅ ${modalData.type} verified!`;
+            if (data.matchInfo) msg += `\n\n🔎 Inventory Update: ${data.matchInfo}`;
+
+            alert(msg);
             closeModal();
             if (currentType === modalData.type) {
               currentType === "restaurant" ? loadRestaurants() : loadAcceptors();

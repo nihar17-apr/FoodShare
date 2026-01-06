@@ -54,10 +54,25 @@ if (MONGODB_URI) {
 const isLive = () => mongoose.connection.readyState === 1;
 
 /* ===============================
-   CORE LOGIC: AUTO-ALLOCATION (Real World)
+   PUBLIC ROUTES (Portal Access)
 ================================ */
+app.get("/restaurants", async (req, res) => {
+  try {
+    if (isLive()) return res.json(await Restaurant.find({ isVerified: true }));
+    res.json(memoryDB.restaurants.filter(r => r.isVerified));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
 
-// Handle Restaurant Submission
+app.get("/acceptors", async (req, res) => {
+  try {
+    if (isLive()) return res.json(await Acceptor.find({ isVerified: true }));
+    res.json(memoryDB.acceptors.filter(a => a.isVerified));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+/* ===============================
+   SUBMISSION HANDLERS
+================================ */
 app.post("/add-restaurant", async (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
@@ -72,18 +87,17 @@ app.post("/add-restaurant", async (req, res) => {
 
     if (isLive()) {
       const dbData = await new Restaurant(record).save();
-      await new Activity({ actorType: "Restaurant", actorName: name, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() }).save();
+      await new Activity({ actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() }).save();
       return res.status(201).json({ success: true, data: dbData });
     }
 
     memoryDB.restaurants.push(record);
-    memoryDB.activityLogs.push({ actorType: "Restaurant", actorName: name, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() });
+    memoryDB.activityLogs.push({ _id: Date.now().toString(), actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() });
     commitData();
     res.status(201).json({ success: true, data: record, status: systemStatus });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Handle Acceptor Submission
 app.post("/add-acceptor", async (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, membership } = req.body;
@@ -91,22 +105,20 @@ app.post("/add-acceptor", async (req, res) => {
 
     if (isLive()) {
       const dbData = await new Acceptor(record).save();
-      await new Activity({ actorType: "Acceptor", actorName: name, action: "Requested Food", details: `${quantity} portions of ${food}`, timestamp: new Date() }).save();
+      await new Activity({ actorType: "Acceptor", actorName: name, actorEmail: email, action: "Requested Food", details: `${quantity} portions of ${food}`, timestamp: new Date() }).save();
       return res.status(201).json({ success: true, data: dbData });
     }
 
     memoryDB.acceptors.push(record);
-    memoryDB.activityLogs.push({ actorType: "Acceptor", actorName: name, action: "Requested Food", details: `${quantity} portions of ${food}`, timestamp: new Date() });
+    memoryDB.activityLogs.push({ _id: Date.now().toString(), actorType: "Acceptor", actorName: name, actorEmail: email, action: "Requested Food", details: `${quantity} portions of ${food}`, timestamp: new Date() });
     commitData();
     res.status(201).json({ success: true, data: record });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 /* ===============================
-   ADMIN APPROVAL (Real-World Deduction Logic)
+   ADMIN ACTIONS (Approval & Deduction)
 ================================ */
-
-// Verify Restaurant
 app.put("/verify-restaurant/:id", async (req, res) => {
   try {
     if (isLive()) {
@@ -120,7 +132,6 @@ app.put("/verify-restaurant/:id", async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// Verify Acceptor & Deduct Inventory
 app.put("/verify-acceptor/:id", async (req, res) => {
   try {
     let acceptorRecord;
@@ -137,7 +148,6 @@ app.put("/verify-acceptor/:id", async (req, res) => {
     let matched = false;
     let matchDetails = "No matching verified restaurant found.";
 
-    // Real World Logic: Deduct from available verified restaurant portions
     if (isLive()) {
       const restaurants = await Restaurant.find({ isVerified: true });
       for (let rest of restaurants) {
@@ -168,28 +178,13 @@ app.put("/verify-acceptor/:id", async (req, res) => {
       memoryDB.activityLogs.push({ actorType: "System", actorName: "Allocation Engine", action: "Matched Food", details: `Acceptor ${acceptorRecord.name} matched. ${matchDetails}`, timestamp: new Date() });
       commitData();
     }
-
     res.json({ success: true, data: acceptorRecord, matchInfo: matchDetails });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 /* ===============================
-   OTHER ROUTES
+   ADMIN DATA & MANAGEMENT
 ================================ */
-app.post("/add-delivery", async (req, res) => {
-  try {
-    const d = req.body;
-    if (isLive()) {
-      const dbData = await new Delivery({ ...d, isVerified: false, status: "Available" }).save();
-      return res.json({ success: true, data: dbData });
-    }
-    const record = { _id: Date.now().toString(), ...d, isVerified: false, status: "Available", createdAt: new Date() };
-    memoryDB.deliveryPersons.push(record);
-    commitData();
-    res.json({ success: true, data: record });
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
 app.get("/admin/db-status", (req, res) => res.json({ status: systemStatus }));
 app.get("/admin/restaurants", async (req, res) => isLive() ? res.json(await Restaurant.find().sort({ createdAt: -1 })) : res.json(memoryDB.restaurants.slice().reverse()));
 app.get("/admin/acceptors", async (req, res) => isLive() ? res.json(await Acceptor.find().sort({ createdAt: -1 })) : res.json(memoryDB.acceptors.slice().reverse()));
@@ -199,6 +194,20 @@ app.get("/admin/deliveries", async (req, res) => isLive() ? res.json(await Deliv
 app.delete("/delete-restaurant/:id", async (req, res) => {
   if (isLive()) await Restaurant.findByIdAndDelete(req.params.id);
   else memoryDB.restaurants = memoryDB.restaurants.filter(x => x._id !== req.params.id);
+  commitData();
+  res.json({ success: true });
+});
+
+app.delete("/delete-acceptor/:id", async (req, res) => {
+  if (isLive()) await Acceptor.findByIdAndDelete(req.params.id);
+  else memoryDB.acceptors = memoryDB.acceptors.filter(x => x._id !== req.params.id);
+  commitData();
+  res.json({ success: true });
+});
+
+app.delete("/delete-activity/:id", async (req, res) => {
+  if (isLive()) await Activity.findByIdAndDelete(req.params.id);
+  else memoryDB.activityLogs = memoryDB.activityLogs.filter(x => x._id !== req.params.id);
   commitData();
   res.json({ success: true });
 });
