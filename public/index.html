@@ -14,13 +14,14 @@
 
 /* ===== BODY ===== */
 html {
-  scroll-behavior: smooth;   /* ✅ smooth scrolling (past + clean) */
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #ffb3ff, #b3c6ff, #80b3ff);
   min-height: 100vh;
+  color: white;
 }
 
 /* ===== NAVBAR ===== */
@@ -35,21 +36,19 @@ body {
   margin: 20px;
 }
 
-.navbar .logo {
+.logo {
   font-size: 22px;
   font-weight: 900;
-  color: white;
 }
 
-.navbar .links a {
+.links a {
   margin-left: 40px;
   color: white;
   text-decoration: none;
   font-weight: 700;
-  cursor: pointer;
 }
 
-.navbar .links a:hover {
+.links a:hover {
   text-decoration: underline;
 }
 
@@ -64,14 +63,12 @@ body {
 
 .hero h1 {
   font-size: 48px;
-  color: white;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .hero h3 {
   font-size: 22px;
-  color: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .hero p {
@@ -112,10 +109,10 @@ body {
   padding: 60px;
   background: rgba(255,255,255,0.25);
   border-radius: 30px;
-  color: white;
   text-align: center;
 }
 
+/* ===== ABOUT ===== */
 .section h2 {
   font-size: 36px;
   margin-bottom: 20px;
@@ -128,10 +125,70 @@ body {
   line-height: 1.7;
 }
 
+/* ===== CONTACT ===== */
+.contact-cards {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.contact-card {
+  width: 280px;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.contact-card h3 {
+  margin-bottom: 15px;
+}
+
+.contact-card p {
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+.contact-btn {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #6c63ff, #00b0ff);
+}
+
+.contact-btn:hover {
+  opacity: 0.85;
+}
+
+/* ===== PRIMARY CONTACT ===== */
+.primary-contact {
+  border: 2px dashed rgba(255,255,255,0.5);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.primary-contact h3 {
+  color: #ffe066;
+  margin-bottom: 10px;
+}
+
+.primary-contact span {
+  font-size: 14px;
+  color: #f0f0f0;
+}
+
 /* ===== FOOTER ===== */
 .footer {
   text-align: center;
-  color: white;
   padding: 30px;
   font-weight: 700;
 }
@@ -142,9 +199,11 @@ body {
     flex-direction: column;
     gap: 10px;
   }
-  .navbar .links a {
+
+  .links a {
     margin-left: 15px;
   }
+
   .hero h1 {
     font-size: 34px;
   }
@@ -159,7 +218,7 @@ body {
   <div class="logo">🍽 Food To Need</div>
   <div class="links">
     <a href="#hero">Home</a>
-    <a href="#about">About Us</a>
+    <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
 </div>
@@ -168,15 +227,13 @@ body {
 <div class="hero" id="hero">
   <h1>🍽 Food To Need</h1>
   <h3>Connecting Food Surplus to Food Shortage</h3>
-  <p>
-    A platform bridging restaurants with excess food to orphanages and charitable organizations in need
-  </p>
+  <p>A platform bridging restaurants with excess food to orphanages and NGOs</p>
 
   <div class="button-group">
-    <button class="btn restaurant" onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
-    <button class="btn acceptor" onclick="location.href='acceptor.html'">🏠 Acceptor Portal</button>
-    <button class="btn membership" onclick="location.href='membership.html'">🚚 Delivery Membership</button>
-    <button class="btn admin" onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
+    <button class="btn restaurant">🏨 Restaurant Portal</button>
+    <button class="btn acceptor">🏠 Acceptor Portal</button>
+    <button class="btn membership">🚚 Delivery Membership</button>
+    <button class="btn admin">👨‍💼 Admin Dashboard</button>
   </div>
 </div>
 
@@ -185,25 +242,46 @@ body {
   <h2>📖 About Us</h2>
   <p>
     Food To Need is a community-driven initiative designed to reduce food waste
-    while fighting hunger. We connect restaurants, hotels, and food providers
-    with NGOs, orphanages, and people in need using a simple and secure platform.
+    while fighting hunger by connecting food providers with people in need.
   </p>
 </div>
 
 <!-- CONTACT -->
 <div class="section" id="contact">
-  <h2>📞 Contact Us</h2>
-  <p>
-    📧 Email: <strong>nrouthu@gitam.in</strong><br><br>
-    📍 Location: India<br><br>
-    We usually respond within 24 hours.
-  </p>
+  <h2>💬 Get in Touch</h2>
+  <p>Have questions, suggestions, or want to get involved? We'd love to hear from you!</p>
+
+  <div class="contact-cards">
+    <div class="contact-card">
+      <h3>📧 Email</h3>
+      <p>Send us your inquiries, feedback, or partnership proposals</p>
+      <button class="contact-btn">SEND EMAIL</button>
+    </div>
+
+    <div class="contact-card">
+      <h3>💬 Feedback</h3>
+      <p>Help us improve! Share your experience and suggestions</p>
+      <button class="contact-btn">SHARE FEEDBACK</button>
+    </div>
+
+    <div class="contact-card">
+      <h3>🤝 Partnerships</h3>
+      <p>Interested in partnering with us? Let’s collaborate!</p>
+      <button class="contact-btn">DISCUSS PARTNERSHIP</button>
+    </div>
+  </div>
+
+  <div class="primary-contact">
+    <h3>📩 Primary Contact</h3>
+    <p><strong>nrouthu@gitam.in</strong></p>
+    <span>We typically respond within 24 hours</span>
+  </div>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>Food To Need – Building a Hunger-Free Community</p>
-  <p>© 2026 Food To Need Initiative</p>
+  <p>🍽 Food To Need – Building a Hunger-Free Community</p>
+  <p>© 2026 Food To Need Initiative. Developed with ❤️</p>
 </div>
 
 </body>
