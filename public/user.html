@@ -12,10 +12,32 @@
   }
 
   body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #764ba2;
+    background-image:
+      radial-gradient(at 0% 0%, #667eea 0px, transparent 50%),
+      radial-gradient(at 100% 0%, #764ba2 0px, transparent 50%),
+      radial-gradient(at 100% 100%, #f093fb 0px, transparent 50%),
+      radial-gradient(at 0% 100%, #4facfe 0px, transparent 50%),
+      radial-gradient(at 50% 50%, #667eea 0px, transparent 50%);
+    background-size: 200% 200%;
+    animation: mixColors 15s ease infinite;
     min-height: 100vh;
     padding: 40px 20px;
     color: white;
+  }
+
+  @keyframes mixColors {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   .container {
