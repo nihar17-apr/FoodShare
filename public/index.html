@@ -4,25 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food To Need | The Zenith of Sharing</title>
+  <title>Food To Need | Heavenly Sharing</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
     rel="stylesheet">
   <style>
     :root {
-      --primary: #10b981;
-      /* Emerald */
-      --primary-dark: #065f46;
-      --secondary: #f59e0b;
-      /* Amber */
-      --accent: #ec4899;
-      /* Pink */
-      --bg: #0f172a;
-      /* Slate 900 */
-      --glass: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --text: #f8fafc;
-      --text-dim: #94a3b8;
+      --aurora-1: #00f2fe;
+      --aurora-2: #4facfe;
+      --aurora-3: #7028ff;
+      --aurora-4: #f093fb;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.6);
+      --primary: #00f2fe;
     }
 
     * {
@@ -30,58 +26,60 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Outfit', sans-serif;
+      cursor: default;
     }
 
     body {
-      background-color: var(--bg);
+      background: #02001a;
       color: var(--text);
       overflow-x: hidden;
       line-height: 1.6;
     }
 
-    /* Animated Orchard Background */
-    .bg-animation {
+    /* Aurora Background Animation */
+    .aurora-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at top right, #064e3b, transparent 40%),
-        radial-gradient(circle at bottom left, #1e1b4b, transparent 40%);
+      background: #02001a;
+      overflow: hidden;
     }
 
-    .orb {
+    .aurora-layer {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
+      width: 150%;
+      height: 150%;
+      top: -25%;
+      left: -25%;
+      background: radial-gradient(circle at 20% 30%, var(--aurora-1), transparent 40%),
+        radial-gradient(circle at 80% 70%, var(--aurora-2), transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--aurora-3), transparent 50%),
+        radial-gradient(circle at 30% 80%, var(--aurora-4), transparent 40%);
       filter: blur(80px);
-      opacity: 0.15;
-      animation: float 20s infinite alternate ease-in-out;
+      opacity: 0.3;
+      animation: drift 20s infinite alternate linear;
     }
 
-    .orb-1 {
-      background: var(--primary);
-      top: 10%;
-      left: 10%;
-    }
-
-    .orb-2 {
-      background: var(--secondary);
-      bottom: 10%;
-      right: 10%;
-      animation-delay: -5s;
-    }
-
-    @keyframes float {
+    @keyframes drift {
       from {
-        transform: translate(0, 0) scale(1);
+        transform: rotate(0deg) scale(1);
       }
 
       to {
-        transform: translate(100px, 50px) scale(1.2);
+        transform: rotate(10deg) scale(1.1);
       }
+    }
+
+    /* Beautiful Typography Settings */
+    h1,
+    h2,
+    h3 {
+      font-family: 'Syne', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: -1px;
     }
 
     /* Navigation */
@@ -89,24 +87,22 @@
       position: fixed;
       top: 0;
       width: 100%;
-      padding: 25px 80px;
+      padding: 30px 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
     }
 
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(to right, white, var(--aurora-1));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
     }
 
     .nav-links {
@@ -116,16 +112,19 @@
 
     .nav-links a {
       text-decoration: none;
-      color: var(--text);
-      font-weight: 600;
-      font-size: 15px;
-      transition: 0.3s;
-      opacity: 0.8;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.6;
+      transition: 0.4s;
+      cursor: pointer;
     }
 
     .nav-links a:hover {
       opacity: 1;
-      color: var(--primary);
+      text-shadow: 0 0 10px var(--aurora-1);
     }
 
     /* Hero Section */
@@ -137,164 +136,191 @@
       align-items: center;
       text-align: center;
       padding: 0 20px;
-      margin-top: 80px;
     }
 
     .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(50px, 8vw, 100px);
-      line-height: 1.1;
-      margin-bottom: 30px;
-      background: linear-gradient(to right, #ffffff, #d1d5db);
+      font-size: clamp(60px, 12vw, 150px);
+      line-height: 0.9;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--aurora-1) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: glowTitle 5s infinite alternate;
     }
 
-    .hero h1 span {
-      display: block;
-      color: var(--primary);
-      -webkit-text-fill-color: var(--primary);
+    @keyframes glowTitle {
+      from {
+        text-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+      }
+
+      to {
+        text-shadow: 0 0 50px rgba(0, 242, 254, 0.5);
+      }
     }
 
     .hero p {
       font-size: 20px;
-      max-width: 700px;
+      max-width: 600px;
       color: var(--text-dim);
       margin-bottom: 50px;
+      animation: fadeIn 2s ease;
     }
 
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Glass Buttons */
     .btn-group {
       display: flex;
       gap: 20px;
     }
 
     .btn {
-      padding: 18px 45px;
-      border-radius: 50px;
-      font-weight: 700;
+      padding: 22px 50px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
       text-decoration: none;
-      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      font-size: 16px;
-      border: 2px solid transparent;
+      transition: 0.5s;
+      border: 1px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+      background: white;
+      color: #02001a;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     }
 
     .btn-primary:hover {
-      transform: translateY(-5px) scale(1.05);
-      background: #059669;
-      box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4);
+      transform: scale(1.05) translateY(-5px);
+      background: var(--aurora-1);
+      box-shadow: 0 0 50px var(--aurora-1);
     }
 
-    .btn-secondary {
+    .btn-outline {
       background: var(--glass);
-      color: #fff;
-      border-color: var(--glass-border);
+      color: white;
       backdrop-filter: blur(10px);
     }
 
-    .btn-secondary:hover {
+    .btn-outline:hover {
       background: rgba(255, 255, 255, 0.1);
+      border-color: white;
       transform: translateY(-5px);
     }
 
-    /* Featured Section */
+    /* High-Level Sections */
     .section {
-      padding: 120px 80px;
-      max-width: 1400px;
-      margin: 0 auto;
+      padding: 150px 10%;
+      position: relative;
     }
 
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 48px;
-      margin-bottom: 60px;
+    .section-header {
       text-align: center;
+      margin-bottom: 100px;
+    }
+
+    .section-header h2 {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    .section-header p {
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 40px;
     }
 
-    .card {
+    .glass-card {
       background: var(--glass);
+      backdrop-filter: blur(30px);
       border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      padding: 50px;
-      transition: 0.4s;
-      backdrop-filter: blur(10px);
+      border-radius: 40px;
+      padding: 60px;
+      transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
     }
 
-    .card:hover {
-      transform: translateY(-15px);
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--primary);
+    .glass-card:hover {
+      transform: translateY(-20px) scale(1.02);
+      border-color: var(--aurora-1);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1), transparent 70%);
+      opacity: 0;
+      transition: 0.6s;
+    }
+
+    .glass-card:hover::before {
+      opacity: 1;
     }
 
     .card-icon {
-      font-size: 50px;
+      font-size: 40px;
       margin-bottom: 30px;
       display: block;
-      color: var(--primary);
+      color: var(--aurora-1);
     }
 
-    .card h3 {
+    .glass-card h3 {
       font-size: 24px;
       margin-bottom: 20px;
+      letter-spacing: 0;
     }
 
-    .card p {
+    .glass-card p {
       color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
     }
 
     /* Footer */
     footer {
-      padding: 80px;
-      background: #020617;
+      padding: 100px 60px;
+      background: rgba(0, 0, 0, 0.3);
       text-align: center;
       border-top: 1px solid var(--glass-border);
     }
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     .footer-logo {
-      font-family: 'Playfair Display', serif;
       font-size: 40px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 30px;
-      display: block;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-
-    .social-links a {
-      color: var(--text-dim);
-      font-size: 24px;
-      transition: 0.3s;
-    }
-
-    .social-links a:hover {
-      color: var(--primary);
+      margin-bottom: 20px;
     }
 
     .copy {
+      font-size: 12px;
       color: var(--text-dim);
-      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     @media (max-width: 768px) {
@@ -306,105 +332,99 @@
         display: none;
       }
 
-      .section {
-        padding: 80px 20px;
+      .hero h1 {
+        font-size: 80px;
       }
 
-      .hero h1 {
-        font-size: 60px;
+      .section {
+        padding: 100px 5%;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg-animation">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+  <div class="aurora-bg">
+    <div class="aurora-layer"></div>
   </div>
 
   <nav>
     <div class="logo">FOODTO●NEED</div>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
+      <a href="#about">Mission</a>
       <a href="#impact">Impact</a>
-      <a href="admin.html" style="color: var(--secondary);">Admin Access</a>
+      <a href="#connect">Network</a>
+      <a href="admin.html" style="color: var(--aurora-1);">Sovereign Access</a>
     </div>
   </nav>
 
   <section class="hero">
-    <h1>Harvesting <span>Abundance</span> For Every Need.</h1>
-    <p>The world's most elegant network connecting surplus culinary treasures with those who value them most. Join the
-      luxury of sharing.</p>
+    <h1>DIVINE.<br>ABUNDANCE.</h1>
+    <p>We are the pulse of human kindness, synchronizing the world's feast with the world's hunger. Experience the
+      heavenly art of sharing.</p>
     <div class="btn-group">
-      <a href="user.html" class="btn btn-primary">Find Food</a>
-      <a href="restaurant.html" class="btn btn-secondary">Donor Portal</a>
-      <a href="delivery.html" class="btn btn-secondary">Partner Node</a>
+      <a class="btn btn-primary" href="user.html">Discover Matrix</a>
+      <a class="btn btn-outline" href="restaurant.html">Join as Donor</a>
+      <a class="btn btn-outline" href="delivery.html">Logistic Node</a>
     </div>
   </section>
 
-  <section id="services" class="section">
-    <h2 class="section-title">The Orchard Ecosystem</h2>
+  <section id="about" class="section">
+    <div class="section-header">
+      <h2>OUR ETHOS</h2>
+      <p>A beautiful synthesis of technology and empathy, designed to eliminate waste and celebrate life.</p>
+    </div>
     <div class="grid">
-      <div class="card">
-        <span class="card-icon">🍃</span>
-        <h3>Pure Efficiency</h3>
-        <p>Our algorithms ensure that fresh surplus travels the shortest path to its destination, preserving quality and
-          taste.</p>
+      <div class="glass-card">
+        <span class="card-icon">✧</span>
+        <h3>Pure Intent</h3>
+        <p>Our foundation is built on the purest mission: ensuring no nutrient goes uncelebrated. We treat every meal as
+          a divine gift.</p>
       </div>
-      <div class="card">
-        <span class="card-icon">💎</span>
-        <h3>Premium Network</h3>
-        <p>Curated partnerships with high-end restaurants, hotels, and organic grocers ensuring the finest grade of
-          surplus and care.</p>
+      <div class="glass-card">
+        <span class="card-icon">✺</span>
+        <h3>Zenith Sync</h3>
+        <p>Real-time atmospheric synchronization between surplus zones and high-need hubs. Faster than light, smoother
+          than glass.</p>
       </div>
-      <div class="card">
-        <span class="card-icon">🤝</span>
-        <h3>Verified Trust</h3>
-        <p>Every participant in the Food To Need network undergoes rigorous verification to ensure safety and social
-          responsibility.</p>
+      <div class="glass-card">
+        <span class="card-icon">✦</span>
+        <h3>Eternal Loop</h3>
+        <p>A continuous cycle of giving that feeds not just the body, but the soul of the community. A truly eternal
+          network.</p>
       </div>
     </div>
   </section>
 
-  <section id="impact" class="section">
-    <div class="card" style="max-width: 900px; margin: 0 auto; text-align: center;">
-      <h2 class="section-title" style="margin-bottom: 30px;">Our Collective Impact</h2>
-      <p style="font-size: 24px; color: var(--text); margin-bottom: 40px;">Saving 10,000+ meals daily across the globe.
-        We aren't just sharing food; we're sharing hope and dignity.</p>
-      <div style="display: flex; justify-content: center; gap: 50px;">
+  <section id="impact" class="section" style="background: rgba(255,255,255,0.02);">
+    <div class="glass-card" style="max-width: 1000px; margin: 0 auto; text-align: center; border: none;">
+      <h2 style="font-size: 80px; margin-bottom: 20px;">100M+</h2>
+      <p style="font-size: 24px; color: var(--aurora-1); font-weight: 800; margin-bottom: 40px;">TRANSFERS OF KINDNESS
+      </p>
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
         <div>
-          <h4 style="font-size: 40px; color: var(--primary);">2M+</h4>
-          <p>Meals Saved</p>
+          <h4 style="font-size: 30px;">500K</h4>
+          <p style="font-size: 12px; letter-spacing: 2px;">DONORS</p>
         </div>
         <div>
-          <h4 style="font-size: 40px; color: var(--primary);">500+</h4>
-          <p>Partner Hubs</p>
+          <h4 style="font-size: 30px;">2M+</h4>
+          <p style="font-size: 12px; letter-spacing: 2px;">LIVES</p>
         </div>
         <div>
-          <h4 style="font-size: 40px; color: var(--primary);">50k+</h4>
-          <p>Lives Impacted</p>
+          <h4 style="font-size: 30px;">∞</h4>
+          <p style="font-size: 12px; letter-spacing: 2px;">HOPE</p>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="footer-content">
-      <span class="footer-logo">FOODTO●NEED</span>
-      <div class="social-links">
-        <a href="#">FB</a>
-        <a href="#">IG</a>
-        <a href="#">LI</a>
-        <a href="#">TW</a>
-      </div>
-      <p class="copy">&copy; 2026 Food To Need. Designed for Humanity. All Rights Reserved.</p>
-    </div>
+    <div class="logo footer-logo">FOODTO●NEED</div>
+    <p class="copy">&copy; 2026 THE HEAVENLY NETWORK. ALL RIGHTS RESERVED.</p>
   </footer>
 
   <script>
-    // Smooth scroll
+    // Smooth Scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();

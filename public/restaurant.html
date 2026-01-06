@@ -4,19 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donor Portal | Food To Need</title>
+  <title>Donor Hub | Heavenly Aurora</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
     rel="stylesheet">
   <style>
     :root {
-      --primary: #10b981;
-      --secondary: #f59e0b;
-      --bg: #0f172a;
-      --glass: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --text: #f8fafc;
-      --text-dim: #94a3b8;
+      --aurora-1: #00f2fe;
+      --aurora-2: #4facfe;
+      --aurora-3: #7028ff;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
     }
 
     * {
@@ -27,7 +26,7 @@
     }
 
     body {
-      background: var(--bg);
+      background: #02001a;
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -36,183 +35,182 @@
       overflow-x: hidden;
     }
 
-    .bg-blobs {
+    .aurora-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1), transparent 40%),
-        radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1), transparent 40%);
+      background: radial-gradient(circle at 100% 0%, var(--aurora-1), transparent 50%),
+        radial-gradient(circle at 0% 100%, var(--aurora-3), transparent 50%);
+      filter: blur(100px);
+      opacity: 0.15;
     }
 
-    .glass-box {
+    .glass-form-box {
       background: var(--glass);
+      backdrop-filter: blur(40px);
       border: 1px solid var(--glass-border);
-      border-radius: 40px;
-      padding: 60px;
+      border-radius: 60px;
+      padding: 80px;
       width: 90%;
-      max-width: 600px;
-      backdrop-filter: blur(30px);
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
-      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 650px;
+      box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+      animation: formPop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes slideUp {
+    @keyframes formPop {
       from {
         opacity: 0;
-        transform: translateY(40px);
+        transform: scale(0.9) translateY(40px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1) translateY(0);
       }
     }
 
-    .header {
+    .header-unit {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 60px;
     }
 
-    .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 42px;
-      margin-bottom: 10px;
-      color: #fff;
+    .header-unit h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 50px;
+      line-height: 0.9;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
     }
 
-    .header p {
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    .header-unit p {
+      color: var(--aurora-1);
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 4px;
     }
 
     .form-group {
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
     label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-dim);
-      margin-bottom: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 12px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
     }
 
     input,
     select,
     textarea {
       width: 100%;
-      padding: 16px 20px;
+      padding: 22px 30px;
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--glass-border);
-      border-radius: 15px;
+      border-radius: 25px;
       color: white;
-      font-size: 15px;
-      transition: 0.3s;
+      font-size: 16px;
+      transition: 0.4s;
     }
 
     input:focus {
       outline: none;
-      border-color: var(--primary);
-      background: rgba(0, 0, 0, 0.5);
+      border-color: var(--aurora-1);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
     }
 
-    .btn-submit {
+    .submit-btn {
       width: 100%;
-      padding: 20px;
-      background: var(--primary);
-      color: white;
+      padding: 25px;
+      background: white;
+      color: #02001a;
       border: none;
-      border-radius: 15px;
-      font-weight: 800;
-      font-size: 16px;
+      border-radius: 100px;
+      font-weight: 900;
+      font-size: 18px;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
       cursor: pointer;
-      transition: 0.4s;
-      margin-top: 10px;
+      transition: 0.5s;
+      margin-top: 20px;
     }
 
-    .btn-submit:hover {
+    .submit-btn:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
-      filter: brightness(1.1);
+      box-shadow: 0 20px 50px rgba(255, 255, 255, 0.3);
+      background: var(--aurora-1);
     }
 
-    #msg {
-      margin-top: 30px;
-      padding: 15px;
-      border-radius: 12px;
+    #flashMsg {
+      margin-top: 40px;
+      padding: 20px;
+      border-radius: 20px;
       text-align: center;
-      font-weight: 700;
+      font-weight: 800;
       display: none;
     }
 
     .success {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--primary);
-      border: 1px solid var(--primary);
+      background: rgba(0, 242, 254, 0.1);
+      color: var(--aurora-1);
+      border: 1px solid var(--aurora-1);
     }
 
-    .error {
-      background: rgba(239, 68, 68, 0.1);
-      color: #ef4444;
-      border: 1px solid #ef4444;
-    }
-
-    .back-link {
+    .back-nav {
       display: block;
-      margin-top: 30px;
+      margin-top: 40px;
       text-align: center;
-      color: var(--text-dim);
+      color: rgba(255, 255, 255, 0.4);
       text-decoration: none;
-      font-size: 13px;
-      transition: 0.3s;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
-    .back-link:hover {
+    .back-nav:hover {
       color: white;
     }
   </style>
 </head>
 
 <body>
-  <div class="bg-blobs"></div>
+  <div class="aurora-bg"></div>
 
-  <div class="glass-box">
-    <div class="header">
-      <h1>DONOR NODE</h1>
-      <p> culinary surplus transmission hub </p>
+  <div class="glass-form-box">
+    <div class="header-unit">
+      <h1>DONOR<br>PROTOCOL</h1>
+      <p>Initialize Abundance Sync</p>
     </div>
 
-    <form id="restaurantForm" onsubmit="submitRestaurant(event)">
+    <form id="donorForm" onsubmit="handleDonorSubmit(event)">
       <div class="form-group">
-        <label>Establishment Name</label>
-        <input id="name" type="text" placeholder="e.g. The Green Bistro" required>
+        <label>ESTABLISHMENT IDENTIFIER</label>
+        <input id="name" type="text" placeholder="e.g. Celestial Bakery" required>
       </div>
 
       <div class="form-group">
-        <label>Transmission Email</label>
-        <input id="email" type="email" placeholder="owner@establishment.com" required>
+        <label>COORDINATE EMAIL</label>
+        <input id="email" type="email" placeholder="admin@celestial.com" required>
       </div>
 
       <div class="form-group">
-        <label>Transmission Location</label>
-        <input id="location" type="text" placeholder="Street Address / GPS Coords" required>
+        <label>PHYSICAL LOCALE (ADDRESS)</label>
+        <input id="location" type="text" placeholder="Street / Sector" required>
       </div>
 
       <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div>
-          <label>Category</label>
+          <label>RESOURCE CATEGORY</label>
           <select id="food" required>
-            <option value="">Select Genre</option>
+            <option value="">Select Domain</option>
             <option value="Bakery">Bakery</option>
             <option value="Vegeterian">Vegetarian</option>
             <option value="Non-Vegeterian">Non-Vegetarian</option>
@@ -220,32 +218,32 @@
           </select>
         </div>
         <div>
-          <label>Portions</label>
+          <label>PORTION COUNT</label>
           <input id="quantity" type="number" placeholder="Qty" min="1" required>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Membership Tier</label>
+        <label>SERVICE TIER</label>
         <select id="membership" required>
-          <option value="Basic">Basic Sync</option>
+          <option value="Basic">Basic Transmission</option>
           <option value="Verified">Verified Hub (Premium)</option>
         </select>
       </div>
 
-      <button type="submit" class="btn-submit">Initialize Sync</button>
+      <button type="submit" class="submit-btn">ACTIVATE LINK</button>
     </form>
 
-    <div id="msg"></div>
-    <a href="index.html" class="back-link">← Return to Matrix</a>
+    <div id="flashMsg"></div>
+    <a href="index.html" class="back-nav">← RETURN TO MAIN MATRIX</a>
   </div>
 
   <script>
-    function submitRestaurant(event) {
-      event.preventDefault();
-      const msg = document.getElementById("msg");
+    function handleDonorSubmit(e) {
+      e.preventDefault();
+      const msg = document.getElementById("flashMsg");
 
-      const data = {
+      const payload = {
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
         location: document.getElementById("location").value,
@@ -257,19 +255,14 @@
       fetch('/add-restaurant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
       })
-        .then(res => res.json())
+        .then(r => r.json())
         .then(d => {
-          msg.textContent = d.message || "✓ Transmission Confirmed";
+          msg.textContent = "✓ SIGNAL ESTABLISHED: NODE ACTIVE";
           msg.className = "success";
           msg.style.display = "block";
-          event.target.reset();
-        })
-        .catch(err => {
-          msg.textContent = "✘ Signal Interrupted";
-          msg.className = "error";
-          msg.style.display = "block";
+          e.target.reset();
         });
     }
   </script>

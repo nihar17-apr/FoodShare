@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistic Node | Food To Need</title>
+    <title>Logistic Node | Heavenly Aurora</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --primary: #10b981;
-            --secondary: #f59e0b;
-            --bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
+            --aurora-1: #00f2fe;
+            --aurora-2: #4facfe;
+            --aurora-3: #7028ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text: #ffffff;
         }
 
         * {
@@ -27,7 +26,7 @@
         }
 
         body {
-            background: var(--bg);
+            background: #02001a;
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -36,179 +35,195 @@
             overflow-x: hidden;
         }
 
-        .bg-blobs {
+        .aurora-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 50% 10%, rgba(16, 185, 129, 0.1), transparent 50%),
-                radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.1), transparent 50%);
+            background: radial-gradient(circle at 50% 0%, var(--aurora-2), transparent 60%),
+                radial-gradient(circle at 50% 100%, var(--aurora-3), transparent 60%);
+            filter: blur(120px);
+            opacity: 0.15;
         }
 
-        .glass-box {
+        .node-box {
             background: var(--glass);
+            backdrop-filter: blur(50px);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 60px;
+            border-radius: 60px;
+            padding: 80px;
             width: 90%;
             max-width: 600px;
-            backdrop-filter: blur(30px);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1s ease;
+            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+            animation: boxReveal 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes fadeIn {
+        @keyframes boxReveal {
             from {
                 opacity: 0;
-                transform: scale(0.95);
+                transform: translateY(60px);
             }
 
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateY(0);
             }
         }
 
-        .header {
+        .header-info {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
-        .header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .header p {
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .form-group {
+        .header-info h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 48px;
+            line-height: 0.85;
             margin-bottom: 25px;
+            letter-spacing: -2px;
+        }
+
+        .header-info p {
+            color: var(--aurora-1);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .field-wrap {
+            margin-bottom: 30px;
         }
 
         label {
             display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dim);
-            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         input,
         select {
             width: 100%;
-            padding: 16px 20px;
+            padding: 22px 30px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
-            border-radius: 15px;
+            border-radius: 20px;
             color: white;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-weight: 800;
             font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
             transition: 0.4s;
-            margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+        input:focus {
+            outline: none;
+            border-color: var(--aurora-1);
         }
 
-        #msg {
-            margin-top: 30px;
-            padding: 15px;
-            border-radius: 12px;
+        .activate-btn {
+            width: 100%;
+            padding: 25px;
+            background: white;
+            color: #02001a;
+            border: none;
+            border-radius: 100px;
+            font-weight: 950;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: 0.5s;
+            margin-top: 20px;
+        }
+
+        .activate-btn:hover {
+            transform: scale(1.05);
+            background: var(--aurora-1);
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.4);
+        }
+
+        #syncStatus {
+            margin-top: 40px;
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
             display: none;
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--aurora-1);
+            border: 1px solid var(--aurora-1);
         }
 
-        .success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--primary);
+        .back-home {
+            display: block;
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
     </style>
 </head>
 
 <body>
-    <div class="bg-blobs"></div>
+    <div class="aurora-bg"></div>
 
-    <div class="glass-box">
-        <div class="header">
-            <h1>LOGISTIC HUB</h1>
-            <p> partner fulfillment synchronization </p>
+    <div class="node-box">
+        <div class="header-info">
+            <h1>LOGISTIC<br>TERMINAL</h1>
+            <p>Operative Activation Unit</p>
         </div>
 
-        <form onsubmit="handleDeliverySubmission(event)">
-            <div class="form-group">
-                <label>Operative Name</label>
-                <input type="text" id="name" placeholder="Agent Name / Org" required>
+        <form onsubmit="activateNode(event)">
+            <div class="field-wrap">
+                <label>OPERATIVE IDENTIFIER</label>
+                <input type="text" id="name" placeholder="Agent Alias" required>
             </div>
 
-            <div class="form-group">
-                <label>Sync Link (Email)</label>
-                <input type="email" id="email" placeholder="contact@domain.com" required>
+            <div class="field-wrap">
+                <label>SECURE SYNC (EMAIL)</label>
+                <input type="email" id="email" placeholder="contact@nexus.io" required>
             </div>
 
-            <div class="form-group">
-                <label>Operational Sector</label>
+            <div class="field-wrap">
+                <label>OPERATIONAL ZONE</label>
                 <select id="sector" required>
                     <option value="">Select Domain</option>
-                    <option value="Urban">Urban Sector</option>
-                    <option value="Suburban">Suburban Sector</option>
+                    <option value="Urban">Primary Urban Core</option>
+                    <option value="Suburban">Metropolitan Ring</option>
                     <option value="Industrial">Industrial Zone</option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label>Vehicle Type</label>
+            <div class="field-wrap">
+                <label>TRANSLATION MODE (VEHICLE)</label>
                 <select id="vehicle" required>
-                    <option value="Electric">Sustainable Electric</option>
-                    <option value="Bicycle">Zero-Carbon Cycle</option>
+                    <option value="Electric">Hyper-Sustainable Electric</option>
+                    <option value="Bicycle">Zero-Carbon Kinetic</option>
                     <option value="Compact">Compact Transport</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-submit">Activate Node</button>
+            <button type="submit" class="activate-btn">INITIALIZE NODE</button>
         </form>
 
-        <div id="msg"></div>
-        <a href="index.html"
-            style="display:block; text-align:center; margin-top:30px; color:var(--text-dim); text-decoration:none; font-size:13px;">←
-            Return to Hub</a>
+        <div id="syncStatus">✓ LOGISTIC NODE ACTIVE IN MATRIX</div>
+        <a href="index.html" class="back-home">← RETURN TO HUB</a>
     </div>
 
     <script>
-        function handleDeliverySubmission(event) {
-            event.preventDefault();
-            const msg = document.getElementById("msg");
+        function activateNode(e) {
+            e.preventDefault();
+            const status = document.getElementById("syncStatus");
 
-            const data = {
+            const payload = {
                 name: document.getElementById("name").value,
                 email: document.getElementById("email").value,
                 location: document.getElementById("sector").value,
@@ -218,13 +233,11 @@
             fetch('/add-delivery', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(payload)
             })
                 .then(() => {
-                    msg.textContent = "✓ Logistic Node Activated";
-                    msg.className = "success";
-                    msg.style.display = "block";
-                    event.target.reset();
+                    status.style.display = "block";
+                    e.target.reset();
                 });
         }
     </script>
