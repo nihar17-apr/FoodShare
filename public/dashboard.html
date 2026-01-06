@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 ================================ */
 let restaurants = [];
 let acceptors = [];
+let memberships = [];   // ✅ membership added
 
 /* ===============================
    HOME ROUTE
@@ -57,6 +58,31 @@ app.post("/add-acceptor", (req, res) => {
 });
 
 /* ===============================
+   MEMBERSHIP (DELIVERY PERSON)
+================================ */
+app.post("/memberships", (req, res) => {
+  const { name, phone, vehicle, area, email } = req.body;
+
+  if (!name || !phone || !vehicle || !area) {
+    return res.status(400).json({ error: "All fields required" });
+  }
+
+  const member = {
+    _id: Date.now().toString(),
+    name,
+    phone,
+    vehicle,
+    area,
+    email,
+    isVerified: false,
+    createdAt: new Date()
+  };
+
+  memberships.push(member);
+  res.json({ success: true });
+});
+
+/* ===============================
    ADMIN ROUTES
 ================================ */
 app.get("/admin/restaurants", (req, res) => {
@@ -67,6 +93,13 @@ app.get("/admin/acceptors", (req, res) => {
   res.json(acceptors);
 });
 
+app.get("/admin/memberships", (req, res) => {
+  res.json(memberships);
+});
+
+/* ===============================
+   VERIFY ROUTES
+================================ */
 app.put("/verify-restaurant/:id", (req, res) => {
   const r = restaurants.find(x => x._id === req.params.id);
   if (!r) return res.status(404).json({ error: "Not found" });
@@ -81,6 +114,16 @@ app.put("/verify-acceptor/:id", (req, res) => {
   res.json({ success: true });
 });
 
+app.put("/verify-membership/:id", (req, res) => {
+  const m = memberships.find(x => x._id === req.params.id);
+  if (!m) return res.status(404).json({ error: "Not found" });
+  m.isVerified = true;
+  res.json({ success: true });
+});
+
+/* ===============================
+   DELETE ROUTES
+================================ */
 app.delete("/delete-restaurant/:id", (req, res) => {
   restaurants = restaurants.filter(x => x._id !== req.params.id);
   res.json({ success: true });
@@ -91,7 +134,12 @@ app.delete("/delete-acceptor/:id", (req, res) => {
   res.json({ success: true });
 });
 
+app.delete("/delete-membership/:id", (req, res) => {
+  memberships = memberships.filter(x => x._id !== req.params.id);
+  res.json({ success: true });
+});
+
 /* ===============================
-   EXPORT APP (IMPORTANT)
+   EXPORT APP
 ================================ */
 module.exports = app;
