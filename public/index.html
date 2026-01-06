@@ -13,6 +13,10 @@
 }
 
 /* ===== BODY ===== */
+html {
+  scroll-behavior: smooth;   /* ✅ smooth scrolling (past + clean) */
+}
+
 body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #ffb3ff, #b3c6ff, #80b3ff);
@@ -154,9 +158,9 @@ body {
 <div class="navbar">
   <div class="logo">🍽 Food To Need</div>
   <div class="links">
-    <a onclick="scrollToSection('hero')">Home</a>
-    <a onclick="scrollToSection('about')">About Us</a>
-    <a onclick="scrollToSection('contact')">Contact</a>
+    <a href="#hero">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
   </div>
 </div>
 
@@ -202,15 +206,5 @@ body {
   <p>© 2026 Food To Need Initiative</p>
 </div>
 
-<script>
-function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-  }
-}
-</script>
-
 </body>
 </html>
-
