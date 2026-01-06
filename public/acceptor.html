@@ -685,7 +685,24 @@
       }
 
       restaurants.forEach(r => {
-        const verifiedBadge = r.isVerified ? '<span class="badge">✓ Verified</span>' : '';
+        // Add Marker to Map for Database Restaurants
+        if (map && r.location) {
+          // Attempt to extract lat/lon if location contains coordinates, else it's just a label
+          const coordMatch = r.location.match(/Coordinates: ([\d.-]+),([\d.-]+)/);
+          if (coordMatch) {
+            const marker = L.marker([parseFloat(coordMatch[1]), parseFloat(coordMatch[2])], {
+              icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: "<div style='background-color:#c30;color:white;padding:5px;border-radius:50%;border:2px solid white;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:bold;'>🍴</div>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
+              })
+            }).addTo(map);
+            marker.bindPopup(`<b>🏨 ${r.name} (Verified Donor)</b><br>Currently has surplus food!`);
+          }
+        }
+
+        const verifiedBadge = r.isVerified ? '<span class="badge">✓ Verified Donor</span>' : '';
 
         let itemsHtml = '';
         if (r.items && r.items.length > 0) {
