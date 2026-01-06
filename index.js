@@ -178,6 +178,110 @@ app.post("/verify-admin", (req, res) => {
 });
 
 /* ===============================
+   VERIFICATION & DELETION
+================================ */
+app.put("/verify-restaurant/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      const data = await Restaurant.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+      return res.json({ success: true, data });
+    }
+    const item = memoryDB.restaurants.find(x => x._id === req.params.id);
+    if (item) item.isVerified = true;
+    res.json({ success: true, data: item });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.put("/verify-acceptor/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      const data = await Acceptor.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+      return res.json({ success: true, data });
+    }
+    const item = memoryDB.acceptors.find(x => x._id === req.params.id);
+    if (item) item.isVerified = true;
+    res.json({ success: true, data: item });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.put("/verify-delivery/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      const data = await Delivery.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+      return res.json({ success: true, data });
+    }
+    const item = memoryDB.deliveryPersons.find(x => x._id === req.params.id);
+    if (item) item.isVerified = true;
+    res.json({ success: true, data: item });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete("/delete-restaurant/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      await Restaurant.findByIdAndDelete(req.params.id);
+      return res.json({ success: true });
+    }
+    memoryDB.restaurants = memoryDB.restaurants.filter(x => x._id !== req.params.id);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete("/delete-acceptor/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      await Acceptor.findByIdAndDelete(req.params.id);
+      return res.json({ success: true });
+    }
+    memoryDB.acceptors = memoryDB.acceptors.filter(x => x._id !== req.params.id);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete("/delete-delivery/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      await Delivery.findByIdAndDelete(req.params.id);
+      return res.json({ success: true });
+    }
+    memoryDB.deliveryPersons = memoryDB.deliveryPersons.filter(x => x._id !== req.params.id);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete("/delete-activity/:id", async (req, res) => {
+  try {
+    if (isConnected()) {
+      await Activity.findByIdAndDelete(req.params.id);
+      return res.json({ success: true });
+    }
+    memoryDB.activityLogs = memoryDB.activityLogs.filter(x => x._id !== req.params.id);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get("/get-restaurant/:id", async (req, res) => {
+  try {
+    if (isConnected()) return res.json(await Restaurant.findById(req.params.id));
+    res.json(memoryDB.restaurants.find(x => x._id === req.params.id));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get("/get-acceptor/:id", async (req, res) => {
+  try {
+    if (isConnected()) return res.json(await Acceptor.findById(req.params.id));
+    res.json(memoryDB.acceptors.find(x => x._id === req.params.id));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get("/get-delivery/:id", async (req, res) => {
+  try {
+    if (isConnected()) return res.json(await Delivery.findById(req.params.id));
+    res.json(memoryDB.deliveryPersons.find(x => x._id === req.params.id));
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+/* ===============================
    HOME & CATCH-ALL
 ================================ */
 app.get("/", (req, res) => {
