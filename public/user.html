@@ -1,237 +1,266 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>User Portal | Vitality</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Tenor+Sans&display=swap"
-    rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Portal | Food To Need</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
-      --void: #000000;
-      --surface: #0a0a0a;
-      --signal: #00f5ff;
-      --danger: #ff0055;
-      --text: #ffffff;
-      --text-muted: #444444;
-      --border: rgba(255, 255, 255, 0.05);
-      --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      --primary: #10b981;
+      --secondary: #f59e0b;
+      --bg: #0f172a;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Outfit', sans-serif;
     }
 
     body {
-      background: var(--void);
+      background: var(--bg);
       color: var(--text);
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Extraordinary Neural Grid Background */
-    .grid-bg {
+    .bg-blobs {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 100px 100px;
       z-index: -1;
-      pointer-events: none;
-    }
-
-    .grid-bg::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, transparent 30%, var(--void) 80%);
+      background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.1), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.1), transparent 40%);
     }
 
     .container {
-      max-width: 1600px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 40px;
+      padding: 40px 20px;
     }
 
-    /* High-Level Header */
-    .header {
+    header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 80px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 40px;
+      align-items: center;
+      margin-bottom: 60px;
     }
 
-    .title-unit h1 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: 80px;
-      letter-spacing: -2px;
-      line-height: 0.9;
-    }
-
-    .title-unit p {
-      color: var(--signal);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      margin-top: 15px;
-    }
-
-    /* Navigation: The Functional Bar */
-    .nav-bar {
-      display: flex;
-      gap: 1px;
-      background: var(--border);
-      padding: 1px;
-      width: fit-content;
-      margin: 0 auto 80px;
-    }
-
-    .nav-btn {
-      padding: 20px 40px;
-      background: var(--void);
-      border: none;
-      color: var(--text-muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .nav-btn:hover {
-      color: var(--text);
-    }
-
-    .nav-btn.active {
-      background: var(--signal);
-      color: var(--void);
-      font-weight: 700;
-    }
-
-    /* The Map: A Digital Topography */
-    #map {
-      height: 600px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 80px;
-    }
-
-    /* Extraordinary Data Cards */
-    .data-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .data-item {
-      background: var(--void);
-      padding: 50px;
-      transition: var(--transition);
-      position: relative;
-    }
-
-    .data-item:hover {
-      background: #050505;
-    }
-
-    .data-item:hover::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--signal);
-    }
-
-    .data-item h3 {
-      font-family: 'Tenor Sans', sans-serif;
+    .logo {
+      font-family: 'Playfair Display', serif;
       font-size: 28px;
-      margin-bottom: 20px;
-      font-weight: 400;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    .data-item .type-tag {
-      font-size: 10px;
-      color: var(--signal);
-      border: 1px solid var(--signal);
-      padding: 4px 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      background: var(--glass);
+      padding: 6px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+      width: fit-content;
+      margin: 0 auto 50px;
     }
 
-    /* Form Architecture */
-    .form-wrap {
-      background: var(--surface);
-      padding: 80px;
-      border: 1px solid var(--border);
-      max-width: 900px;
-      margin: 100px auto;
+    .tab-btn {
+      padding: 12px 30px;
+      border-radius: 50px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    .input-unit {
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Map & Grid */
+    #map {
+      height: 500px;
+      width: 100%;
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
       margin-bottom: 40px;
     }
 
-    .input-unit label {
-      display: block;
-      font-size: 10px;
-      color: var(--text-muted);
-      letter-spacing: 2px;
+    .search-bar {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 20px 30px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      color: white;
+      font-size: 16px;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 25px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      transition: 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 5px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--primary);
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
       margin-bottom: 15px;
     }
 
-    .input-unit input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      padding: 15px 0;
-      color: var(--text);
-      font-size: 20px;
-      transition: var(--transition);
+    /* Form */
+    .glass-form {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 40px;
+      padding: 60px;
+      backdrop-filter: blur(20px);
     }
 
-    .input-unit input:focus {
-      outline: none;
-      border-bottom-color: var(--signal);
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      margin-bottom: 20px;
+      text-align: center;
     }
 
-    .action-btn {
-      width: 100%;
-      padding: 30px;
-      background: var(--signal);
-      color: var(--void);
-      border: none;
-      font-weight: 700;
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 5px;
-      cursor: pointer;
-      transition: var(--transition);
+      letter-spacing: 1px;
     }
 
-    .action-btn:hover {
-      transform: scale(0.98);
-      background: #ffffff;
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
     }
 
     #toast {
@@ -239,161 +268,180 @@
       bottom: 40px;
       right: 40px;
       padding: 20px 40px;
-      background: var(--signal);
-      color: var(--void);
+      background: var(--primary);
+      color: white;
+      border-radius: 20px;
       font-weight: 700;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       z-index: 1000;
       display: none;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+
+      to {
+        transform: translateX(0);
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="grid-bg"></div>
+  <div class="bg-blobs"></div>
 
   <div class="container">
-    <div class="tab-container">
-      <button id="btn-discover" class="tab-button active" onclick="switchTab('tab-discover')">Discover</button>
-      <button id="btn-join" class="tab-button" onclick="switchTab('tab-join')">Join Network</button>
+    <header>
+      <a href="index.html" class="logo">FOODTO●NEED</a>
+      <div style="font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">User Access
+        Mode</div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('discover')">Discover Surplus</button>
+      <button class="tab-btn" onclick="switchTab('join')">Register Needed</button>
     </div>
 
+    <!-- Discover Tab -->
     <div id="tab-discover" class="tab-content active">
-      <div class="glass-panel">
-        <h2>VITALITY MATRIX</h2>
-        <div id="map"></div>
-        <div class="form-group">
-          <input type="text" id="searchIndex" placeholder="Scan for specific food or locale..."
-            oninput="filterResults()" style="border-radius: 100px; padding: 25px 50px; font-size: 20px;">
-        </div>
-        <div id="resultsList" class="restaurant-grid"></div>
+      <div id="map"></div>
+
+      <div class="search-bar">
+        <input type="text" id="searchNodes" placeholder="Search by name, location, or food type..."
+          onkeyup="filterNodes()">
+      </div>
+
+      <div id="nodesGrid" class="grid">
+        <!-- Dynamic Cards -->
       </div>
     </div>
 
+    <!-- Join Tab -->
     <div id="tab-join" class="tab-content">
-      <div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
-        <h2>JOIN THE PULSE</h2>
+      <div class="glass-form">
+        <h2 class="form-title">Join the Network</h2>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 40px;">Register your organization or family
+          to receive surplus donations automatically.</p>
+
         <form id="joinForm" onsubmit="handleJoin(event)">
           <div class="form-group">
-            <label>IDENTIFIER (NAME)</label>
-            <input type="text" id="join-name" placeholder="Agent Name or Org" required>
+            <label>Full Name / Organization</label>
+            <input type="text" id="join-name" placeholder="Agent Name" required>
           </div>
           <div class="form-group">
-            <label>DIGITAL LINK (EMAIL)</label>
-            <input type="email" id="join-email" placeholder="nexus@vitality.io" required>
+            <label>Contact Email</label>
+            <input type="email" id="join-email" placeholder="contact@domain.io" required>
           </div>
           <div class="form-group">
-            <label>LOCALE (ADDRESS)</label>
-            <input type="text" id="join-loc" placeholder="Physical Address" required>
+            <label>Pickup Location</label>
+            <input type="text" id="join-loc" placeholder="Street Address" required>
           </div>
-          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div>
-              <label>PULSE REQ (FOOD TYPE)</label>
-              <input type="text" id="join-food" placeholder="e.g. Nutrients/Rice" required>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+              <label>Requirement</label>
+              <input type="text" id="join-food" placeholder="e.g. Rice, Bread" required>
             </div>
-            <div>
-              <label>VOLUME (PORTIONS)</label>
-              <input type="number" id="join-qty" placeholder="Quantity" min="1" required>
+            <div class="form-group">
+              <label>Quantity</label>
+              <input type="number" id="join-qty" placeholder="Portions" required min="1">
             </div>
           </div>
-          <button type="submit">INITIALIZE CONNECTION</button>
+          <button type="submit" class="btn-submit">Initialize Agreement</button>
         </form>
-        <div id="msg"></div>
       </div>
     </div>
   </div>
 
+  <div id="toast"></div>
+
   <script>
     let map;
-    let allDonors = [];
+    let donors = [];
     let liveDonors = [];
-    let userCoords = null;
 
-    function switchTab(id) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.getElementById(id === 'tab-discover' ? 'btn-discover' : 'btn-join').classList.add('active');
-      if (id === 'tab-discover') setTimeout(() => map.invalidateSize(), 200);
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tab).classList.add('active');
+      if (tab === 'discover' && map) setTimeout(() => map.invalidateSize(), 200);
     }
 
     function initMap() {
       map = L.map('map').setView([20.5937, 78.9629], 5);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(p => {
-          userCoords = [p.coords.latitude, p.coords.longitude];
-          map.setView(userCoords, 14);
-          L.marker(userCoords).addTo(map).bindPopup("<b>🏠 YOUR LOCATION</b>").openPopup();
-          scanNearby(p.coords.latitude, p.coords.longitude);
+        navigator.geolocation.getCurrentPosition(pos => {
+          const coords = [pos.coords.latitude, pos.coords.longitude];
+          map.setView(coords, 14);
+          L.marker(coords).addTo(map).bindPopup("<b>You are here</b>").openPopup();
+          fetchNearby(pos.coords.latitude, pos.coords.longitude);
         });
       }
     }
 
-    async function scanNearby(lat, lon) {
+    async function fetchNearby(lat, lon) {
       const q = `[out:json];(node["amenity"~"restaurant|fast_food|cafe|hotel"](around:5000, ${lat}, ${lon}););out body;`;
-      const r = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(q)}`);
-      const d = await r.json();
-      liveDonors = d.elements.map(e => ({
-        name: e.tags.name || "UNNAMED DONOR",
+      const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(q)}`);
+      const data = await res.json();
+
+      liveDonors = data.elements.map(e => ({
+        name: e.tags.name || "Local Donor",
         lat: e.lat, lon: e.lon,
         type: e.tags.amenity,
         dist: getDist(lat, lon, e.lat, e.lon)
       })).sort((a, b) => a.dist - b.dist);
 
       liveDonors.forEach(h => {
-        L.marker([h.lat, h.lon]).addTo(map).bindPopup(`<b>${h.name}</b><br><button onclick="autofill('${h.name}', '${h.lat},${h.lon}')">Select</button>`);
+        L.marker([h.lat, h.lon]).addTo(map).bindPopup(`<b>${h.name}</b><br><button onclick="autofill('${h.name}', '${h.lat},${h.lon}')" style="margin-top:5px; padding:5px 10px; background:#10b981; color:white; border:none; border-radius:5px; cursor:pointer;">Select</button>`);
       });
-      renderResults();
+      renderNodes();
     }
 
-    function getDist(la1, lo1, la2, lo2) {
+    function getDist(lat1, lon1, lat2, lon2) {
       const R = 6371;
-      const dLa = (la2 - la1) * Math.PI / 180;
-      const dLo = (lo2 - lo1) * Math.PI / 180;
-      const a = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * Math.PI / 180) * Math.cos(la2 * Math.PI / 180) * Math.sin(dLo / 2) ** 2;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
       return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(1);
     }
 
-    function fetchVerified() {
-      fetch('/restaurants').then(r => r.json()).then(d => {
-        allDonors = d;
-        renderResults();
-      });
-    }
+    function renderNodes() {
+      const grid = document.getElementById("nodesGrid");
+      grid.innerHTML = "";
+      const search = document.getElementById("searchNodes").value.toLowerCase();
 
-    function renderResults() {
-      const list = document.getElementById("resultsList");
-      list.innerHTML = "";
-      const q = document.getElementById("searchIndex").value.toLowerCase();
-
-      const combined = [...allDonors.map(d => ({ ...d, verified: true })), ...liveDonors.map(l => ({ ...l, verified: false }))];
-      const filtered = combined.filter(i => (i.name || "").toLowerCase().includes(q) || (i.location || "").toLowerCase().includes(q));
+      const combined = [...donors.map(d => ({ ...d, verified: true })), ...liveDonors.map(l => ({ ...l, verified: false }))];
+      const filtered = combined.filter(i => i.name.toLowerCase().includes(search));
 
       filtered.forEach(item => {
         const card = document.createElement("div");
-        card.className = "restaurant-card";
-        const badge = item.verified ? '<span class="badge-vivid">VERIFIED</span>' : '<span class="badge-vivid" style="background:var(--royal-blue)">NEARBY</span>';
+        card.className = "card";
+        const tag = item.verified ? '<span class="tag">Verified Hub</span>' : '<span class="tag" style="background:rgba(245,158,11,0.1); color:#f59e0b;">Detected Node</span>';
         card.innerHTML = `
+          ${tag}
           <h3>${item.name}</h3>
-          ${badge}
-          <p style="margin-top:15px; font-size:14px; color:#94a3b8;">${item.location || 'Real-time detection'}</p>
-          <p style="color:var(--electric-green); font-weight:800; margin-top:10px;">${item.dist ? item.dist + ' km' : 'Syncing...'}</p>
-          <button onclick="autofill('${item.name}', '${item.lat ? item.lat + ',' + item.lon : item.location}')" style="width:100%; padding:15px; margin-top:20px; border-radius:15px; background:var(--glass); border:1px solid var(--glass-border); color:white; font-weight:800; cursor:pointer;">SELECT NODE</button>
+          <p>📍 ${item.location || 'Real-time Signal'}</p>
+          <p style="color:#10b981; font-weight:700; margin-top:10px;">${item.dist ? item.dist + ' km away' : 'Analyzing distance...'}</p>
+          <button onclick="autofill('${item.name}', '${item.lat ? item.lat + ',' + item.lon : (item.location || '')}')" style="width:100%; padding:12px; margin-top:20px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); color:white; font-weight:600; cursor:pointer;">Request Surplus</button>
         `;
-        list.appendChild(card);
+        grid.appendChild(card);
       });
     }
 
     function autofill(name, loc) {
-      switchTab('tab-join');
+      switchTab('join');
       document.getElementById("join-name").value = "Requester for " + name;
-      document.getElementById("join-food").value = "Surplus from " + name;
       document.getElementById("join-loc").value = loc;
+      document.getElementById("join-food").value = "Items from " + name;
     }
 
     function handleJoin(e) {
       e.preventDefault();
-      const msg = document.getElementById("msg");
       const data = {
         name: document.getElementById("join-name").value,
         email: document.getElementById("join-email").value,
@@ -401,21 +449,29 @@
         food: document.getElementById("join-food").value,
         quantity: document.getElementById("join-qty").value
       };
+
       fetch('/add-acceptor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       }).then(() => {
-        msg.textContent = "✓ CONNECTION INITIALIZED";
-        msg.className = "success";
-        msg.style.display = "block";
+        notify("Node Synchronized Successfully!");
         e.target.reset();
       });
     }
 
-    function filterResults() { renderResults(); }
+    function notify(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m; t.style.display = "block";
+      setTimeout(() => t.style.display = "none", 3000);
+    }
 
-    window.onload = () => { initMap(); fetchVerified(); };
+    function filterNodes() { renderNodes(); }
+
+    window.onload = () => {
+      initMap();
+      fetch('/restaurants').then(r => r.json()).then(d => { donors = d; renderNodes(); });
+    };
   </script>
 </body>
 

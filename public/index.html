@@ -1,424 +1,419 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>FOODTO●NEED | The Vitality Network</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Tenor+Sans&display=swap"
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food To Need | The Zenith of Sharing</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
     rel="stylesheet">
-
   <style>
     :root {
-      --bg: #050505;
-      --surface: rgba(255, 255, 255, 0.03);
-      --surface-solid: #111111;
-      --vitality: #00f5ff;
-      /* Hyper Cyan */
-      --ethereal: #ff007a;
-      /* Molten Pink */
-      --gold: #ffcc00;
-      --text: #f5f5f7;
-      --text-dim: #86868b;
-      --transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      --primary: #10b981;
+      /* Emerald */
+      --primary-dark: #065f46;
+      --secondary: #f59e0b;
+      /* Amber */
+      --accent: #ec4899;
+      /* Pink */
+      --bg: #0f172a;
+      /* Slate 900 */
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Space Grotesk', sans-serif;
-      -webkit-font-smoothing: antialiased;
+      font-family: 'Outfit', sans-serif;
     }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
       color: var(--text);
       overflow-x: hidden;
-      line-height: 1.4;
+      line-height: 1.6;
     }
 
-    /* Extraordinary Liquid Background */
-    .liquid-bg {
+    /* Animated Orchard Background */
+    .bg-animation {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: -1;
-      overflow: hidden;
-      filter: url(#gooey);
+      background: radial-gradient(circle at top right, #064e3b, transparent 40%),
+        radial-gradient(circle at bottom left, #1e1b4b, transparent 40%);
     }
 
-    .blob {
+    .orb {
       position: absolute;
-      width: 600px;
-      height: 600px;
-      background: var(--vitality);
+      width: 400px;
+      height: 400px;
       border-radius: 50%;
       filter: blur(80px);
       opacity: 0.15;
-      animation: drift 25s infinite alternate;
+      animation: float 20s infinite alternate ease-in-out;
     }
 
-    .blob-2 {
-      background: var(--ethereal);
-      right: -100px;
-      top: -100px;
-      animation-duration: 30s;
+    .orb-1 {
+      background: var(--primary);
+      top: 10%;
+      left: 10%;
+    }
+
+    .orb-2 {
+      background: var(--secondary);
+      bottom: 10%;
+      right: 10%;
       animation-delay: -5s;
     }
 
-    @keyframes drift {
-      0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
+    @keyframes float {
+      from {
+        transform: translate(0, 0) scale(1);
       }
 
-      100% {
-        transform: translate(200px, 150px) scale(1.3) rotate(180deg);
+      to {
+        transform: translate(100px, 50px) scale(1.2);
       }
     }
 
-    /* Navigation: Architectural Simplicity */
-    .nav {
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 25px 80px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 40px 80px;
-      position: fixed;
-      width: 100%;
       z-index: 1000;
-      mix-blend-mode: difference;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
     }
 
     .logo {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: 24px;
-      letter-spacing: 8px;
-      text-transform: uppercase;
-      color: white;
-      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
     }
 
     .nav-links {
       display: flex;
-      gap: 60px;
+      gap: 40px;
     }
 
     .nav-links a {
-      color: white;
       text-decoration: none;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      opacity: 0.6;
-      transition: var(--transition);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 15px;
+      transition: 0.3s;
+      opacity: 0.8;
     }
 
     .nav-links a:hover {
       opacity: 1;
-      letter-spacing: 6px;
+      color: var(--primary);
     }
 
-    /* Hero: The Extraordinary Statement */
+    /* Hero Section */
     .hero {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0 10%;
-      position: relative;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      margin-top: 80px;
     }
 
     .hero h1 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: clamp(60px, 10vw, 180px);
-      line-height: 0.85;
-      letter-spacing: -4px;
-      color: white;
-      margin-bottom: 40px;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(50px, 8vw, 100px);
+      line-height: 1.1;
+      margin-bottom: 30px;
+      background: linear-gradient(to right, #ffffff, #d1d5db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .hero h1 span {
       display: block;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-      transition: var(--transition);
-      cursor: default;
-    }
-
-    .hero h1 span:hover {
-      color: white;
-      -webkit-text-stroke: 1px transparent;
+      color: var(--primary);
+      -webkit-text-fill-color: var(--primary);
     }
 
     .hero p {
       font-size: 20px;
-      max-width: 500px;
+      max-width: 700px;
       color: var(--text-dim);
-      margin-left: 10px;
-      border-left: 2px solid var(--vitality);
-      padding-left: 30px;
+      margin-bottom: 50px;
     }
 
-    /* Extraordinary Button Architecture */
-    .cta-wrapper {
-      margin-top: 80px;
+    .btn-group {
       display: flex;
-      gap: 40px;
+      gap: 20px;
     }
 
     .btn {
-      position: relative;
-      padding: 25px 60px;
-      background: transparent;
-      color: white;
-      text-decoration: none;
-      font-size: 12px;
+      padding: 18px 45px;
+      border-radius: 50px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: var(--transition);
-      overflow: hidden;
+      text-decoration: none;
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 16px;
+      border: 2px solid transparent;
     }
 
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: white;
-      transition: var(--transition);
-      z-index: -1;
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
     }
 
-    .btn:hover {
-      color: black;
-      border-color: white;
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: #059669;
+      box-shadow: 0 25px 50px rgba(16, 185, 129, 0.4);
     }
 
-    .btn:hover::before {
-      left: 0;
+    .btn-secondary {
+      background: var(--glass);
+      color: #fff;
+      border-color: var(--glass-border);
+      backdrop-filter: blur(10px);
     }
 
-    /* Card Architecture: Brutalist Precision */
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    /* Featured Section */
+    .section {
+      padding: 120px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 40px;
-      padding: 150px 10%;
     }
 
     .card {
-      grid-column: span 4;
-      background: var(--surface);
-      backdrop-filter: blur(20px);
+      background: var(--glass);
       border: 1px solid var(--glass-border);
-      padding: 60px;
-      position: relative;
-      transition: var(--transition);
-    }
-
-    .card:nth-child(even) {
-      margin-top: 80px;
+      border-radius: 30px;
+      padding: 50px;
+      transition: 0.4s;
+      backdrop-filter: blur(10px);
     }
 
     .card:hover {
-      background: rgba(255, 255, 255, 0.06);
-      transform: translateY(-20px);
+      transform: translateY(-15px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--primary);
     }
 
-    .card-num {
-      font-size: 10px;
-      color: var(--vitality);
-      font-weight: 700;
+    .card-icon {
+      font-size: 50px;
       margin-bottom: 30px;
       display: block;
-      letter-spacing: 3px;
+      color: var(--primary);
     }
 
     .card h3 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: 32px;
+      font-size: 24px;
       margin-bottom: 20px;
-      font-weight: 400;
     }
 
     .card p {
       color: var(--text-dim);
-      font-size: 16px;
-      line-height: 1.6;
     }
 
-    /* The Extraordinary Portal Section */
-    .portal-section {
-      padding: 150px 10%;
-      background: var(--surface-solid);
+    /* Footer */
+    footer {
+      padding: 80px;
+      background: #020617;
+      text-align: center;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 30px;
+      display: block;
+    }
+
+    .social-links {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .portal-text h2 {
-      font-family: 'Tenor Sans', sans-serif;
-      font-size: 80px;
-      line-height: 1;
+      justify-content: center;
+      gap: 30px;
       margin-bottom: 40px;
     }
 
-    .portal-visual {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle at center, var(--vitality), transparent 70%);
-      border-radius: 50%;
-      position: relative;
-      animation: pulse 8s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 0.5;
-      }
-
-      50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-      }
-    }
-
-    /* Footer: Minimalist Void */
-    .footer {
-      padding: 100px 10%;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer p {
-      font-size: 12px;
+    .social-links a {
       color: var(--text-dim);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      font-size: 24px;
+      transition: 0.3s;
     }
 
-    /* Custom Gooey Filter */
-    svg.goo-filter {
-      position: absolute;
-      width: 0;
-      height: 0;
+    .social-links a:hover {
+      color: var(--primary);
+    }
+
+    .copy {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 20px 30px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .section {
+        padding: 80px 20px;
+      }
+
+      .hero h1 {
+        font-size: 60px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="liquid-bg">
-    <div class="blob"></div>
-    <div class="blob blob-2"></div>
+  <div class="bg-animation">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
   </div>
 
-  <svg class="goo-filter">
-    <defs>
-      <filter id="gooey">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
-      </filter>
-    </defs>
-  </svg>
-
-  <nav class="nav">
-    <a href="#" class="logo">VITALITY</a>
+  <nav>
+    <div class="logo">FOODTO●NEED</div>
     <div class="nav-links">
-      <a href="#membership">Access</a>
-      <a href="#contact">Network</a>
-      <a href="admin.html" style="color: var(--electric-green);">System Intelligence</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#impact">Impact</a>
+      <a href="admin.html" style="color: var(--secondary);">Admin Access</a>
     </div>
   </nav>
 
   <section class="hero">
-    <h1>VITALITY.</h1>
-    <p>Hyper-active network converting food waste into life energy. Joining forces with the most vibrant donors on
-      Earth.</p>
-    <div class="cta-group">
-      <button class="btn btn-vivid" onclick="location.href='user.html'">Access Matrix</button>
-      <button class="btn btn-outline" onclick="location.href='restaurant.html'">Join Hub</button>
-      <button class="btn btn-outline" onclick="location.href='delivery.html'">Logistic Node</button>
+    <h1>Harvesting <span>Abundance</span> For Every Need.</h1>
+    <p>The world's most elegant network connecting surplus culinary treasures with those who value them most. Join the
+      luxury of sharing.</p>
+    <div class="btn-group">
+      <a href="user.html" class="btn btn-primary">Find Food</a>
+      <a href="restaurant.html" class="btn btn-secondary">Donor Portal</a>
+      <a href="delivery.html" class="btn btn-secondary">Partner Node</a>
     </div>
   </section>
 
-  <section id="about" class="section">
-    <h2 style="font-size: 80px; text-align: center; margin-bottom: 80px;">The Pulse</h2>
-    <div class="grid-vivid">
-      <div class="vivid-card">
-        <div class="icon-vivid">⚡</div>
-        <h3>Rapid Sync</h3>
-        <p>Real-time synchronization between surplus nodes and high-need zones. We move faster than light to preserve
-          vitality.</p>
+  <section id="services" class="section">
+    <h2 class="section-title">The Orchard Ecosystem</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="card-icon">🍃</span>
+        <h3>Pure Efficiency</h3>
+        <p>Our algorithms ensure that fresh surplus travels the shortest path to its destination, preserving quality and
+          taste.</p>
       </div>
-      <div class="vivid-card">
-        <div class="icon-vivid">🍏</div>
-        <h3>Nutrient Focus</h3>
-        <p>We deliver vital energy. Our algorithm ensures the highest nutrient density for maximum community impact.</p>
+      <div class="card">
+        <span class="card-icon">💎</span>
+        <h3>Premium Network</h3>
+        <p>Curated partnerships with high-end restaurants, hotels, and organic grocers ensuring the finest grade of
+          surplus and care.</p>
       </div>
-      <div class="vivid-card">
-        <div class="icon-vivid">🌈</div>
-        <h3>Vivid Impact</h3>
-        <p>Every gram saved is a pixel of a better future. Impact that is colorful, measurable, and extraordinary.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="membership" class="section">
-    <h2 style="font-size: 80px; text-align: center; margin-bottom: 80px;">Access Channels</h2>
-    <div class="membership-grid">
-      <div class="tier-card">
-        <h3>BASIC</h3>
-        <div class="price">$0<span>/mo</span></div>
-        <p>Core syncing, community access, and basic logging.</p>
-        <button class="btn btn-outline" style="margin-top: 30px; padding: 15px 30px;">Initialize</button>
-      </div>
-      <div class="tier-card premium">
-        <h3>ULTRA</h3>
-        <div class="price">$19<span>/mo</span></div>
-        <p>Priority matrix access, detailed intelligence, and verified status.</p>
-        <button class="btn btn-vivid" style="margin-top: 30px; padding: 15px 30px; background: white; color: black;">Go
-          Ultra</button>
-      </div>
-      <div class="tier-card">
-        <h3>INFINITE</h3>
-        <div class="price">$49<span>/mo</span></div>
-        <p>System-wide influence, full API access, and unlimited nodes.</p>
-        <button class="btn btn-outline" style="margin-top: 30px; padding: 15px 30px;">Ascend</button>
+      <div class="card">
+        <span class="card-icon">🤝</span>
+        <h3>Verified Trust</h3>
+        <p>Every participant in the Food To Need network undergoes rigorous verification to ensure safety and social
+          responsibility.</p>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="section">
-    <div class="vivid-card" style="max-width: 1000px; margin: 0 auto; text-align: center;">
-      <h2 style="font-size: 60px; margin-bottom: 30px;">The Nexus</h2>
-      <p style="font-size: 24px; color: #94a3b8; margin-bottom: 40px;">Direct communication for high-level partnerships.
-      </p>
+  <section id="impact" class="section">
+    <div class="card" style="max-width: 900px; margin: 0 auto; text-align: center;">
+      <h2 class="section-title" style="margin-bottom: 30px;">Our Collective Impact</h2>
+      <p style="font-size: 24px; color: var(--text); margin-bottom: 40px;">Saving 10,000+ meals daily across the globe.
+        We aren't just sharing food; we're sharing hope and dignity.</p>
       <div style="display: flex; justify-content: center; gap: 50px;">
         <div>
-          <p style="color: var(--electric-green); font-weight: 800;">VOICE: +1-VIVID-PULSE</p>
+          <h4 style="font-size: 40px; color: var(--primary);">2M+</h4>
+          <p>Meals Saved</p>
         </div>
         <div>
-          <p style="color: var(--sunset-pink); font-weight: 800;">LINK: hello@vitality.tech</p>
+          <h4 style="font-size: 40px; color: var(--primary);">500+</h4>
+          <p>Partner Hubs</p>
+        </div>
+        <div>
+          <h4 style="font-size: 40px; color: var(--primary);">50k+</h4>
+          <p>Lives Impacted</p>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="footer-logo">FOODTO●NEED</div>
-    <p>© 2026 THE VITALITY NETWORK. ALL SYSTEMS OPTIMIZED.</p>
+  <footer>
+    <div class="footer-content">
+      <span class="footer-logo">FOODTO●NEED</span>
+      <div class="social-links">
+        <a href="#">FB</a>
+        <a href="#">IG</a>
+        <a href="#">LI</a>
+        <a href="#">TW</a>
+      </div>
+      <p class="copy">&copy; 2026 Food To Need. Designed for Humanity. All Rights Reserved.</p>
+    </div>
   </footer>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
