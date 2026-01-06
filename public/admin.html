@@ -3,65 +3,74 @@
 
 <head>
   <title>System Intelligence | Vitality</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Tenor+Sans&display=swap"
     rel="stylesheet">
 
   <style>
     :root {
-      --electric-green: #00ff87;
-      --sunset-pink: #ff007a;
-      --vivid-violet: #6e00ff;
-      --royal-blue: #00a2ff;
-      --bright-yellow: #f9ff00;
-      --glass: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.2);
+      --sovereign: #000000;
+      --intelligence: #ffcc00;
+      /* Gold intelligence */
+      --glow: #00f5ff;
+      /* Cyan data stream */
+      --structure: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --text-dim: #444444;
+      --transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     body {
-      background: #000;
-      min-height: 100vh;
-      color: white;
+      background: var(--sovereign);
+      color: var(--text);
       overflow-x: hidden;
     }
 
-    /* Extraordinary Mesh Gradient Background */
-    .mesh-bg {
+    /* Extraordinary Sovereign Background */
+    .sovereign-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top left, #0a0a0f, #000000);
       z-index: -1;
-      background:
-        radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 0% 100%, hsla(266, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 100% 100%, hsla(199, 100%, 50%, 1) 0, transparent 50%);
-      filter: blur(60px);
-      opacity: 0.5;
-      animation: pulseMesh 20s infinite alternate;
     }
 
-    @keyframes pulseMesh {
-      from {
-        transform: scale(1) rotate(0deg);
+    .data-spark {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--glow);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: sparkMove 10s infinite linear;
+    }
+
+    @keyframes sparkMove {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
       }
 
-      to {
-        transform: scale(1.2) rotate(10deg);
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(100vw, 100vh);
+        opacity: 0;
       }
     }
 
-    /* Login Panel */
-    .login-container {
+    /* Login Interface: Ethereal Entry */
+    .login-wrap {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -69,105 +78,94 @@
     }
 
     .login-box {
-      background: var(--glass);
-      backdrop-filter: blur(50px);
-      border: 2px solid var(--glass-border);
-      border-radius: 50px;
-      padding: 70px;
+      background: var(--structure);
+      backdrop-filter: blur(80px);
+      border: 1px solid var(--structure);
+      padding: 100px;
       max-width: 500px;
-      width: 100%;
-      box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+      width: 90%;
       text-align: center;
+      animation: revealEntry 1.5s var(--transition);
+    }
+
+    @keyframes revealEntry {
+      from {
+        opacity: 0;
+        filter: blur(20px);
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+      }
     }
 
     .login-box h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 40px;
-      margin-bottom: 40px;
-      background: linear-gradient(to right, white, var(--electric-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 32px;
+      letter-spacing: 15px;
       text-transform: uppercase;
-      letter-spacing: -2px;
+      margin-bottom: 60px;
     }
 
-    /* Dash Interface */
-    .dashboard-container {
-      max-width: 1600px;
+    /* Dashboard Architecture */
+    .dashboard {
+      max-width: 1800px;
       margin: 0 auto;
-      padding: 50px;
+      padding: 60px;
       display: none;
     }
 
-    .dashboard-header {
+    .dash-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 60px;
-      padding: 40px;
-      background: var(--glass);
-      border-radius: 40px;
-      border: 2px solid var(--glass-border);
-      backdrop-filter: blur(30px);
+      align-items: flex-start;
+      margin-bottom: 80px;
+      border-bottom: 1px solid var(--structure);
+      padding-bottom: 40px;
     }
 
-    .dashboard-header h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 32px;
-      background: linear-gradient(to right, white, var(--royal-blue));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .dash-header h2 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 40px;
+      letter-spacing: 5px;
       text-transform: uppercase;
     }
 
-    .stats-tray {
+    /* Extraordinary Stat Blocks */
+    .stat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      margin-bottom: 60px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--structure);
+      border: 1px solid var(--structure);
+      margin-bottom: 80px;
     }
 
-    .stat-card {
-      background: var(--glass);
-      border: 2px solid var(--glass-border);
-      border-radius: 40px;
-      padding: 40px;
+    .stat-block {
+      background: var(--sovereign);
+      padding: 60px;
       text-align: center;
-      transition: 0.4s;
+      transition: var(--transition);
     }
 
-    .stat-card:hover {
-      transform: translateY(-15px);
-      border-color: var(--electric-green);
-      background: rgba(255, 255, 255, 0.2);
+    .stat-block:hover {
+      background: #050505;
     }
 
-    .stat-card h4 {
-      font-size: 11px;
-      font-weight: 900;
+    .stat-block h4 {
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 4px;
+      margin-bottom: 20px;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #94a3b8;
-      margin-bottom: 15px;
     }
 
-    .stat-card .number {
-      font-family: 'Syne', sans-serif;
+    .stat-block .val {
+      font-family: 'Tenor Sans', sans-serif;
       font-size: 60px;
-      font-weight: 800;
-      background: linear-gradient(to bottom, white, var(--electric-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .nav-bar {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-bottom: 60px;
     }
 
     .nav-tab {

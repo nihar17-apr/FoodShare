@@ -3,245 +3,253 @@
 
 <head>
   <title>User Portal | Vitality</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Tenor+Sans&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
-    rel="stylesheet">
 
   <style>
     :root {
-      --electric-green: #00ff87;
-      --sunset-pink: #ff007a;
-      --vivid-violet: #6e00ff;
-      --royal-blue: #00a2ff;
-      --bright-yellow: #f9ff00;
-      --glass: rgba(255, 255, 255, 0.15);
-      --glass-border: rgba(255, 255, 255, 0.3);
+      --void: #000000;
+      --surface: #0a0a0a;
+      --signal: #00f5ff;
+      --danger: #ff0055;
+      --text: #ffffff;
+      --text-muted: #444444;
+      --border: rgba(255, 255, 255, 0.05);
+      --transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     body {
-      background: #000;
-      min-height: 100vh;
-      padding: 20px;
-      color: white;
+      background: var(--void);
+      color: var(--text);
       overflow-x: hidden;
     }
 
-    .mesh-bg {
+    /* Extraordinary Neural Grid Background */
+    .grid-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 100px 100px;
       z-index: -1;
-      background:
-        radial-gradient(at 0% 100%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 50% 100%, hsla(266, 100%, 50%, 1) 0, transparent 50%);
-      filter: blur(80px);
-      opacity: 0.6;
-      animation: pulseBg 10s ease infinite alternate;
+      pointer-events: none;
     }
 
-    @keyframes pulseBg {
-      from {
-        opacity: 0.4;
-        transform: scale(1);
-      }
-
-      to {
-        opacity: 0.7;
-        transform: scale(1.1);
-      }
+    .grid-bg::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 30%, var(--void) 80%);
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 30px;
+      padding: 40px;
     }
 
-    .tab-container {
+    /* High-Level Header */
+    .header {
       display: flex;
-      gap: 15px;
-      margin-bottom: 50px;
-      justify-content: center;
-      background: var(--glass);
-      padding: 10px;
-      border-radius: 100px;
-      width: fit-content;
-      margin: 0 auto 50px;
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 80px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 40px;
     }
 
-    .tab-button {
-      padding: 15px 40px;
-      border-radius: 100px;
+    .title-unit h1 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 80px;
+      letter-spacing: -2px;
+      line-height: 0.9;
+    }
+
+    .title-unit p {
+      color: var(--signal);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 15px;
+    }
+
+    /* Navigation: The Functional Bar */
+    .nav-bar {
+      display: flex;
+      gap: 1px;
+      background: var(--border);
+      padding: 1px;
+      width: fit-content;
+      margin: 0 auto 80px;
+    }
+
+    .nav-btn {
+      padding: 20px 40px;
+      background: var(--void);
       border: none;
-      background: transparent;
-      color: white;
-      font-weight: 800;
-      font-size: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 2px;
       cursor: pointer;
-      transition: 0.4s;
+      transition: var(--transition);
     }
 
-    .tab-button.active {
-      background: linear-gradient(to right, var(--electric-green), var(--royal-blue));
-      color: black;
-      box-shadow: 0 10px 30px rgba(0, 255, 135, 0.4);
+    .nav-btn:hover {
+      color: var(--text);
     }
 
-    .tab-content {
-      display: none;
+    .nav-btn.active {
+      background: var(--signal);
+      color: var(--void);
+      font-weight: 700;
     }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    .glass-panel {
-      background: var(--glass);
-      backdrop-filter: blur(40px);
-      border: 2px solid var(--glass-border);
-      border-radius: 50px;
-      padding: 60px;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
-    }
-
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 60px;
-      margin-bottom: 40px;
-      background: linear-gradient(to right, white, var(--electric-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -3px;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: var(--electric-green);
-      margin-bottom: 15px;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 20px 30px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid var(--glass-border);
-      border-radius: 25px;
-      color: white;
-      font-size: 16px;
-      transition: 0.4s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--electric-green);
-      box-shadow: 0 0 30px rgba(0, 255, 135, 0.2);
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 25px;
-      border-radius: 25px;
-      background: linear-gradient(135deg, var(--electric-green), var(--royal-blue));
-      color: black;
-      font-weight: 900;
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      cursor: pointer;
-      border: none;
-      transition: 0.5s;
-    }
-
+    /* The Map: A Digital Topography */
     #map {
       height: 600px;
-      border-radius: 40px;
-      border: 2px solid var(--glass-border);
-      margin-bottom: 50px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 80px;
     }
 
-    .restaurant-grid {
+    /* Extraordinary Data Cards */
+    .data-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 40px;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
     }
 
-    .restaurant-card {
-      background: var(--glass);
-      border: 2px solid var(--glass-border);
-      border-radius: 40px;
-      padding: 40px;
-      transition: 0.5s;
+    .data-item {
+      background: var(--void);
+      padding: 50px;
+      transition: var(--transition);
       position: relative;
     }
 
-    .restaurant-card:hover {
-      transform: translateY(-10px);
-      border-color: var(--sunset-pink);
+    .data-item:hover {
+      background: #050505;
     }
 
-    .badge-vivid {
-      padding: 8px 18px;
-      border-radius: 100px;
-      font-size: 11px;
-      font-weight: 900;
-      background: var(--sunset-pink);
-      color: white;
+    .data-item:hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--signal);
+    }
+
+    .data-item h3 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    .data-item .type-tag {
+      font-size: 10px;
+      color: var(--signal);
+      border: 1px solid var(--signal);
+      padding: 4px 12px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    #msg {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 20px;
-      text-align: center;
-      font-weight: 800;
+    /* Form Architecture */
+    .form-wrap {
+      background: var(--surface);
+      padding: 80px;
+      border: 1px solid var(--border);
+      max-width: 900px;
+      margin: 100px auto;
+    }
+
+    .input-unit {
+      margin-bottom: 40px;
+    }
+
+    .input-unit label {
+      display: block;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .input-unit input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 0;
+      color: var(--text);
+      font-size: 20px;
+      transition: var(--transition);
+    }
+
+    .input-unit input:focus {
+      outline: none;
+      border-bottom-color: var(--signal);
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 30px;
+      background: var(--signal);
+      color: var(--void);
+      border: none;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .action-btn:hover {
+      transform: scale(0.98);
+      background: #ffffff;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      padding: 20px 40px;
+      background: var(--signal);
+      color: var(--void);
+      font-weight: 700;
+      z-index: 1000;
       display: none;
-    }
-
-    .success {
-      background: rgba(0, 255, 135, 0.1);
-      color: var(--electric-green);
-      border: 1px solid var(--electric-green);
-    }
-
-    .error {
-      background: rgba(255, 0, 122, 0.1);
-      color: var(--sunset-pink);
-      border: 1px solid var(--sunset-pink);
     }
   </style>
 </head>
 
 <body>
-  <div class="mesh-bg"></div>
+  <div class="grid-bg"></div>
 
   <div class="container">
     <div class="tab-container">

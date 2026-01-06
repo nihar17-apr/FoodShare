@@ -1,160 +1,176 @@
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Tenor+Sans&display=swap"
   rel="stylesheet">
 
 <style>
   :root {
-    --electric-green: #00ff87;
-    --sunset-pink: #ff007a;
-    --vivid-violet: #6e00ff;
-    --royal-blue: #00a2ff;
-    --bright-yellow: #f9ff00;
-    --glass: rgba(255, 255, 255, 0.15);
-    --glass-border: rgba(255, 255, 255, 0.3);
+    --foundry: #0a0a0b;
+    --flare: #00f5ff;
+    --structure: rgba(255, 255, 255, 0.08);
+    --gold: #ffcc00;
+    --text: #f5f5f7;
+    --transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
   }
 
   body {
-    background: #000;
+    background: var(--foundry);
+    color: var(--text);
     min-height: 100vh;
-    padding: 20px;
-    color: white;
-    overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
 
-  /* Extraordinary Mesh Gradient Background */
-  .mesh-bg {
+  /* Extraordinary Kinetic Light Flare */
+  .flare-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 50%;
+    left: 50%;
+    width: 150vw;
+    height: 150vh;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at center, rgba(0, 245, 255, 0.03) 0%, transparent 70%);
     z-index: -1;
-    background:
-      radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
-      radial-gradient(at 100% 100%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
-      radial-gradient(at 50% 50%, hsla(199, 100%, 50%, 1) 0, transparent 50%);
-    filter: blur(80px);
-    opacity: 0.6;
-    animation: rotateBg 15s linear infinite;
+    animation: flareMove 20s infinite alternate linear;
   }
 
-  @keyframes rotateBg {
+  @keyframes flareMove {
     from {
-      transform: rotate(0deg);
+      transform: translate(-60%, -40%) rotate(0deg);
     }
 
     to {
-      transform: rotate(360deg);
+      transform: translate(-40%, -60%) rotate(360deg);
     }
   }
 
-  .container {
-    background: var(--glass);
-    backdrop-filter: blur(50px);
-    border: 2px solid var(--glass-border);
-    border-radius: 60px;
-    padding: 80px;
-    max-width: 650px;
-    width: 100%;
-    box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
-    animation: popIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  .terminal-box {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--structure);
+    padding: 100px;
+    max-width: 800px;
+    width: 90%;
+    position: relative;
+    animation: slideIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  @keyframes popIn {
+  @keyframes slideIn {
     from {
       opacity: 0;
-      transform: scale(0.8);
+      transform: translateY(100px);
     }
 
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
   }
 
+  .terminal-box::before {
+    content: 'SECURITY PROTOCOL ACTIVE';
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: var(--flare);
+    opacity: 0.5;
+  }
+
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: 56px;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 60px;
+    letter-spacing: -2px;
+    line-height: 1;
     margin-bottom: 20px;
-    background: linear-gradient(to right, white, var(--royal-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -3px;
     text-transform: uppercase;
-    text-align: center;
   }
 
   p {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 50px;
-    font-size: 18px;
-  }
-
-  /* Neon Inputs */
-  .form-group {
-    margin-bottom: 30px;
-  }
-
-  label {
-    display: block;
-    font-size: 11px;
-    font-weight: 900;
-    text-transform: uppercase;
+    color: #555;
+    font-size: 14px;
     letter-spacing: 2px;
-    color: var(--royal-blue);
-    margin-bottom: 12px;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    padding: 20px 25px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid var(--glass-border);
-    border-radius: 20px;
-    color: white;
-    font-size: 16px;
-    transition: 0.3s;
-  }
-
-  input:focus {
-    outline: none;
-    border-color: var(--royal-blue);
-    background: rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 30px rgba(0, 162, 255, 0.2);
-  }
-
-  button[type="submit"] {
-    width: 100%;
-    padding: 25px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, var(--royal-blue), var(--vivid-violet));
-    color: white;
-    font-weight: 900;
-    font-size: 16px;
+    margin-bottom: 60px;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    cursor: pointer;
-    border: none;
-    transition: 0.5s;
-    box-shadow: 0 20px 40px rgba(110, 0, 255, 0.3);
   }
 
-  button[type="submit"]:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 30px 60px rgba(110, 0, 255, 0.5);
-    background: linear-gradient(135deg, var(--electric-green), var(--royal-blue));
+  /* Extraordinary Input Fields */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .input-field {
+    position: relative;
+  }
+
+  .input-field label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #444;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .input-field input,
+  .input-field select,
+  .input-field textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--structure);
+    padding: 15px 0;
+    color: white;
+    font-size: 18px;
+    transition: var(--transition);
+  }
+
+  .input-field input:focus {
+    outline: none;
+    border-bottom-color: var(--flare);
+  }
+
+  /* The Kinetic Button */
+  .kinetic-btn {
+    width: 100%;
+    padding: 30px;
+    background: transparent;
+    border: 1px solid var(--flare);
+    color: var(--flare);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: var(--transition);
+  }
+
+  .kinetic-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--flare);
+    transition: var(--transition);
+    z-index: -1;
+  }
+
+  .kinetic-btn:hover {
     color: black;
   }
 

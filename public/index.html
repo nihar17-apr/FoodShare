@@ -4,300 +4,337 @@
 <head>
   <meta charset="UTF-8">
   <title>FOODTO●NEED | The Vitality Network</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Tenor+Sans&display=swap"
     rel="stylesheet">
 
   <style>
     :root {
-      --electric-green: #00ff87;
-      --sunset-pink: #ff007a;
-      --vivid-violet: #6e00ff;
-      --royal-blue: #00a2ff;
-      --bright-yellow: #f9ff00;
-      --glass: rgba(255, 255, 255, 0.15);
-      --glass-border: rgba(255, 255, 255, 0.3);
+      --bg: #050505;
+      --surface: rgba(255, 255, 255, 0.03);
+      --surface-solid: #111111;
+      --vitality: #00f5ff;
+      /* Hyper Cyan */
+      --ethereal: #ff007a;
+      /* Molten Pink */
+      --gold: #ffcc00;
+      --text: #f5f5f7;
+      --text-dim: #86868b;
+      --transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
-      scroll-behavior: smooth;
+      font-family: 'Space Grotesk', sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      background: #000;
+      background: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
-      color: white;
+      line-height: 1.4;
     }
 
-    /* Extraordinary Mesh Gradient Background */
-    .mesh-bg {
+    /* Extraordinary Liquid Background */
+    .liquid-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       z-index: -1;
-      background:
-        radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
-        radial-gradient(at 50% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 100% 0%, hsla(266, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 50% 50%, hsla(199, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 0% 100%, hsla(55, 100%, 50%, 1) 0, transparent 50%),
-        radial-gradient(at 100% 100%, hsla(180, 100%, 50%, 1) 0, transparent 50%);
-      filter: blur(60px);
-      opacity: 0.8;
-      animation: backgroundMove 15s ease infinite alternate;
+      overflow: hidden;
+      filter: url(#gooey);
     }
 
-    @keyframes backgroundMove {
-      0% {
-        transform: scale(1) translate(0, 0);
-      }
+    .blob {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: var(--vitality);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: drift 25s infinite alternate;
+    }
 
-      50% {
-        transform: scale(1.2) translate(-5%, 5%);
+    .blob-2 {
+      background: var(--ethereal);
+      right: -100px;
+      top: -100px;
+      animation-duration: 30s;
+      animation-delay: -5s;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
       }
 
       100% {
-        transform: scale(1) translate(5%, -5%);
+        transform: translate(200px, 150px) scale(1.3) rotate(180deg);
       }
     }
 
-    h1,
-    h2,
-    h3 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    /* Vivid Navigation */
-    .navbar {
+    /* Navigation: Architectural Simplicity */
+    .nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 80px;
+      padding: 40px 80px;
       position: fixed;
       width: 100%;
       z-index: 1000;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(30px);
-      border-bottom: 2px solid var(--glass-border);
+      mix-blend-mode: difference;
     }
 
     .logo {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(to right, var(--electric-green), var(--royal-blue), var(--sunset-pink));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -2px;
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 24px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: white;
+      text-decoration: none;
     }
 
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: 60px;
     }
 
     .nav-links a {
       color: white;
       text-decoration: none;
+      font-size: 11px;
       font-weight: 700;
-      font-size: 14px;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      transition: 0.3s;
+      letter-spacing: 4px;
+      opacity: 0.6;
+      transition: var(--transition);
     }
 
     .nav-links a:hover {
-      color: var(--electric-green);
+      opacity: 1;
+      letter-spacing: 6px;
     }
 
-    /* Hero Section */
+    /* Hero: The Extraordinary Statement */
     .hero {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
+      padding: 0 10%;
+      position: relative;
     }
 
     .hero h1 {
-      font-size: clamp(60px, 12vw, 150px);
-      line-height: 0.9;
-      letter-spacing: -10px;
-      background: linear-gradient(135deg, white 30%, var(--electric-green) 60%, var(--royal-blue) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: titleFlow 5s ease infinite alternate;
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: clamp(60px, 10vw, 180px);
+      line-height: 0.85;
+      letter-spacing: -4px;
+      color: white;
+      margin-bottom: 40px;
     }
 
-    @keyframes titleFlow {
-      from {
-        filter: hue-rotate(0deg);
-      }
+    .hero h1 span {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+      transition: var(--transition);
+      cursor: default;
+    }
 
-      to {
-        filter: hue-rotate(45deg);
-      }
+    .hero h1 span:hover {
+      color: white;
+      -webkit-text-stroke: 1px transparent;
     }
 
     .hero p {
-      font-size: 24px;
-      font-weight: 600;
-      max-width: 800px;
-      margin: 40px 0;
+      font-size: 20px;
+      max-width: 500px;
+      color: var(--text-dim);
+      margin-left: 10px;
+      border-left: 2px solid var(--vitality);
+      padding-left: 30px;
     }
 
-    .cta-group {
+    /* Extraordinary Button Architecture */
+    .cta-wrapper {
+      margin-top: 80px;
       display: flex;
-      gap: 25px;
-    }
-
-    .btn {
-      padding: 25px 60px;
-      border-radius: 100px;
-      font-size: 18px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      cursor: pointer;
-      transition: 0.5s;
-      border: none;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-vivid {
-      background: white;
-      color: black;
-      box-shadow: 0 0 40px rgba(0, 255, 135, 0.5);
-    }
-
-    .btn-vivid:hover {
-      transform: scale(1.1) rotate(-2deg);
-      background: var(--bright-yellow);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: white;
-      border: 3px solid white;
-    }
-
-    .btn-outline:hover {
-      background: white;
-      color: black;
-      transform: scale(1.1) rotate(2deg);
-    }
-
-    /* Section Styles */
-    .section {
-      padding: 150px 80px;
-      position: relative;
-    }
-
-    .grid-vivid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 40px;
     }
 
-    .vivid-card {
-      background: var(--glass);
-      backdrop-filter: blur(40px);
-      border: 2px solid var(--glass-border);
-      border-radius: 50px;
-      padding: 60px;
-      transition: 0.6s;
+    .btn {
+      position: relative;
+      padding: 25px 60px;
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      overflow: hidden;
     }
 
-    .vivid-card:hover {
-      transform: translateY(-20px);
-      background: rgba(255, 255, 255, 0.25);
-      border-color: var(--electric-green);
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: white;
+      transition: var(--transition);
+      z-index: -1;
     }
 
-    .icon-vivid {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
-      border-radius: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin-bottom: 30px;
+    .btn:hover {
+      color: black;
+      border-color: white;
     }
 
-    /* Membership Ultra-Vivid */
-    .membership-grid {
+    .btn:hover::before {
+      left: 0;
+    }
+
+    /* Card Architecture: Brutalist Precision */
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 40px;
+      padding: 150px 10%;
     }
 
-    .tier-card {
+    .card {
+      grid-column: span 4;
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
       padding: 60px;
-      border-radius: 40px;
-      text-align: center;
-      transition: 0.5s;
-      background: var(--glass);
-      border: 2px solid var(--glass-border);
+      position: relative;
+      transition: var(--transition);
     }
 
-    .tier-card.premium {
-      background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
-      border: none;
-      transform: scale(1.05);
+    .card:nth-child(even) {
+      margin-top: 80px;
     }
 
-    .price {
-      font-size: 60px;
-      font-weight: 900;
+    .card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-20px);
+    }
+
+    .card-num {
+      font-size: 10px;
+      color: var(--vitality);
+      font-weight: 700;
+      margin-bottom: 30px;
+      display: block;
+      letter-spacing: 3px;
+    }
+
+    .card h3 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 32px;
       margin-bottom: 20px;
+      font-weight: 400;
     }
 
-    .price span {
-      font-size: 20px;
-      opacity: 0.7;
+    .card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* Footer */
-    .footer {
-      padding: 100px 80px;
-      background: rgba(0, 0, 0, 0.8);
-      text-align: center;
-      border-top: 2px solid var(--glass-border);
+    /* The Extraordinary Portal Section */
+    .portal-section {
+      padding: 150px 10%;
+      background: var(--surface-solid);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
     }
 
-    .footer-logo {
-      font-size: 50px;
-      font-weight: 800;
-      background: linear-gradient(to right, var(--electric-green), var(--sunset-pink));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .portal-text h2 {
+      font-family: 'Tenor Sans', sans-serif;
+      font-size: 80px;
+      line-height: 1;
       margin-bottom: 40px;
+    }
+
+    .portal-visual {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle at center, var(--vitality), transparent 70%);
+      border-radius: 50%;
+      position: relative;
+      animation: pulse 8s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+      }
+    }
+
+    /* Footer: Minimalist Void */
+    .footer {
+      padding: 100px 10%;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Custom Gooey Filter */
+    svg.goo-filter {
+      position: absolute;
+      width: 0;
+      height: 0;
     }
   </style>
 </head>
 
 <body>
-  <div class="mesh-bg"></div>
+  <div class="liquid-bg">
+    <div class="blob"></div>
+    <div class="blob blob-2"></div>
+  </div>
 
-  <nav class="navbar">
-    <div class="logo">FOODTO●NEED</div>
+  <svg class="goo-filter">
+    <defs>
+      <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+      </filter>
+    </defs>
+  </svg>
+
+  <nav class="nav">
+    <a href="#" class="logo">VITALITY</a>
     <div class="nav-links">
-      <a href="#about">Philosophy</a>
       <a href="#membership">Access</a>
       <a href="#contact">Network</a>
       <a href="admin.html" style="color: var(--electric-green);">System Intelligence</a>

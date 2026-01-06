@@ -3,172 +3,160 @@
 
 <head>
     <title>Logistic Node | Vitality</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Tenor+Sans&display=swap"
         rel="stylesheet">
 
     <style>
         :root {
-            --electric-green: #00ff87;
-            --sunset-pink: #ff007a;
-            --vivid-violet: #6e00ff;
-            --royal-blue: #00a2ff;
-            --bright-yellow: #f9ff00;
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.3);
+            --void: #000000;
+            --telemetry: #00f5ff;
+            --pulse: #ff0055;
+            --text: #ffffff;
+            --border: rgba(255, 255, 255, 0.05);
+            --transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         body {
-            background: #000;
+            background: var(--void);
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
-            color: white;
-            overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
-        /* Extraordinary Mesh Gradient Background */
-        .mesh-bg {
+        /* Extraordinary Telemetry Stream */
+        .telemetry-bg {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            background:
-                radial-gradient(at 100% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
-                radial-gradient(at 0% 100%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
-                radial-gradient(at 50% 50%, hsla(266, 100%, 50%, 1) 0, transparent 50%);
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: pulseBg 12s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseBg {
-            from {
-                transform: scale(1) translate(0, 0);
-            }
-
-            to {
-                transform: scale(1.2) translate(5%, 5%);
-            }
-        }
-
-        .container {
-            background: var(--glass);
-            backdrop-filter: blur(50px);
-            border: 2px solid var(--glass-border);
-            border-radius: 60px;
-            padding: 80px;
-            max-width: 650px;
             width: 100%;
-            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
-            animation: slideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
         }
 
-        @keyframes slideIn {
+        .stream-line {
+            position: absolute;
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--telemetry), transparent);
+            animation: flowDown 5s infinite linear;
+        }
+
+        @keyframes flowDown {
             from {
-                opacity: 0;
-                transform: translateX(-50px);
+                transform: translateY(-100px);
             }
 
             to {
-                opacity: 1;
-                transform: translateX(0);
+                transform: translateY(110vh);
             }
+        }
+
+        .agent-box {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(50px);
+            border: 1px solid var(--border);
+            padding: 80px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: agentReveal 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes agentReveal {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .agent-box::after {
+            content: 'LOGISTIC NODE STATUS: READY';
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--telemetry);
         }
 
         h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: 56px;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, white, var(--vivid-violet));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -3px;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-        p {
-            text-align: center;
-            color: #94a3b8;
+            font-family: 'Tenor Sans', sans-serif;
+            font-size: 50px;
+            letter-spacing: -2px;
             margin-bottom: 50px;
-            font-size: 18px;
-        }
-
-        .form-group {
-            margin-bottom: 30px;
-        }
-
-        label {
-            display: block;
-            font-size: 11px;
-            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: var(--vivid-violet);
-            margin-bottom: 12px;
         }
 
-        input,
-        select {
+        /* Ultra-Fine Form Infrastructure */
+        .field-unit {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .field-unit label {
+            display: block;
+            font-size: 9px;
+            color: #444;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .field-unit input,
+        .field-unit select {
             width: 100%;
-            padding: 20px 25px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--glass-border);
-            border-radius: 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            padding: 12px 0;
             color: white;
             font-size: 16px;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
-        input:focus,
-        select:focus {
+        .field-unit input:focus {
             outline: none;
-            border-color: var(--vivid-violet);
-            background: rgba(0, 0, 0, 0.6);
-            box-shadow: 0 0 30px rgba(110, 0, 255, 0.2);
+            border-bottom-color: var(--telemetry);
         }
 
-        button[type="submit"] {
+        .telemetry-btn {
             width: 100%;
             padding: 25px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
-            color: white;
-            font-weight: 900;
-            font-size: 16px;
+            background: transparent;
+            border: 1px solid var(--telemetry);
+            color: var(--telemetry);
+            font-weight: 700;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 6px;
             cursor: pointer;
-            border: none;
-            transition: 0.5s;
-            box-shadow: 0 20px 40px rgba(110, 0, 255, 0.3);
+            transition: var(--transition);
         }
 
-        button[type="submit"]:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(110, 0, 255, 0.5);
-            background: linear-gradient(135deg, var(--bright-yellow), var(--electric-green));
-            color: black;
+        .telemetry-btn:hover {
+            background: var(--telemetry);
+            color: var(--void);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.4);
         }
 
         #msg {
             margin-top: 30px;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
             font-weight: 800;
             display: none;
         }
