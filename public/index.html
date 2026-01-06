@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
-  <title>Food To Need</title>
+  <title>FOODTO●NEED | The Vitality Network</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
     rel="stylesheet">
 
   <style>
     :root {
-      --primary: #6366f1;
-      --secondary: #a855f7;
-      --accent: #ec4899;
-      --glass: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --text-white: #f8fafc;
+      --electric-green: #00ff87;
+      --sunset-pink: #ff007a;
+      --vivid-violet: #6e00ff;
+      --royal-blue: #00a2ff;
+      --bright-yellow: #f9ff00;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.3);
     }
 
     * {
@@ -27,485 +28,360 @@
     }
 
     body {
-      background: radial-gradient(circle at top left, #0f172a, #1e1b4b, #0f172a);
-      background-attachment: fixed;
-      min-height: 100vh;
-      color: var(--text-white);
+      background: #000;
       overflow-x: hidden;
+      color: white;
     }
 
-    /* Interactive Background Elements */
-    body::before {
-      content: '';
+    /* Extraordinary Mesh Gradient Background */
+    .mesh-bg {
       position: fixed;
-      top: -20%;
-      left: -10%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-      filter: blur(100px);
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      animation: drift 25s infinite alternate;
+      background:
+        radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(266, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 50%, hsla(199, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(55, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(180, 100%, 50%, 1) 0, transparent 50%);
+      filter: blur(60px);
+      opacity: 0.8;
+      animation: backgroundMove 15s ease infinite alternate;
     }
 
-    @keyframes drift {
-      from {
-        transform: translate(0, 0) rotate(0deg);
+    @keyframes backgroundMove {
+      0% {
+        transform: scale(1) translate(0, 0);
       }
 
-      to {
-        transform: translate(15%, 15%) rotate(10deg);
+      50% {
+        transform: scale(1.2) translate(-5%, 5%);
+      }
+
+      100% {
+        transform: scale(1) translate(5%, -5%);
       }
     }
 
-    /* Ultra-Modern Navbar */
+    h1,
+    h2,
+    h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Vivid Navigation */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 60px;
-      position: sticky;
-      top: 0;
+      padding: 30px 80px;
+      position: fixed;
+      width: 100%;
       z-index: 1000;
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-      transition: all 0.4s ease;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(30px);
+      border-bottom: 2px solid var(--glass-border);
     }
 
-    .navbar span {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
+    .logo {
+      font-size: 32px;
       font-weight: 800;
-      background: linear-gradient(to right, #fff, var(--primary));
+      background: linear-gradient(to right, var(--electric-green), var(--royal-blue), var(--sunset-pink));
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -1px;
+      letter-spacing: -2px;
     }
 
     .nav-links {
       display: flex;
-      gap: 35px;
+      gap: 40px;
     }
 
-    .nav-link {
-      color: #94a3b8;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 15px;
-      transition: 0.3s;
-      position: relative;
-      padding: 8px 0;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: 0.3s;
-    }
-
-    .nav-link:hover {
+    .nav-links a {
       color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: 0.3s;
     }
 
-    .nav-link:hover::after {
-      width: 100%;
+    .nav-links a:hover {
+      color: var(--electric-green);
     }
 
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-
-    /* Cinematic Hero Section */
+    /* Hero Section */
     .hero {
-      height: 90vh;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      gap: 25px;
-      animation: reveal 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0 20px;
     }
 
-    @keyframes reveal {
+    .hero h1 {
+      font-size: clamp(60px, 12vw, 150px);
+      line-height: 0.9;
+      letter-spacing: -10px;
+      background: linear-gradient(135deg, white 30%, var(--electric-green) 60%, var(--royal-blue) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: titleFlow 5s ease infinite alternate;
+    }
+
+    @keyframes titleFlow {
       from {
-        opacity: 0;
-        transform: scale(0.9) translateY(40px);
+        filter: hue-rotate(0deg);
       }
 
       to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
+        filter: hue-rotate(45deg);
       }
-    }
-
-    h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 82px;
-      font-weight: 800;
-      line-height: 1.1;
-      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -4px;
-      margin-bottom: 10px;
-    }
-
-    .tagline {
-      font-family: 'Outfit', sans-serif;
-      font-size: 26px;
-      font-weight: 300;
-      color: #cbd5e1;
-      letter-spacing: 4px;
-      text-transform: uppercase;
     }
 
     .hero p {
-      max-width: 700px;
-      font-size: 18px;
-      line-height: 1.8;
-      color: #94a3b8;
+      font-size: 24px;
+      font-weight: 600;
+      max-width: 800px;
+      margin: 40px 0;
     }
 
-    .button-group {
+    .cta-group {
       display: flex;
-      gap: 20px;
-      margin-top: 40px;
+      gap: 25px;
     }
 
     .btn {
-      padding: 16px 40px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 16px;
+      padding: 25px 60px;
+      border-radius: 100px;
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid var(--glass-border);
+      transition: 0.5s;
+      border: none;
       position: relative;
       overflow: hidden;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .btn-primary {
+    .btn-vivid {
       background: white;
-      color: #0f172a;
-      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+      color: black;
+      box-shadow: 0 0 40px rgba(0, 255, 135, 0.5);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 45px rgba(255, 255, 255, 0.2);
+    .btn-vivid:hover {
+      transform: scale(1.1) rotate(-2deg);
+      background: var(--bright-yellow);
     }
 
-    .btn-glass {
-      background: var(--glass);
+    .btn-outline {
+      background: transparent;
       color: white;
-      backdrop-filter: blur(10px);
+      border: 3px solid white;
     }
 
-    .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-5px);
-      border-color: var(--primary);
+    .btn-outline:hover {
+      background: white;
+      color: black;
+      transform: scale(1.1) rotate(2deg);
     }
 
-    /* High-Fi Cards Section */
-    .section-title {
-      font-size: 48px;
-      margin-bottom: 60px;
-      text-align: center;
-      background: linear-gradient(to right, #fff, #4ade80);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    /* Section Styles */
+    .section {
+      padding: 150px 80px;
+      position: relative;
     }
 
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      border-radius: 32px;
-      padding: 50px;
-      backdrop-filter: blur(30px);
-      transition: 0.4s;
-    }
-
-    .glass-card:hover {
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.05);
-      transform: translateY(-10px);
-    }
-
-    .feature-grid {
+    .grid-vivid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
     }
 
-    .mini-card {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 35px;
-      border-radius: 24px;
-      border: 1px solid var(--glass-border);
-      transition: 0.4s;
-      text-align: center;
-    }
-
-    .mini-card:hover {
+    .vivid-card {
       background: var(--glass);
-      border-color: var(--accent);
-      transform: translateY(-10px) rotate(1deg);
+      backdrop-filter: blur(40px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 60px;
+      transition: 0.6s;
     }
 
-    .icon-box {
-      width: 60px;
-      height: 60px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      margin: 0 auto 25px;
+    .vivid-card:hover {
+      transform: translateY(-20px);
+      background: rgba(255, 255, 255, 0.25);
+      border-color: var(--electric-green);
+    }
+
+    .icon-vivid {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
+      border-radius: 25px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+      font-size: 32px;
+      margin-bottom: 30px;
     }
 
-    /* Contact Hub */
-    .contact-hub {
+    /* Membership Ultra-Vivid */
+    .membership-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      margin-top: 80px;
-      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
     }
 
-    .contact-visual {
-      position: relative;
-      height: 400px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    .tier-card {
+      padding: 60px;
       border-radius: 40px;
-      overflow: hidden;
-    }
-
-    .contact-visual::after {
-      content: 'FOOD TO NEED';
-      position: absolute;
-      font-size: 100px;
-      font-weight: 900;
-      opacity: 0.1;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(-45deg);
-      white-space: nowrap;
-    }
-
-    .footer {
-      margin-top: 150px;
-      padding: 60px 0;
-      border-top: 1px solid var(--glass-border);
       text-align: center;
-      color: #475569;
+      transition: 0.5s;
+      background: var(--glass);
+      border: 2px solid var(--glass-border);
     }
 
-    @media (max-width: 900px) {
-      h1 {
-        font-size: 48px;
-        letter-spacing: -2px;
-      }
+    .tier-card.premium {
+      background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
+      border: none;
+      transform: scale(1.05);
+    }
 
-      .hero {
-        height: auto;
-        padding: 100px 0;
-      }
+    .price {
+      font-size: 60px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
 
-      .contact-hub {
-        grid-template-columns: 1fr;
-      }
+    .price span {
+      font-size: 20px;
+      opacity: 0.7;
+    }
 
-      .navbar {
-        padding: 20px 30px;
-      }
+    /* Footer */
+    .footer {
+      padding: 100px 80px;
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      border-top: 2px solid var(--glass-border);
+    }
 
-      .nav-links {
-        display: none;
-      }
+    .footer-logo {
+      font-size: 50px;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--electric-green), var(--sunset-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 40px;
     }
   </style>
 </head>
 
 <body>
-  <!-- Navigation -->
+  <div class="mesh-bg"></div>
+
   <nav class="navbar">
-    <span>🍽 FOOD TO NEED</span>
+    <div class="logo">FOODTO●NEED</div>
     <div class="nav-links">
-      <a class="nav-link" onclick="scrollToSection('hero')">HOME</a>
-      <a class="nav-link" onclick="scrollToSection('about')">ABOUT</a>
-      <a class="nav-link" onclick="scrollToSection('membership')">PLAN</a>
-      <a class="nav-link" onclick="scrollToSection('contact')">CONTACT</a>
+      <a href="#about">Philosophy</a>
+      <a href="#membership">Access</a>
+      <a href="#contact">Network</a>
+      <a href="admin.html" style="color: var(--electric-green);">System Intelligence</a>
     </div>
   </nav>
 
-  <div class="container">
-    <!-- Hero Section -->
-    <header class="hero" id="hero">
-      <div class="tagline">Bridging the Gap</div>
-      <h1>Sustain Life.<br>Share Surplus.</h1>
-      <p>The most advanced platform connecting food establishments with excess supplies to charitable organizations.
-        Together, we ensure no nutritious meal goes to waste.</p>
+  <section class="hero">
+    <h1>VITALITY.</h1>
+    <p>Hyper-active network converting food waste into life energy. Joining forces with the most vibrant donors on
+      Earth.</p>
+    <div class="cta-group">
+      <button class="btn btn-vivid" onclick="location.href='user.html'">Access Matrix</button>
+      <button class="btn btn-outline" onclick="location.href='restaurant.html'">Join Hub</button>
+      <button class="btn btn-outline" onclick="location.href='delivery.html'">Logistic Node</button>
+    </div>
+  </section>
 
-      <div class="button-group">
-        <a href="restaurant.html" class="btn btn-primary">🏨 RESTAURANT HUB</a>
-        <a href="user.html" class="btn btn-glass">🏠 USER PORTAL</a>
-        <a href="delivery.html" class="btn btn-glass">🚚 LOGISTICS</a>
-        <a href="admin.html" class="btn btn-glass" style="border-style: dashed;">👨‍💼 ADMIN</a>
+  <section id="about" class="section">
+    <h2 style="font-size: 80px; text-align: center; margin-bottom: 80px;">The Pulse</h2>
+    <div class="grid-vivid">
+      <div class="vivid-card">
+        <div class="icon-vivid">⚡</div>
+        <h3>Rapid Sync</h3>
+        <p>Real-time synchronization between surplus nodes and high-need zones. We move faster than light to preserve
+          vitality.</p>
       </div>
-    </header>
-
-    <!-- About Section -->
-    <section class="glass-card" id="about">
-      <div class="section-title">Global Vision. Local Impact.</div>
-      <p style="text-align: center; margin-bottom: 50px; font-size: 19px;">Food To Need is a high-performance ecosystem
-        designed to solve the food waste crisis through precision logistics and community compassion.</p>
-
-      <div class="feature-grid">
-        <div class="mini-card">
-          <div class="icon-box">♻️</div>
-          <h3>ECO-POSITIVE</h3>
-          <p>Cutting methane emissions by redirecting thousands of pounds of food from landfills.</p>
-        </div>
-        <div class="mini-card">
-          <div class="icon-box">💝</div>
-          <h3>PURE COMPASSION</h3>
-          <p>Delivering hot meals to those who need them most with dignity and care.</p>
-        </div>
-        <div class="mini-card">
-          <div class="icon-box">📈</div>
-          <h3>SMART LOGISTICS</h3>
-          <p>Real-time analytics and route optimization for the fastest possible delivery.</p>
-        </div>
+      <div class="vivid-card">
+        <div class="icon-vivid">🍏</div>
+        <h3>Nutrient Focus</h3>
+        <p>We deliver vital energy. Our algorithm ensures the highest nutrient density for maximum community impact.</p>
       </div>
-
-      <div
-        style="margin-top: 80px; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 30px; border: 1px solid var(--glass-border);">
-        <h2 style="font-size: 28px; text-align: center; margin-bottom: 40px;">THE WORKFLOW</h2>
-        <div class="feature-grid">
-          <div>
-            <h4 style="color: var(--primary);">01. REGISTRATION</h4>
-            <p style="font-size: 14px;">Instant profile creation for donors and recipients.</p>
-          </div>
-          <div>
-            <h4 style="color: var(--secondary);">02. LIVE LISTING</h4>
-            <p style="font-size: 14px;">Real-time surplus alerts broadcast to nearby users.</p>
-          </div>
-          <div>
-            <h4 style="color: var(--accent);">03. VERIFICATION</h4>
-            <p style="font-size: 14px;">AI-assisted validation for safety and quality.</p>
-          </div>
-          <div>
-            <h4 style="color: #4ade80;">04. DISPATCH</h4>
-            <p style="font-size: 14px;">Seamless logistics matching for instant delivery.</p>
-          </div>
-        </div>
+      <div class="vivid-card">
+        <div class="icon-vivid">🌈</div>
+        <h3>Vivid Impact</h3>
+        <p>Every gram saved is a pixel of a better future. Impact that is colorful, measurable, and extraordinary.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Membership Section -->
-    <section id="membership" style="padding-top: 100px;">
-      <div class="section-title">Choose Your Impact</div>
-      <div class="feature-grid">
-        <!-- Basic -->
-        <div class="mini-card" style="border-bottom: 4px solid #94a3b8;">
-          <h3 style="font-size: 14px; color: #94a3b8;">SILVER CORE</h3>
-          <div style="font-size: 42px; font-weight: 800; margin: 20px 0;">FREE</div>
-          <ul
-            style="list-style: none; text-align: left; padding: 0 20px; font-size: 14px; color: #cbd5e1; margin-bottom: 30px;">
-            <li style="margin-bottom: 12px;">✅ Standard Listings</li>
-            <li style="margin-bottom: 12px;">✅ Community Access</li>
-            <li style="margin-bottom: 12px;">✅ Basic Analytics</li>
-          </ul>
-          <a href="restaurant.html" class="btn btn-glass" style="width: 100%; justify-content: center;">JOIN FREE</a>
-        </div>
-        <!-- Premium -->
-        <div class="mini-card"
-          style="border-bottom: 4px solid var(--primary); background: rgba(99, 102, 241, 0.05); transform: scale(1.05);">
-          <h3 style="font-size: 14px; color: var(--primary);">TITANIUM ELITE</h3>
-          <div style="font-size: 42px; font-weight: 800; margin: 20px 0;">$49<span
-              style="font-size: 16px; font-weight: 400;">/mo</span></div>
-          <ul
-            style="list-style: none; text-align: left; padding: 0 20px; font-size: 14px; color: #cbd5e1; margin-bottom: 30px;">
-            <li style="margin-bottom: 12px;">🔥 TOP FEATURED DONOR</li>
-            <li style="margin-bottom: 12px;">🚀 INSTANT MATCHMAKING</li>
-            <li style="margin-bottom: 12px;">📊 ADVANCED CSV EXPORT</li>
-            <li style="margin-bottom: 12px;">💎 ELITE PARTNER BADGE</li>
-          </ul>
-          <a href="restaurant.html" class="btn btn-primary" style="width: 100%; justify-content: center;">GO ELITE</a>
-        </div>
-        <!-- Gold -->
-        <div class="mini-card" style="border-bottom: 4px solid #fbbf24;">
-          <h3 style="font-size: 14px; color: #fbbf24;">GOLD SHIELD</h3>
-          <div style="font-size: 42px; font-weight: 800; margin: 20px 0;">$19<span
-              style="font-size: 16px; font-weight: 400;">/mo</span></div>
-          <ul
-            style="list-style: none; text-align: left; padding: 0 20px; font-size: 14px; color: #cbd5e1; margin-bottom: 30px;">
-            <li style="margin-bottom: 12px;">✅ VERIFIED BADGE</li>
-            <li style="margin-bottom: 12px;">📊 IMPACT DASHBOARD</li>
-            <li style="margin-bottom: 12px;">📧 PRIORITY SUPPORT</li>
-          </ul>
-          <a href="restaurant.html" class="btn btn-glass" style="width: 100%; justify-content: center;">CHOOSE GOLD</a>
-        </div>
+  <section id="membership" class="section">
+    <h2 style="font-size: 80px; text-align: center; margin-bottom: 80px;">Access Channels</h2>
+    <div class="membership-grid">
+      <div class="tier-card">
+        <h3>BASIC</h3>
+        <div class="price">$0<span>/mo</span></div>
+        <p>Core syncing, community access, and basic logging.</p>
+        <button class="btn btn-outline" style="margin-top: 30px; padding: 15px 30px;">Initialize</button>
       </div>
-    </section>
+      <div class="tier-card premium">
+        <h3>ULTRA</h3>
+        <div class="price">$19<span>/mo</span></div>
+        <p>Priority matrix access, detailed intelligence, and verified status.</p>
+        <button class="btn btn-vivid" style="margin-top: 30px; padding: 15px 30px; background: white; color: black;">Go
+          Ultra</button>
+      </div>
+      <div class="tier-card">
+        <h3>INFINITE</h3>
+        <div class="price">$49<span>/mo</span></div>
+        <p>System-wide influence, full API access, and unlimited nodes.</p>
+        <button class="btn btn-outline" style="margin-top: 30px; padding: 15px 30px;">Ascend</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- Contact Hub -->
-    <section class="glass-card" id="contact" style="margin-top: 100px;">
-      <div class="contact-hub">
+  <section id="contact" class="section">
+    <div class="vivid-card" style="max-width: 1000px; margin: 0 auto; text-align: center;">
+      <h2 style="font-size: 60px; margin-bottom: 30px;">The Nexus</h2>
+      <p style="font-size: 24px; color: #94a3b8; margin-bottom: 40px;">Direct communication for high-level partnerships.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 50px;">
         <div>
-          <h2 style="text-align: left;">Let's Connect.</h2>
-          <p style="margin-bottom: 40px;">Ready to revolutionize your food management? Our global team is here to assist
-            you in making the switch to zero-waste.</p>
-
-          <div style="display: flex; flex-direction: column; gap: 20px;">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in" target="_blank"
-              class="btn btn-glass">
-              📬 INQUIRIES: nrouthu@gitam.in
-            </a>
-            <p style="font-size: 13px; color: #64748b; padding-left: 20px;">Average response time: 2.4 Hours</p>
-          </div>
+          <p style="color: var(--electric-green); font-weight: 800;">VOICE: +1-VIVID-PULSE</p>
         </div>
-        <div class="contact-visual"></div>
+        <div>
+          <p style="color: var(--sunset-pink); font-weight: 800;">LINK: hello@vitality.tech</p>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; color: white; margin-bottom: 20px;">FOOD TO
-        NEED</div>
-      <p>&copy; 2026 PRECISION SUSTAINABILITY INITIATIVE. ALL RIGHTS RESERVED.</p>
-      <p style="font-size: 12px; margin-top: 10px; color: #334155;">DESIGNED FOR MAXIMUM HUMAN IMPACT</p>
-    </footer>
-  </div>
-
-  <script>
-    function scrollToSection(sectionId) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        window.scrollTo({
-          top: element.offsetTop - 100,
-          behavior: 'smooth'
-        });
-      }
-    }
-  </script>
+  <footer class="footer">
+    <div class="footer-logo">FOODTO●NEED</div>
+    <p>© 2026 THE VITALITY NETWORK. ALL SYSTEMS OPTIMIZED.</p>
+  </footer>
 </body>
 
 </html>

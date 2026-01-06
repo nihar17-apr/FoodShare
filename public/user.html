@@ -1,834 +1,414 @@
-<title>User Portal - Food To Need</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!DOCTYPE html>
+<html>
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
-  rel="stylesheet">
+<head>
+  <title>User Portal | Vitality</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+    rel="stylesheet">
 
-<style>
-  :root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-    --accent: #ec4899;
-    --glass: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text-main: #ffffff;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Outfit', sans-serif;
-  }
-
-  body {
-    background: radial-gradient(circle at top left, #1e1b4b, #312e81, #1e1b4b);
-    background-attachment: fixed;
-    min-height: 100vh;
-    padding: 40px 20px;
-    color: var(--text-main);
-    overflow-x: hidden;
-  }
-
-  /* Animated background shapes */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -10%;
-    right: -10%;
-    width: 40%;
-    height: 40%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-    filter: blur(80px);
-    z-index: -1;
-    animation: float 20s infinite alternate;
-  }
-
-  @keyframes float {
-    from {
-      transform: translate(0, 0);
+  <style>
+    :root {
+      --electric-green: #00ff87;
+      --sunset-pink: #ff007a;
+      --vivid-violet: #6e00ff;
+      --royal-blue: #00a2ff;
+      --bright-yellow: #f9ff00;
+      --glass: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.3);
     }
 
-    to {
-      transform: translate(-10%, 10%);
-    }
-  }
-
-  .container {
-    max-width: 1300px;
-    margin: 0 auto;
-    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
     }
 
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Premium Tabs */
-  .tab-container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 50px;
-    justify-content: center;
-    perspective: 1000px;
-  }
-
-  .tab-button {
-    padding: 16px 40px;
-    border: 1px solid var(--glass-border);
-    border-radius: 50px;
-    background: var(--glass);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(12px);
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .tab-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-  }
-
-  .tab-button.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-color: transparent;
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-    transform: scale(1.05);
-  }
-
-  /* Glass Cards */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    padding: 50px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  }
-
-  h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    margin-bottom: 40px;
-    letter-spacing: -0.5px;
-    background: linear-gradient(to right, #fff, #a5b4fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* Advanced Form */
-  .form-group {
-    margin-bottom: 25px;
-    position: relative;
-  }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #94a3b8;
-    margin-bottom: 10px;
-    transition: 0.3s;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    padding: 16px 20px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    color: white;
-    font-size: 15px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.4);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
-  }
-
-  button[type="submit"] {
-    width: 100%;
-    padding: 18px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-    background-size: 200% auto;
-    border: none;
-    color: white;
-    font-weight: 700;
-    font-size: 17px;
-    cursor: pointer;
-    transition: 0.4s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  button[type="submit"]:hover {
-    background-position: right center;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(99, 102, 241, 0.3);
-  }
-
-  /* Advanced Map & Grid */
-  #map-container {
-    height: 500px;
-    width: 100%;
-    border-radius: 30px;
-    overflow: hidden;
-    border: 1px solid var(--glass-border);
-    margin-bottom: 40px;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
-  }
-
-  .search-section {
-    margin-bottom: 40px;
-    position: relative;
-  }
-
-  .search-section input {
-    background: var(--glass);
-    padding-left: 50px;
-    border-radius: 50px;
-    font-size: 16px;
-  }
-
-  .restaurant-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 30px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .restaurant-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    background: rgba(255, 255, 255, 0.07);
-    border-color: var(--primary);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  }
-
-  .restaurant-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(to right, var(--primary), var(--accent));
-    opacity: 0;
-    transition: 0.3s;
-  }
-
-  .restaurant-card:hover::after {
-    opacity: 1;
-  }
-
-  .badge {
-    background: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 1px solid rgba(99, 102, 241, 0.3);
-  }
-
-  .distance-tag {
-    color: var(--accent);
-    font-weight: 800;
-    font-size: 13px;
-  }
-
-  /* Custom Loading Animation */
-  .loading-msg {
-    text-align: center;
-    padding: 60px;
-    font-size: 20px;
-    color: #94a3b8;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-
-    0%,
-    100% {
-      opacity: 0.5;
+    body {
+      background: #000;
+      min-height: 100vh;
+      padding: 20px;
+      color: white;
+      overflow-x: hidden;
     }
 
-    50% {
-      opacity: 1;
-    }
-  }
-
-  /* Success/Error Toast Design */
-  #msg {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    padding: 20px 30px;
-    border-radius: 20px;
-    z-index: 10000;
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  }
-
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
+    .mesh-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background:
+        radial-gradient(at 0% 100%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 100%, hsla(266, 100%, 50%, 1) 0, transparent 50%);
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: pulseBg 10s ease infinite alternate;
     }
 
-    to {
-      transform: translateX(0);
-      opacity: 1;
+    @keyframes pulseBg {
+      from {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+
+      to {
+        opacity: 0.7;
+        transform: scale(1.1);
+      }
     }
-  }
-</style>
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    .tab-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 50px;
+      justify-content: center;
+      background: var(--glass);
+      padding: 10px;
+      border-radius: 100px;
+      width: fit-content;
+      margin: 0 auto 50px;
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .tab-button {
+      padding: 15px 40px;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      color: white;
+      font-weight: 800;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(to right, var(--electric-green), var(--royal-blue));
+      color: black;
+      box-shadow: 0 10px 30px rgba(0, 255, 135, 0.4);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .glass-panel {
+      background: var(--glass);
+      backdrop-filter: blur(40px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 60px;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 60px;
+      margin-bottom: 40px;
+      background: linear-gradient(to right, white, var(--electric-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -3px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--electric-green);
+      margin-bottom: 15px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 20px 30px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--glass-border);
+      border-radius: 25px;
+      color: white;
+      font-size: 16px;
+      transition: 0.4s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--electric-green);
+      box-shadow: 0 0 30px rgba(0, 255, 135, 0.2);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 25px;
+      border-radius: 25px;
+      background: linear-gradient(135deg, var(--electric-green), var(--royal-blue));
+      color: black;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      cursor: pointer;
+      border: none;
+      transition: 0.5s;
+    }
+
+    #map {
+      height: 600px;
+      border-radius: 40px;
+      border: 2px solid var(--glass-border);
+      margin-bottom: 50px;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 40px;
+    }
+
+    .restaurant-card {
+      background: var(--glass);
+      border: 2px solid var(--glass-border);
+      border-radius: 40px;
+      padding: 40px;
+      transition: 0.5s;
+      position: relative;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--sunset-pink);
+    }
+
+    .badge-vivid {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 900;
+      background: var(--sunset-pink);
+      color: white;
+      text-transform: uppercase;
+    }
+
+    #msg {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      font-weight: 800;
+      display: none;
+    }
+
+    .success {
+      background: rgba(0, 255, 135, 0.1);
+      color: var(--electric-green);
+      border: 1px solid var(--electric-green);
+    }
+
+    .error {
+      background: rgba(255, 0, 122, 0.1);
+      color: var(--sunset-pink);
+      border: 1px solid var(--sunset-pink);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="mesh-bg"></div>
 
   <div class="container">
-    <!-- Tab Buttons -->
     <div class="tab-container">
-      <button class="tab-button active" onclick="switchTab('restaurants', event)">🍴 Browse Restaurants</button>
-      <button class="tab-button" onclick="switchTab('form', event)">📋 Register Your Need</button>
+      <button id="btn-discover" class="tab-button active" onclick="switchTab('tab-discover')">Discover</button>
+      <button id="btn-join" class="tab-button" onclick="switchTab('tab-join')">Join Network</button>
     </div>
 
-    <div id="restaurants" class="tab-content active">
-      <div class="restaurants-container glass-panel">
-        <h2>🍴 Discover Local Donors</h2>
-        <p style="color: #94a3b8; margin-top: -30px; margin-bottom: 30px; text-align: center;">Real-time food services
-          nearby, sorted by your current distance.</p>
-
-        <div class="search-section">
-          <input type="text" id="searchRestaurants" placeholder="🔍 Search restaurants, hotels, or food..."
-            onkeyup="filterRestaurants()">
+    <div id="tab-discover" class="tab-content active">
+      <div class="glass-panel">
+        <h2>VITALITY MATRIX</h2>
+        <div id="map"></div>
+        <div class="form-group">
+          <input type="text" id="searchIndex" placeholder="Scan for specific food or locale..."
+            oninput="filterResults()" style="border-radius: 100px; padding: 25px 50px; font-size: 20px;">
         </div>
-
-        <div id="map-container">
-          <div id="map" style="height: 100%;"></div>
-        </div>
-
-        <div id="nearby-status"
-          style="text-align: center; margin-bottom: 25px; font-size: 15px; color: #818cf8; font-weight: 600; background: rgba(99, 102, 241, 0.1); padding: 12px; border-radius: 50px; border: 1px solid rgba(99, 102, 241, 0.2);">
-          📍 Detecting your live location...</div>
-
-        <div id="restaurantsList">
-          <div class="loading-msg">Summoning data...</div>
-        </div>
+        <div id="resultsList" class="restaurant-grid"></div>
       </div>
     </div>
 
-    <!-- Form Tab (Now SECOND) -->
-    <div id="form" class="tab-content">
-      <div class="form-container glass-panel" style="max-width: 600px;">
-        <h2>📝 Register Your Need</h2>
-        <p style="color: #94a3b8; margin-top: -30px; margin-bottom: 40px; text-align: center;">Join our network and get
-          matched with surplus food automatically.</p>
-
-        <form id="acceptorForm" onsubmit="submitAcceptor(event)">
+    <div id="tab-join" class="tab-content">
+      <div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
+        <h2>JOIN THE PULSE</h2>
+        <form id="joinForm" onsubmit="handleJoin(event)">
           <div class="form-group">
-            <label for="name">Your Name / Organization *</label>
-            <input id="name" type="text" placeholder="Enter name" required>
-            <span class="error-msg" id="nameError"></span>
+            <label>IDENTIFIER (NAME)</label>
+            <input type="text" id="join-name" placeholder="Agent Name or Org" required>
           </div>
-
           <div class="form-group">
-            <label for="email">Email *</label>
-            <input id="email" type="email" placeholder="your@email.com" required>
-            <span class="error-msg" id="emailError"></span>
+            <label>DIGITAL LINK (EMAIL)</label>
+            <input type="email" id="join-email" placeholder="nexus@vitality.io" required>
           </div>
-
           <div class="form-group">
-            <label for="phone">Phone Number *</label>
-            <input id="phone" type="tel" placeholder="(123) 456-7890" required>
-            <span class="error-msg" id="phoneError"></span>
+            <label>LOCALE (ADDRESS)</label>
+            <input type="text" id="join-loc" placeholder="Physical Address" required>
           </div>
-
-          <div class="form-group">
-            <label for="location">Location *</label>
-            <input id="location" type="text" placeholder="Street address" required>
-            <span class="error-msg" id="locationError"></span>
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+              <label>PULSE REQ (FOOD TYPE)</label>
+              <input type="text" id="join-food" placeholder="e.g. Nutrients/Rice" required>
+            </div>
+            <div>
+              <label>VOLUME (PORTIONS)</label>
+              <input type="number" id="join-qty" placeholder="Quantity" min="1" required>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="food">Food Required *</label>
-            <input id="food" type="text" placeholder="e.g., Biryani, Rice" required>
-            <span class="error-msg" id="foodError"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="quantity">Quantity Required *</label>
-            <input id="quantity" type="number" placeholder="Number of portions" min="1" required>
-            <span class="error-msg" id="quantityError"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="membership">Membership Plan *</label>
-            <select id="membership" required>
-              <option value="Basic">Basic (Free)</option>
-              <option value="Silver">Silver ($19/mo)</option>
-              <option value="Gold">Gold ($49/mo)</option>
-            </select>
-          </div>
-
-          <button type="submit">Submit Request</button>
+          <button type="submit">INITIALIZE CONNECTION</button>
         </form>
-
         <div id="msg"></div>
       </div>
     </div>
-
   </div>
 
   <script>
-    function switchTab(tabName, event) {
-      // Hide all tabs
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
-
-      // Remove active class from all buttons
-      document.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // Show selected tab
-      document.getElementById(tabName).classList.add('active');
-
-      // Add active class to clicked button
-      event.target.classList.add('active');
-
-      // Load restaurants when switching to restaurants tab
-      if (tabName === 'restaurants') {
-        loadRestaurants();
-        // Fix for Leaflet map grey area issue
-        setTimeout(() => {
-          if (map) map.invalidateSize();
-        }, 300);
-      }
-    }
-
-    // Form Validation
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
-
-    function validatePhone(phone) {
-      const re = /^[\d\s\-\+\(\)]{10,}$/;
-      return re.test(phone.replace(/\s/g, ''));
-    }
-
-    function showError(fieldId, message) {
-      const field = document.getElementById(fieldId);
-      const errorEl = document.getElementById(fieldId + "Error");
-      if (field) {
-        field.classList.add("error");
-        errorEl.textContent = message;
-        errorEl.classList.add("show");
-      }
-    }
-
-    function clearError(fieldId) {
-      const field = document.getElementById(fieldId);
-      const errorEl = document.getElementById(fieldId + "Error");
-      if (field) {
-        field.classList.remove("error");
-        errorEl.classList.remove("show");
-      }
-    }
-
-    function validateForm() {
-      let isValid = true;
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const location = document.getElementById("location").value.trim();
-      const food = document.getElementById("food").value.trim();
-      const quantity = document.getElementById("quantity").value.trim();
-
-      if (!name || name.length < 3) {
-        showError("name", "Name must be at least 3 characters");
-        isValid = false;
-      } else {
-        clearError("name");
-      }
-
-      if (!email || !validateEmail(email)) {
-        showError("email", "Please enter a valid email");
-        isValid = false;
-      } else {
-        clearError("email");
-      }
-
-      if (!phone || !validatePhone(phone)) {
-        showError("phone", "Please enter a valid phone number");
-        isValid = false;
-      } else {
-        clearError("phone");
-      }
-
-      if (!location || location.length < 5) {
-        showError("location", "Please enter a valid location");
-        isValid = false;
-      } else {
-        clearError("location");
-      }
-
-      if (!food || food.length < 2) {
-        showError("food", "Please enter food item");
-        isValid = false;
-      } else {
-        clearError("food");
-      }
-
-      if (!quantity || quantity < 1) {
-        showError("quantity", "Quantity must be at least 1");
-        isValid = false;
-      } else {
-        clearError("quantity");
-      }
-
-      return isValid;
-    }
-
-    function showMessage(message, type) {
-      const msgEl = document.getElementById("msg");
-      msgEl.textContent = message;
-      msgEl.className = type;
-      msgEl.style.display = "block";
-      setTimeout(() => {
-        msgEl.style.display = "none";
-      }, 5000);
-    }
-
-    function submitAcceptor(event) {
-      event.preventDefault();
-
-      if (!validateForm()) {
-        showMessage("❌ Please fix the errors above", "error");
-        return;
-      }
-
-      const data = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        location: document.getElementById("location").value.trim(),
-        food: document.getElementById("food").value.trim(),
-        quantity: parseInt(document.getElementById("quantity").value),
-        membership: document.getElementById("membership").value
-      };
-
-      const submitBtn = document.querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Submitting...";
-
-      fetch("/add-acceptor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-        .then(res => {
-          if (!res.ok) throw new Error("Server error");
-          return res.json();
-        })
-        .then(response => {
-          showMessage("✅ Request submitted successfully!", "success");
-          document.getElementById("acceptorForm").reset();
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit Request";
-        })
-        .catch(error => {
-          showMessage("❌ Error submitting data: " + error.message, "error");
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit Request";
-        });
-    }
-
-    let allRestaurants = [];
-
-    function loadRestaurants() {
-      const listDiv = document.getElementById("restaurantsList");
-      listDiv.innerHTML = '<div class="loading-msg">Loading restaurants...</div>';
-
-      fetch("/restaurants")
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`Server error: ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(data => {
-          if (!Array.isArray(data)) {
-            throw new Error("Invalid data format");
-          }
-          allRestaurants = data;
-          displayRestaurants(data);
-        })
-        .catch(err => {
-          console.error("Error loading restaurants:", err);
-          const listDiv = document.getElementById("restaurantsList");
-          listDiv.innerHTML = `<div class="empty-message"><h3>⚠️ ${err.message}</h3><p>Please wait for restaurants to be verified by admin or try again later.</p></div>`;
-        });
-    }
-
-    function displayRestaurants(restaurants) {
-      const listDiv = document.getElementById("restaurantsList");
-      listDiv.innerHTML = "";
-
-      if (!restaurants || restaurants.length === 0) {
-        listDiv.innerHTML = '<div class="empty-message"><h3>No verified restaurants yet</h3><p>Please check back later or try registering your needs first.</p></div>';
-        return;
-      }
-
-      restaurants.forEach(r => {
-        // Add Marker to Map for Database Restaurants
-        if (map && r.location) {
-          // Attempt to extract lat/lon if location contains coordinates, else it's just a label
-          const coordMatch = r.location.match(/Coordinates: ([\d.-]+),([\d.-]+)/);
-          if (coordMatch) {
-            const marker = L.marker([parseFloat(coordMatch[1]), parseFloat(coordMatch[2])], {
-              icon: L.divIcon({
-                className: 'custom-div-icon',
-                html: "<div style='background-color:#c30;color:white;padding:5px;border-radius:50%;border:2px solid white;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:bold;'>🍴</div>",
-                iconSize: [30, 42],
-                iconAnchor: [15, 42]
-              })
-            }).addTo(map);
-            marker.bindPopup(`<b>🏨 ${r.name} (Verified Donor)</b><br>Currently has surplus food!`);
-          }
-        }
-
-        const verifiedBadge = r.isVerified ? '<span class="badge">✓ Verified Donor</span>' : '';
-
-        let itemsHtml = '';
-        if (r.items && r.items.length > 0) {
-          itemsHtml = '<div class="food-items"><h4>Available Food Items:</h4><ul>';
-          r.items.forEach(item => {
-            const category = item.category ? ` (${item.category})` : '';
-            itemsHtml += `<li>• ${item.food || item.itemName}${category} - ${item.quantity} portions</li>`;
-          });
-          itemsHtml += '</ul></div>';
-        } else if (r.food) {
-          itemsHtml = `<div class="food-items"><h4>Available Food:</h4><ul><li>• ${r.food} - ${r.quantity} portions</li></ul></div>`;
-        }
-
-        const card = document.createElement("div");
-        card.className = "restaurant-card";
-        card.innerHTML = `
-      <h3>🏨 ${r.name}</h3>
-      ${verifiedBadge}
-      <p><strong>📍 Location:</strong> ${r.location}</p>
-      ${r.email ? `<p><strong>📧 Email:</strong> ${r.email}</p>` : ''}
-      ${r.phone ? `<p><strong>📱 Phone:</strong> ${r.phone}</p>` : ''}
-      ${itemsHtml}
-    `;
-        listDiv.appendChild(card);
-      });
-    }
-
-    let userLat, userLon;
-    let liveHotels = [];
-
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Radius of earth in km
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return (R * c).toFixed(1);
-    }
-
-    function filterRestaurants() {
-      const searchTerm = document.getElementById("searchRestaurants").value.trim().toLowerCase();
-
-      // Filter DB Restaurants
-      const filteredDB = allRestaurants.filter(r =>
-        r.name.toLowerCase().includes(searchTerm) ||
-        r.location.toLowerCase().includes(searchTerm) ||
-        (r.food && r.food.toLowerCase().includes(searchTerm))
-      );
-
-      // Filter Live Hotels
-      const filteredLive = liveHotels.filter(h =>
-        h.name.toLowerCase().includes(searchTerm) ||
-        h.type.toLowerCase().includes(searchTerm)
-      );
-
-      displayResults(filteredDB, filteredLive);
-
-      // Map Focus Logic: If search has content, fly to the first/best match
-      if (searchTerm.length >= 2) {
-        if (filteredLive.length > 0) {
-          const match = filteredLive[0];
-          map.flyTo([match.lat, match.lon], 17, { animate: true, duration: 1.5 });
-        } else if (filteredDB.length > 0 && filteredDB[0].location.includes("Coordinates:")) {
-          const coords = filteredDB[0].location.match(/Coordinates: ([\d.-]+),([\d.-]+)/);
-          if (coords) map.flyTo([parseFloat(coords[1]), parseFloat(coords[2])], 17, { animate: true, duration: 1.5 });
-        }
-      }
-    }
-
-    function displayResults(dbData, liveData) {
-      const listDiv = document.getElementById("restaurantsList");
-      listDiv.innerHTML = "";
-
-      // 1. Show LIVE Nearby first (Sorted by distance)
-      if (liveData.length > 0) {
-        const liveSection = document.createElement("div");
-        liveSection.innerHTML = `<h3 style="color: #fff; margin: 30px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">⚡ Live Real-Time Donors (Ordered by Distance)</h3>`;
-        const grid = document.createElement("div");
-        grid.style.display = "grid";
-        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(300px, 1fr))";
-        grid.style.gap = "20px";
-
-        liveData.forEach(h => {
-          const dist = userLat ? calculateDistance(userLat, userLon, h.lat, h.lon) : "Unknown";
-          const card = document.createElement("div");
-          card.className = "restaurant-card";
-          card.style.background = "rgba(255, 255, 255, 0.95)";
-          card.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <span style="background: #e74c3c; color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;">NEARBY 📍</span>
-              <span style="color: #667eea; font-weight: 800; font-size: 12px;">${dist} km away</span>
-            </div>
-            <h3>${h.name}</h3>
-            <p><strong>Type:</strong> ${h.type}</p>
-            <button onclick="requestFromMap('${h.name}', '${h.lat},${h.lon}')" style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: 2px solid #667eea; background: transparent; color: #667eea; font-weight: 700; cursor: pointer;">Request Surplus</button>
-          `;
-          grid.appendChild(card);
-        });
-        liveSection.appendChild(grid);
-        listDiv.appendChild(liveSection);
-      }
-
-      // 2. Show Verified DB Restaurants
-      if (dbData.length > 0) {
-        const dbSection = document.createElement("div");
-        dbSection.innerHTML = `<h3 style="color: #fff; margin: 40px 0 15px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px; font-size: 22px;">✅ Verified Internal Donors</h3>`;
-        const grid = document.createElement("div");
-        grid.style.display = "grid";
-        grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(320px, 1fr))";
-        grid.style.gap = "20px";
-
-        dbData.forEach(r => {
-          const card = document.createElement("div");
-          card.className = "restaurant-card";
-          card.innerHTML = `<h3>🏨 ${r.name}</h3><span class="badge">Verified</span><p>📍 ${r.location}</p><button onclick="requestFromDatabase('${r.name}', '${r.location}')" style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: none; background: #667eea; color: white; font-weight: 700; cursor: pointer;">Select Donor</button>`;
-          grid.appendChild(card);
-        });
-        dbSection.appendChild(grid);
-        listDiv.appendChild(dbSection);
-      }
-    }
-
-    function requestFromDatabase(name, loc) {
-      switchTab('form', { target: document.querySelectorAll('.tab-button')[1] });
-      document.getElementById("food").value = `Surplus food from ${name}`;
-      document.getElementById("location").value = loc;
-      document.querySelector(".form-container").scrollIntoView({ behavior: 'smooth' });
-    }
-
     let map;
-    let userMarker;
-    let nearbyMarkers = [];
+    let allDonors = [];
+    let liveDonors = [];
+    let userCoords = null;
+
+    function switchTab(id) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById(id === 'tab-discover' ? 'btn-discover' : 'btn-join').classList.add('active');
+      if (id === 'tab-discover') setTimeout(() => map.invalidateSize(), 200);
+    }
 
     function initMap() {
       map = L.map('map').setView([20.5937, 78.9629], 5);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
-
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          userLat = position.coords.latitude;
-          userLon = position.coords.longitude;
-          const userLoc = [userLat, userLon];
-          map.setView(userLoc, 15);
-          userMarker = L.marker(userLoc).addTo(map).bindPopup("<b>🏠 Your Location</b>").openPopup();
-          findNearbyHotels(userLat, userLon);
+        navigator.geolocation.getCurrentPosition(p => {
+          userCoords = [p.coords.latitude, p.coords.longitude];
+          map.setView(userCoords, 14);
+          L.marker(userCoords).addTo(map).bindPopup("<b>🏠 YOUR LOCATION</b>").openPopup();
+          scanNearby(p.coords.latitude, p.coords.longitude);
         });
       }
     }
 
-    async function findNearbyHotels(lat, lon) {
-      const query = `[out:json];(node["amenity"~"restaurant|fast_food|cafe|hotel|food_court"](around:5000, ${lat}, ${lon}););out body;`;
-      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+    async function scanNearby(lat, lon) {
+      const q = `[out:json];(node["amenity"~"restaurant|fast_food|cafe|hotel"](around:5000, ${lat}, ${lon}););out body;`;
+      const r = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(q)}`);
+      const d = await r.json();
+      liveDonors = d.elements.map(e => ({
+        name: e.tags.name || "UNNAMED DONOR",
+        lat: e.lat, lon: e.lon,
+        type: e.tags.amenity,
+        dist: getDist(lat, lon, e.lat, e.lon)
+      })).sort((a, b) => a.dist - b.dist);
 
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        liveHotels = data.elements.map(el => ({
-          name: el.tags.name || "Real-Time Donor",
-          type: el.tags.amenity || "Food Establishment",
-          lat: el.lat,
-          lon: el.lon,
-          dist: calculateDistance(lat, lon, el.lat, el.lon)
-        })).sort((a, b) => a.dist - b.dist);
-
-        // Plot Markers
-        liveHotels.forEach(h => {
-          const marker = L.marker([h.lat, h.lon]).addTo(map);
-          marker.bindPopup(`<b>🏨 ${h.name}</b><br><button onclick="requestFromMap('${h.name}', '${h.lat},${h.lon}')">Request</button>`);
-          nearbyMarkers.push(marker);
-        });
-
-        displayResults(allRestaurants, liveHotels);
-      } catch (err) { console.error(err); }
+      liveDonors.forEach(h => {
+        L.marker([h.lat, h.lon]).addTo(map).bindPopup(`<b>${h.name}</b><br><button onclick="autofill('${h.name}', '${h.lat},${h.lon}')">Select</button>`);
+      });
+      renderResults();
     }
 
-
-    function requestFromMap(hotelName, coord) {
-      // Switch back to the registration tab
-      switchTab('form', { target: document.querySelectorAll('.tab-button')[1] });
-
-      document.getElementById("food").value = `Surplus food from ${hotelName}`;
-      document.getElementById("location").value = `Coordinates: ${coord}`;
-
-      // Scroll to the form
-      document.querySelector(".form-container").scrollIntoView({ behavior: 'smooth' });
-      showMessage(`📝 Details for ${hotelName} auto-filled! Please complete your request.`, "success");
+    function getDist(la1, lo1, la2, lo2) {
+      const R = 6371;
+      const dLa = (la2 - la1) * Math.PI / 180;
+      const dLo = (lo2 - lo1) * Math.PI / 180;
+      const a = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * Math.PI / 180) * Math.cos(la2 * Math.PI / 180) * Math.sin(dLo / 2) ** 2;
+      return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(1);
     }
 
-    window.addEventListener("load", () => {
-      loadRestaurants();
-      initMap();
-    });
+    function fetchVerified() {
+      fetch('/restaurants').then(r => r.json()).then(d => {
+        allDonors = d;
+        renderResults();
+      });
+    }
+
+    function renderResults() {
+      const list = document.getElementById("resultsList");
+      list.innerHTML = "";
+      const q = document.getElementById("searchIndex").value.toLowerCase();
+
+      const combined = [...allDonors.map(d => ({ ...d, verified: true })), ...liveDonors.map(l => ({ ...l, verified: false }))];
+      const filtered = combined.filter(i => (i.name || "").toLowerCase().includes(q) || (i.location || "").toLowerCase().includes(q));
+
+      filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "restaurant-card";
+        const badge = item.verified ? '<span class="badge-vivid">VERIFIED</span>' : '<span class="badge-vivid" style="background:var(--royal-blue)">NEARBY</span>';
+        card.innerHTML = `
+          <h3>${item.name}</h3>
+          ${badge}
+          <p style="margin-top:15px; font-size:14px; color:#94a3b8;">${item.location || 'Real-time detection'}</p>
+          <p style="color:var(--electric-green); font-weight:800; margin-top:10px;">${item.dist ? item.dist + ' km' : 'Syncing...'}</p>
+          <button onclick="autofill('${item.name}', '${item.lat ? item.lat + ',' + item.lon : item.location}')" style="width:100%; padding:15px; margin-top:20px; border-radius:15px; background:var(--glass); border:1px solid var(--glass-border); color:white; font-weight:800; cursor:pointer;">SELECT NODE</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function autofill(name, loc) {
+      switchTab('tab-join');
+      document.getElementById("join-name").value = "Requester for " + name;
+      document.getElementById("join-food").value = "Surplus from " + name;
+      document.getElementById("join-loc").value = loc;
+    }
+
+    function handleJoin(e) {
+      e.preventDefault();
+      const msg = document.getElementById("msg");
+      const data = {
+        name: document.getElementById("join-name").value,
+        email: document.getElementById("join-email").value,
+        location: document.getElementById("join-loc").value,
+        food: document.getElementById("join-food").value,
+        quantity: document.getElementById("join-qty").value
+      };
+      fetch('/add-acceptor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(() => {
+        msg.textContent = "✓ CONNECTION INITIALIZED";
+        msg.className = "success";
+        msg.style.display = "block";
+        e.target.reset();
+      });
+    }
+
+    function filterResults() { renderResults(); }
+
+    window.onload = () => { initMap(); fetchVerified(); };
   </script>
-
 </body>
 
 </html>

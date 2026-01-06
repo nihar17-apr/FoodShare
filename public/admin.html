@@ -2,18 +2,20 @@
 <html>
 
 <head>
-  <title>System Intelligence | Admin</title>
+  <title>System Intelligence | Vitality</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
     rel="stylesheet">
 
   <style>
     :root {
-      --primary: #6366f1;
-      --secondary: #a855f7;
-      --accent: #ec4899;
-      --glass: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.1);
+      --electric-green: #00ff87;
+      --sunset-pink: #ff007a;
+      --vivid-violet: #6e00ff;
+      --royal-blue: #00a2ff;
+      --bright-yellow: #f9ff00;
+      --glass: rgba(255, 255, 255, 0.1);
+      --glass-border: rgba(255, 255, 255, 0.2);
     }
 
     * {
@@ -24,267 +26,140 @@
     }
 
     body {
-      background: radial-gradient(circle at bottom right, #0f172a, #050505, #0f172a);
-      background-attachment: fixed;
+      background: #000;
       min-height: 100vh;
       color: white;
       overflow-x: hidden;
     }
 
-    /* Ambient Motion Background */
-    body::before,
-    body::after {
-      content: '';
+    /* Extraordinary Mesh Gradient Background */
+    .mesh-bg {
       position: fixed;
-      width: 700px;
-      height: 700px;
-      border-radius: 50%;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      filter: blur(120px);
-      opacity: 0.12;
-      animation: drift 30s infinite alternate;
+      background:
+        radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 0% 100%, hsla(266, 100%, 50%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 100%, hsla(199, 100%, 50%, 1) 0, transparent 50%);
+      filter: blur(60px);
+      opacity: 0.5;
+      animation: pulseMesh 20s infinite alternate;
     }
 
-    body::before {
-      background: var(--primary);
-      top: -250px;
-      left: -250px;
-    }
-
-    body::after {
-      background: var(--accent);
-      bottom: -250px;
-      right: -250px;
-      animation-delay: -15s;
-    }
-
-    @keyframes drift {
+    @keyframes pulseMesh {
       from {
-        transform: translate(0, 0) scale(1);
+        transform: scale(1) rotate(0deg);
       }
 
       to {
-        transform: translate(150px, 100px) scale(1.1);
+        transform: scale(1.2) rotate(10deg);
       }
     }
 
-    /* Login Experience */
+    /* Login Panel */
     .login-container {
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
     }
 
     .login-box {
       background: var(--glass);
-      backdrop-filter: blur(35px);
-      border: 1px solid var(--glass-border);
-      border-radius: 45px;
+      backdrop-filter: blur(50px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50px;
       padding: 70px;
-      max-width: 480px;
+      max-width: 500px;
       width: 100%;
-      box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6);
-      animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        transform: translateY(60px) scale(0.9);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+      text-align: center;
     }
 
     .login-box h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 44px;
-      text-align: center;
-      margin-bottom: 45px;
-      background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
+      font-family: 'Syne', sans-serif;
+      font-size: 40px;
+      margin-bottom: 40px;
+      background: linear-gradient(to right, white, var(--electric-green));
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -1px;
-    }
-
-    .login-error {
-      background: rgba(239, 68, 68, 0.1);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      text-align: center;
-      display: none;
-      font-size: 14px;
-    }
-
-    .login-error.show {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 30px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 11px;
-      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: #64748b;
-      margin-bottom: 12px;
-      padding-left: 8px;
+      letter-spacing: -2px;
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 20px 28px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      color: white;
-      font-size: 16px;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: rgba(0, 0, 0, 0.6);
-      box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.1);
-      transform: translateY(-2px);
-    }
-
-    .login-btn {
-      width: 100%;
-      padding: 22px;
-      border: none;
-      border-radius: 20px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      font-weight: 800;
-      font-size: 17px;
-      letter-spacing: 4px;
-      cursor: pointer;
-      box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.5);
-      transition: 0.5s;
-    }
-
-    .login-btn:hover {
-      transform: translateY(-5px);
-      filter: brightness(1.2);
-      box-shadow: 0 35px 70px -12px rgba(99, 102, 241, 0.7);
-    }
-
-    /* Dashboard Interface */
+    /* Dash Interface */
     .dashboard-container {
-      max-width: 1440px;
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 40px;
+      padding: 50px;
       display: none;
-      animation: fadeIn 1s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
     }
 
     .dashboard-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 50px;
-      padding: 35px 50px;
+      margin-bottom: 60px;
+      padding: 40px;
       background: var(--glass);
-      backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: 35px;
+      border-radius: 40px;
+      border: 2px solid var(--glass-border);
+      backdrop-filter: blur(30px);
     }
 
     .dashboard-header h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 34px;
-      background: linear-gradient(to right, #fff, #a5b4fc);
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      background: linear-gradient(to right, white, var(--royal-blue));
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-    }
-
-    .db-badge {
-      background: rgba(16, 185, 129, 0.1);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      padding: 8px 18px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .logout-btn {
-      padding: 14px 30px;
-      background: rgba(239, 68, 68, 0.1);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      border-radius: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .logout-btn:hover {
-      background: #ef4444;
-      color: white;
-      transform: scale(1.05);
+      text-transform: uppercase;
     }
 
     .stats-tray {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 30px;
       margin-bottom: 60px;
     }
 
     .stat-card {
       background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 35px;
+      border: 2px solid var(--glass-border);
+      border-radius: 40px;
       padding: 40px;
       text-align: center;
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: 0.4s;
     }
 
     .stat-card:hover {
-      transform: translateY(-12px);
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-15px);
+      border-color: var(--electric-green);
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .stat-card h4 {
-      font-size: 12px;
-      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 3px;
-      margin-bottom: 20px;
+      color: #94a3b8;
+      margin-bottom: 15px;
     }
 
     .stat-card .number {
-      font-size: 56px;
+      font-family: 'Syne', sans-serif;
+      font-size: 60px;
       font-weight: 800;
-      background: linear-gradient(to bottom, #fff, var(--primary));
+      background: linear-gradient(to bottom, white, var(--electric-green));
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -292,151 +167,74 @@
       display: flex;
       gap: 15px;
       justify-content: center;
-      margin-bottom: 50px;
+      margin-bottom: 60px;
     }
 
     .nav-tab {
-      padding: 18px 40px;
+      padding: 20px 45px;
       background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 22px;
+      border: 2px solid var(--glass-border);
+      border-radius: 100px;
       color: #94a3b8;
-      font-weight: 700;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       cursor: pointer;
-      transition: 0.3s;
-      backdrop-filter: blur(15px);
+      transition: 0.4s;
     }
 
     .nav-tab.active {
-      background: var(--primary);
+      background: var(--royal-blue);
       color: white;
-      border-color: var(--primary);
-      box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
+      border-color: var(--royal-blue);
+      box-shadow: 0 15px 40px rgba(0, 162, 255, 0.4);
     }
 
-    .control-panel {
-      background: var(--glass);
-      padding: 30px 50px;
-      border-radius: 30px;
-      margin-bottom: 45px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid var(--glass-border);
-    }
-
-    .search-box {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
-      padding: 16px 25px;
-      border-radius: 18px;
-      color: white;
-      width: 400px;
-      font-size: 15px;
-      transition: 0.3s;
-    }
-
-    .search-box:focus {
-      outline: none;
-      border-color: var(--primary);
-      width: 500px;
-    }
-
-    .sort-dropdown {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
-      padding: 16px 25px;
-      border-radius: 18px;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Entity Cards */
     #dataGrid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 35px;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 40px;
     }
 
     .entity-card {
       background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 35px;
-      padding: 40px;
-      transition: 0.4s;
-      position: relative;
+      border: 2px solid var(--glass-border);
+      border-radius: 45px;
+      padding: 50px;
+      transition: 0.5s;
     }
 
     .entity-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: var(--accent);
-      box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
-    }
-
-    .entity-card h3 {
-      font-size: 24px;
-      margin-bottom: 25px;
-      font-family: 'Playfair Display', serif;
-    }
-
-    .entity-card p {
-      font-size: 15px;
-      color: #94a3b8;
-      margin-bottom: 14px;
-      line-height: 1.7;
-    }
-
-    .entity-card .tag {
-      display: inline-block;
-      padding: 7px 16px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      background: rgba(99, 102, 241, 0.1);
-      color: var(--primary);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-      margin-right: 10px;
+      border-color: var(--sunset-pink);
+      transform: scale(1.02);
     }
 
     .card-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       gap: 15px;
-      margin-top: 35px;
+      margin-top: 30px;
     }
 
-    .card-actions button {
-      padding: 14px;
+    .btn-vivid {
+      flex: 1;
+      padding: 15px;
       border-radius: 15px;
-      font-weight: 800;
-      font-size: 13px;
-      cursor: pointer;
-      transition: 0.3s;
-      border: none;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      border: none;
+      cursor: pointer;
     }
 
-    .btn-approve {
-      background: #10b981;
-      color: white;
+    .btn-green {
+      background: var(--electric-green);
+      color: black;
     }
 
-    .btn-approve:hover {
-      filter: brightness(1.2);
-      transform: scale(1.05);
-    }
-
-    .btn-delete {
-      background: rgba(239, 68, 68, 0.1);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    .btn-delete:hover {
-      background: #ef4444;
-      color: white;
+    .btn-red {
+      background: rgba(255, 0, 122, 0.1);
+      color: var(--sunset-pink);
+      border: 1px solid var(--sunset-pink);
     }
 
     /* Modal Styling */
@@ -447,234 +245,96 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(5, 5, 5, 0.9);
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(20px);
-      z-index: 2000;
-      animation: fadeIn 0.4s ease;
+      z-index: 999;
     }
 
     .modal-sheet {
-      background: #111827;
-      border: 1px solid var(--glass-border);
+      background: #111;
+      border: 2px solid var(--glass-border);
       border-radius: 50px;
       padding: 60px;
       margin: 5% auto;
       max-width: 700px;
-      width: 90%;
-      max-height: 85vh;
-      overflow-y: auto;
-      position: relative;
-      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .modal-sheet::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .modal-sheet::-webkit-scrollbar-thumb {
-      background: var(--glass-border);
-      border-radius: 10px;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 35px;
-      right: 35px;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      color: white;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      transition: 0.3s;
-    }
-
-    .close-modal:hover {
-      transform: rotate(90deg);
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .detail-block {
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 25px;
-      padding: 30px;
-      margin-bottom: 25px;
-      border-left: 5px solid var(--primary);
-    }
-
-    .detail-block h3 {
-      font-size: 13px;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-    }
-
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 15px;
-    }
-
-    .detail-row strong {
-      color: #94a3b8;
-      font-weight: 500;
-    }
-
-    #toast {
-      position: fixed;
-      top: 40px;
-      right: 40px;
-      padding: 20px 40px;
-      border-radius: 20px;
-      z-index: 10000;
-      font-weight: 700;
-      display: none;
-      animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    @keyframes slideInRight {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .toast-success {
-      background: #10b981;
-      color: white;
-    }
-
-    .toast-error {
-      background: #ef4444;
-      color: white;
     }
   </style>
 </head>
 
 <body>
-  <div id="toast"></div>
+  <div class="mesh-bg"></div>
 
-  <!-- AUTH SECTION -->
   <div id="authSection" class="login-container">
     <div class="login-box">
       <h2>Restricted.</h2>
-      <div id="loginErrorMessage" class="login-error">Invalid Credentials</div>
+      <div id="loginErrorMessage" style="display:none; color: var(--sunset-pink); margin-bottom: 20px;">Invalid
+        Credentials</div>
       <form onsubmit="initiateLogin(event)">
-        <div class="form-group">
-          <label>ACCESS ID</label>
-          <input type="text" id="idInput" placeholder="Enter Codename" required>
-        </div>
-        <div class="form-group">
-          <label>SECURITY KEY</label>
-          <input type="password" id="keyInput" placeholder="••••••••" required>
-        </div>
-        <button type="submit" class="login-btn">AUTHORIZE SESSION</button>
+        <input type="text" id="idInput" placeholder="ACCESS ID" required
+          style="width:100%; padding:20px; border-radius:15px; background:#000; border:2px solid var(--glass-border); color:white; margin-bottom:20px;">
+        <input type="password" id="keyInput" placeholder="SECURITY KEY" required
+          style="width:100%; padding:20px; border-radius:15px; background:#000; border:2px solid var(--glass-border); color:white; margin-bottom:30px;">
+        <button type="submit"
+          style="width:100%; padding:20px; border-radius:15px; background:linear-gradient(to right, var(--electric-green), var(--royal-blue)); color:black; font-weight:900; border:none; cursor:pointer;">AUTHORIZE
+          SESSION</button>
       </form>
     </div>
   </div>
 
-  <!-- CORE DASHBOARD -->
   <div id="dashboardSection" class="dashboard-container">
     <header class="dashboard-header">
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <h2>System Overlord</h2>
-        <span id="dbConnection" class="db-badge">DB: CONNECTED</span>
-      </div>
-      <button class="logout-btn" onclick="terminateSession()">TERMINATE ACCESS</button>
+      <h2>System Intelligence</h2>
+      <button onclick="terminateSession()"
+        style="padding:15px 30px; border-radius:15px; background:transparent; border:2px solid var(--glass-border); color:white; cursor:pointer;">TERMINATE</button>
     </header>
 
     <div class="stats-tray">
       <div class="stat-card">
-        <h4>REGISTERED DONORS</h4>
+        <h4>DONORS</h4>
         <div id="restCount" class="number">0</div>
       </div>
       <div class="stat-card">
-        <h4>ACTIVE USERS</h4>
+        <h4>USERS</h4>
         <div id="userCount" class="number">0</div>
       </div>
       <div class="stat-card">
-        <h4>FOOD INVENTORY</h4>
+        <h4>INVENTORY</h4>
         <div id="invCount" class="number">0</div>
       </div>
       <div class="stat-card">
-        <h4>LOGISTIC NODES</h4>
+        <h4>NODES</h4>
         <div id="delivCount" class="number">0</div>
       </div>
     </div>
 
     <nav class="nav-bar">
-      <button id="tab-rest" class="nav-tab active" onclick="switchDomain('restaurant')">🏢 ESTABLISHMENTS</button>
-      <button id="tab-user" class="nav-tab" onclick="switchDomain('acceptor')">🏠 USERS</button>
-      <button id="tab-deliv" class="nav-tab" onclick="switchDomain('delivery')">🚚 OPERATIVES</button>
-      <button id="tab-logs" class="nav-tab" onclick="switchDomain('activity')">📜 PROTOCOLS</button>
+      <button id="tab-rest" class="nav-tab active" onclick="switchDomain('restaurant')">Establishments</button>
+      <button id="tab-user" class="nav-tab" onclick="switchDomain('acceptor')">Users</button>
+      <button id="tab-deliv" class="nav-tab" onclick="switchDomain('delivery')">Logistic Nodes</button>
+      <button id="tab-logs" class="nav-tab" onclick="switchDomain('activity')">Activity Logs</button>
     </nav>
-
-    <div class="control-panel">
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2px;">SEARCH INDEX:</span>
-        <input type="text" id="searchIndex" class="search-box" placeholder="Filter by name, locale, or item..."
-          oninput="triggerFilter()">
-      </div>
-      <select id="sortAlpha" class="sort-dropdown" onchange="triggerSort()">
-        <option value="recent">Sequence: Recent</option>
-        <option value="oldest">Sequence: Oldest</option>
-        <option value="alpha">Sequence: Alpha</option>
-      </select>
-    </div>
 
     <div id="dataGrid"></div>
   </div>
 
-  <!-- INSIGHT MODAL -->
-  <div id="insightModal" class="modal-overlay" onclick="closeInsight(event)">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
-      <button class="close-modal" onclick="closeInsight()">×</button>
-      <div id="sheetContent"></div>
-      <div id="sheetActions" class="card-actions"
-        style="border-top: 1px solid var(--glass-border); margin-top: 40px; padding-top: 40px;"></div>
-    </div>
+  <div id="toast"
+    style="display:none; position:fixed; top:40px; right:40px; padding:20px 40px; border-radius:20px; z-index:9999; font-weight:900;">
   </div>
 
   <script>
     const ADMIN_CREDS = { id: "Nihar", key: "1234" };
-    let currentData = [];
     let currentDomain = 'restaurant';
-    let focusedItem = null;
+    let currentData = [];
 
     function initiateLogin(e) {
       e.preventDefault();
-      const id = document.getElementById("idInput").value;
-      const key = document.getElementById("keyInput").value;
-      const error = document.getElementById("loginErrorMessage");
-
-      if (id === ADMIN_CREDS.id && key === ADMIN_CREDS.key) {
+      if (document.getElementById("idInput").value === ADMIN_CREDS.id && document.getElementById("keyInput").value === ADMIN_CREDS.key) {
         document.getElementById("authSection").style.display = "none";
         document.getElementById("dashboardSection").style.display = "block";
         fetchDomainData('restaurant');
-        updateGlobalStats();
+        updateStats();
       } else {
-        error.classList.add("show");
-        setTimeout(() => error.classList.remove("show"), 3000);
-      }
-    }
-
-    function terminateSession() {
-      if (confirm("Terminate administrative session?")) {
-        location.reload();
+        document.getElementById("loginErrorMessage").style.display = "block";
       }
     }
 
@@ -686,185 +346,55 @@
     }
 
     function fetchDomainData(domain) {
-      const grid = document.getElementById("dataGrid");
-      grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 100px;">SYSTEM SYNCHRONIZING...</div>';
-
       const endpoint = domain === 'activity' ? '/admin/activities' : `/admin/${domain}s`;
-      fetch(endpoint)
-        .then(r => r.json())
-        .then(data => {
-          currentData = Array.isArray(data) ? data : [];
-          renderGrid();
-        })
-        .catch(err => {
-          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 100px;">CORE ERROR: ${err.message}</div>`;
-        });
+      fetch(endpoint).then(r => r.json()).then(data => {
+        currentData = data;
+        renderGrid();
+      });
     }
 
     function renderGrid() {
       const grid = document.getElementById("dataGrid");
       grid.innerHTML = "";
-
-      const filtered = performFilter(currentData);
-      const sorted = performSort(filtered);
-
-      if (sorted.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 100px;">NO RECORDS FOUND IN CURRENT INDEX.</div>';
-        return;
-      }
-
-      sorted.forEach(item => {
+      currentData.forEach(item => {
         const card = document.createElement("div");
         card.className = "entity-card";
-
         if (currentDomain === 'activity') {
-          const date = new Date(item.timestamp).toLocaleString();
-          card.innerHTML = `
-            <h3>📜 ${item.actorName}</h3>
-            <p><span class="tag">${item.action}</span></p>
-            <p><strong>DETAILS:</strong> ${item.details}</p>
-            <p style="font-size: 12px; margin-top: 20px;">🕒 ${date}</p>
-            <div class="card-actions">
-              <button class="btn-delete" style="grid-column: 1/-1" onclick="purgeRecord('${item._id}', 'activity')">PURGE LOG</button>
-            </div>
-          `;
+          card.innerHTML = `<h3>📜 ${item.actorName}</h3><p>${item.action}</p><p>${item.details}</p><div class="card-actions"><button class="btn-vivid btn-red" onclick="purge('${item._id}', 'activity')">PURGE</button></div>`;
         } else {
-          const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'N/A';
-          const badge = item.isVerified ? '<span class="tag" style="background:rgba(16,185,129,0.1); color:#10b981; border-color:#10b981;">VERIFIED</span>' : '<span class="tag">PENDING</span>';
-
-          card.innerHTML = `
-            <h3>${currentDomain === 'restaurant' ? '🏢' : currentDomain === 'acceptor' ? '🏠' : '🚚'} ${item.name}</h3>
-            <p><strong>LOCALE:</strong> ${item.location}</p>
-            <p><strong>CONTACT:</strong> ${item.email || item.phone}</p>
-            <p>${badge} <span class="tag" style="background:rgba(168,85,247,0.1); color:#a855f7; border-color:#a855f7;">${item.membership || 'STANDARD'}</span></p>
-            <div class="card-actions">
-              <button class="btn-approve" onclick="openInsight('${item._id}', '${currentDomain}')">DETAILS</button>
-              <button class="btn-delete" onclick="purgeRecord('${item._id}', '${currentDomain}')">PURGE</button>
-            </div>
-          `;
+          card.innerHTML = `<h3>${item.name}</h3><p>${item.location || 'Node'}</p><div class="card-actions"><button class="btn-vivid btn-red" onclick="purge('${item._id}', '${currentDomain}')">PURGE</button></div>`;
         }
         grid.appendChild(card);
       });
     }
 
-    function openInsight(id, domain) {
-      fetch(`/get-${domain}/${id}`)
-        .then(r => r.json())
-        .then(data => {
-          focusedItem = { id, domain, data };
-          const sheet = document.getElementById("sheetContent");
-          const actions = document.getElementById("sheetActions");
-
-          sheet.innerHTML = `
-            <h2 style="font-family:'Playfair Display',serif; font-size:38px; margin-bottom:40px;">${data.name}</h2>
-            <div class="detail-block">
-              <h3>Core Intelligence</h3>
-              <div class="detail-row"><strong>IDENTIFIER:</strong> <span>${id}</span></div>
-              <div class="detail-row"><strong>NAME:</strong> <span>${data.name}</span></div>
-              <div class="detail-row"><strong>LOCALE:</strong> <span>${data.location}</span></div>
-              <div class="detail-row"><strong>EMAIL:</strong> <span>${data.email || 'SECRET'}</span></div>
-              <div class="detail-row"><strong>PHONE:</strong> <span>${data.phone || 'SECRET'}</span></div>
-            </div>
-            
-            <div class="detail-block">
-              <h3>Classification</h3>
-              <div class="detail-row"><strong>DOMAIN:</strong> <span>${domain.toUpperCase()}</span></div>
-              <div class="detail-row"><strong>PLAN:</strong> <span style="color:#a855f7; font-weight:800">${data.membership || 'BASIC'}</span></div>
-              <div class="detail-row"><strong>STATUS:</strong> <span style="color:${data.isVerified ? '#10b981' : '#f87171'}; font-weight:800">${data.isVerified ? 'VERIFIED' : 'PENDING'}</span></div>
-            </div>
-          `;
-
-          if (domain === 'restaurant' && data.items) {
-            let itemsHtml = `<div class="detail-block"><h3>Inventory Breakdown</h3>`;
-            data.items.forEach(i => {
-              itemsHtml += `<div class="detail-row"><strong>${i.food}:</strong> <span>${i.quantity} units</span></div>`;
-            });
-            itemsHtml += `</div>`;
-            sheet.innerHTML += itemsHtml;
-          }
-
-          actions.innerHTML = `
-            ${!data.isVerified ? `<button class="btn-approve" onclick="verifyFocused()">AUTHORIZE ENTITY</button>` : `<span style="text-align:center; color:#10b981; font-weight:800; grid-column:1/-1;">✓ FULLY AUTHORIZED</span>`}
-            <button class="btn-delete" onclick="purgeRecord('${id}', '${domain}')">PURGE ENTITY</button>
-          `;
-
-          document.getElementById("insightModal").style.display = "block";
-        });
-    }
-
-    function closeInsight(e) {
-      document.getElementById("insightModal").style.display = "none";
-    }
-
-    function verifyFocused() {
-      if (!focusedItem) return;
-      fetch(`/verify-${focusedItem.domain}/${focusedItem.id}`, { method: "PUT" })
-        .then(r => r.json())
-        .then(d => {
-          notify("ENTITY AUTHORIZED SUCCESSFULLY", "success");
-          closeInsight();
+    function purge(id, domain) {
+      if (confirm("INITIALIZE PURGE?")) {
+        fetch(`/delete-${domain}/${id}`, { method: "DELETE" }).then(() => {
+          notify("PURGE COMPLETE");
           fetchDomainData(currentDomain);
+          updateStats();
         });
-    }
-
-    function purgeRecord(id, domain) {
-      if (confirm(`INITIATE PERMANENT PURGE OF ${domain.toUpperCase()} ${id}?`)) {
-        fetch(`/delete-${domain}/${id}`, { method: "DELETE" })
-          .then(r => {
-            notify("ENTITY PURGED FROM INDEX", "success");
-            closeInsight();
-            fetchDomainData(currentDomain);
-            updateGlobalStats();
-          });
       }
     }
 
-    function triggerFilter() { renderGrid(); }
-    function triggerSort() { renderGrid(); }
-
-    function performFilter(data) {
-      const q = document.getElementById("searchIndex").value.toLowerCase();
-      if (!q) return data;
-      return data.filter(i =>
-        (i.name && i.name.toLowerCase().includes(q)) ||
-        (i.location && i.location.toLowerCase().includes(q)) ||
-        (i.food && i.food.toLowerCase().includes(q)) ||
-        (i.actorName && i.actorName.toLowerCase().includes(q))
-      );
-    }
-
-    function performSort(data) {
-      const mode = document.getElementById("sortAlpha").value;
-      const clone = [...data];
-      if (mode === 'alpha') return clone.sort((a, b) => (a.name || a.actorName).localeCompare(b.name || b.actorName));
-      if (mode === 'oldest') return clone.sort((a, b) => new Date(a.createdAt || a.timestamp) - new Date(b.createdAt || b.timestamp));
-      return clone.sort((a, b) => new Date(b.createdAt || b.timestamp) - new Date(a.createdAt || a.timestamp));
-    }
-
-    function updateGlobalStats() {
+    function updateStats() {
       fetch('/admin/restaurants').then(r => r.json()).then(d => {
         document.getElementById("restCount").textContent = d.length;
-        let total = 0;
-        d.forEach(r => r.items.forEach(i => total += (parseInt(i.quantity) || 0)));
+        let total = 0; d.forEach(r => r.items.forEach(i => total += parseInt(i.quantity) || 0));
         document.getElementById("invCount").textContent = total;
       });
       fetch('/admin/acceptors').then(r => r.json()).then(d => document.getElementById("userCount").textContent = d.length);
       fetch('/admin/deliveries').then(r => r.json()).then(d => document.getElementById("delivCount").textContent = d.length);
-
-      fetch("/admin/db-status").then(r => r.json()).then(d => {
-        const b = document.getElementById("dbConnection");
-        b.textContent = `DB: ${d.status.toUpperCase()}`;
-        b.style.color = d.status.includes("Connected") ? "#10b981" : "#ef4444";
-      });
     }
 
-    function notify(m, t) {
-      const toast = document.getElementById("toast");
-      toast.textContent = m;
-      toast.className = t === 'success' ? 'toast-success' : 'toast-error';
-      toast.style.display = "block";
-      setTimeout(() => toast.style.display = "none", 4000);
+    function notify(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m; t.style.background = "#00ff87"; t.style.color = "#000"; t.style.display = "block";
+      setTimeout(() => t.style.display = "none", 3000);
     }
+
+    function terminateSession() { location.reload(); }
   </script>
 </body>
 

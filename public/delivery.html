@@ -1,305 +1,278 @@
-<link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
-    rel="stylesheet">
+<!DOCTYPE html>
+<html>
 
-<style>
-    :root {
-        --primary: #4facfe;
-        --secondary: #00f2fe;
-        --accent: #f093fb;
-        --glass: rgba(255, 255, 255, 0.03);
-        --glass-border: rgba(255, 255, 255, 0.1);
-    }
+<head>
+    <title>Logistic Node | Vitality</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
+        rel="stylesheet">
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Outfit', sans-serif;
-    }
-
-    body {
-        background: radial-gradient(circle at top right, #0f172a, #1e1b4b, #0f172a);
-        background-attachment: fixed;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 40px 20px;
-        color: white;
-    }
-
-    /* Floating Orbs */
-    body::before {
-        content: '';
-        position: fixed;
-        bottom: -10%;
-        left: -10%;
-        width: 60%;
-        height: 60%;
-        background: radial-gradient(circle, rgba(79, 172, 254, 0.1) 0%, transparent 70%);
-        filter: blur(80px);
-        z-index: -1;
-    }
-
-    .glass-panel {
-        background: var(--glass);
-        backdrop-filter: blur(25px);
-        border: 1px solid var(--glass-border);
-        border-radius: 45px;
-        padding: 60px;
-        max-width: 600px;
-        width: 100%;
-        box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6);
-        animation: reveal 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @keyframes reveal {
-        from {
-            opacity: 0;
-            transform: translateY(50px) scale(0.95);
+    <style>
+        :root {
+            --electric-green: #00ff87;
+            --sunset-pink: #ff007a;
+            --vivid-violet: #6e00ff;
+            --royal-blue: #00a2ff;
+            --bright-yellow: #f9ff00;
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-    }
-
-    h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 42px;
-        text-align: center;
-        margin-bottom: 40px;
-        background: linear-gradient(to right, #fff, var(--primary));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -2px;
-    }
-
-    .tagline {
-        text-align: center;
-        color: #94a3b8;
-        margin-top: -30px;
-        margin-bottom: 40px;
-        font-size: 15px;
-        font-weight: 300;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
-    }
-
-    label {
-        display: block;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #4facfe;
-        margin-bottom: 10px;
-        padding-left: 5px;
-    }
-
-    input,
-    select {
-        width: 100%;
-        padding: 18px 22px;
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        color: white;
-        font-size: 15px;
-        transition: all 0.4s ease;
-    }
-
-    input:focus,
-    select:focus {
-        outline: none;
-        border-color: var(--secondary);
-        background: rgba(0, 0, 0, 0.6);
-        box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.1);
-        transform: translateY(-2px);
-    }
-
-    button[type="submit"] {
-        width: 100%;
-        padding: 22px;
-        border: none;
-        border-radius: 20px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: #0f172a;
-        font-weight: 800;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.5s;
-        margin-top: 20px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        box-shadow: 0 20px 40px -10px rgba(79, 172, 254, 0.4);
-    }
-
-    button[type="submit"]:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 30px 60px -10px rgba(79, 172, 254, 0.6);
-        filter: brightness(1.1);
-    }
-
-    /* Back button */
-    .back-btn {
-        display: block;
-        text-align: center;
-        margin-top: 35px;
-        color: #64748b;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.3s;
-    }
-
-    .back-btn:hover {
-        color: white;
-    }
-
-    #msg {
-        position: fixed;
-        top: 30px;
-        right: 30px;
-        padding: 20px 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(20px);
-        z-index: 1000;
-        display: none;
-        animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        font-weight: 600;
-    }
-
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
         }
 
-        to {
-            transform: translateX(0);
-            opacity: 1;
+        body {
+            background: #000;
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-    }
 
-    #msg.success {
-        background: rgba(34, 197, 94, 0.1);
-        color: #4ade80;
-        border-color: rgba(34, 197, 94, 0.2);
-    }
+        /* Extraordinary Mesh Gradient Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background:
+                radial-gradient(at 100% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 50%, hsla(266, 100%, 50%, 1) 0, transparent 50%);
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: pulseBg 12s ease-in-out infinite alternate;
+        }
 
-    #msg.error {
-        background: rgba(239, 68, 68, 0.1);
-        color: #f87171;
-        border-color: rgba(239, 68, 68, 0.2);
-    }
-</style>
+        @keyframes pulseBg {
+            from {
+                transform: scale(1) translate(0, 0);
+            }
+
+            to {
+                transform: scale(1.2) translate(5%, 5%);
+            }
+        }
+
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(50px);
+            border: 2px solid var(--glass-border);
+            border-radius: 60px;
+            padding: 80px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+            animation: slideIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 56px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, white, var(--vivid-violet));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 50px;
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--vivid-violet);
+            margin-bottom: 12px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 20px 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--vivid-violet);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 30px rgba(110, 0, 255, 0.2);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 25px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--vivid-violet), var(--sunset-pink));
+            color: white;
+            font-weight: 900;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            border: none;
+            transition: 0.5s;
+            box-shadow: 0 20px 40px rgba(110, 0, 255, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(110, 0, 255, 0.5);
+            background: linear-gradient(135deg, var(--bright-yellow), var(--electric-green));
+            color: black;
+        }
+
+        #msg {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 800;
+            display: none;
+        }
+
+        #msg.success {
+            background: rgba(0, 255, 135, 0.1);
+            color: var(--electric-green);
+            border: 1px solid var(--electric-green);
+        }
+
+        #msg.error {
+            background: rgba(255, 0, 122, 0.1);
+            color: var(--sunset-pink);
+            border: 1px solid var(--sunset-pink);
+        }
+    </style>
 </head>
 
 <body>
+    <div class="mesh-bg"></div>
 
-    <div class="glass-panel">
-        <h2>Logistic Hero</h2>
-        <p class="tagline">Join our rapid response network and fight hunger.</p>
+    <div class="container">
+        <h1>Logistic Node.</h1>
+        <p>Become a vital connector in the high-speed food distribution matrix.</p>
 
-        <form id="deliveryForm" onsubmit="submitDelivery(event)">
-            <div class="form-group">
-                <label for="name">PERSONAL IDENTITY</label>
-                <input id="name" type="text" placeholder="Legal Full Name" required>
-            </div>
-
-            <div class="form-group" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
+        <form onsubmit="handleDeliverySubmission(event)">
+            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div>
-                    <label for="email">SECURE EMAIL</label>
-                    <input id="email" type="email" placeholder="active@mailbox.com" required>
+                    <label>Full Name</label>
+                    <input type="text" id="name" placeholder="Agent Name" required>
                 </div>
                 <div>
-                    <label for="phone">COMMUNICATION LINE</label>
-                    <input id="phone" type="tel" placeholder="+1 000 000 000" required>
+                    <label>Security ID (Email)</label>
+                    <input type="email" id="email" placeholder="agent@vitality.io" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="location">OPERATIONAL RADIUS / AREA</label>
-                <input id="location" type="text" placeholder="e.g. Greater Metropolitan Area" required>
+                <label>Transport Class</label>
+                <select id="vehicleType" required>
+                    <option value="">Select Module</option>
+                    <option value="Bicycle">Bicycle (Eco)</option>
+                    <option value="Electric Scooter">E-Scooter (Rapid)</option>
+                    <option value="Motorcycle">Motorcycle (Heavy)</option>
+                    <option value="Car/Van">Car/Van (Bulk)</option>
+                </select>
             </div>
 
-            <div class="form-group" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px;">
-                <div>
-                    <label for="vehicleType">VEHICLE CLASSIFICATION</label>
-                    <select id="vehicleType" required>
-                        <option value="">Select Mode</option>
-                        <option value="Bike">Motorcycle / Bike</option>
-                        <option value="Car">Sedan / SUV</option>
-                        <option value="Van">Cargo Van / Truck</option>
-                        <option value="Bicycle">Bicycle / Electric</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="licenseNumber">LICENSE ID</label>
-                    <input id="licenseNumber" type="text" placeholder="Optional">
-                </div>
+            <div class="form-group">
+                <label>License Matrix ID</label>
+                <input type="text" id="license" placeholder="Valid ID required">
             </div>
 
-            <button type="submit">ACTIVATE PARTNERSHIP</button>
+            <button type="submit">INITIALIZE SERVICE</button>
         </form>
 
         <div id="msg"></div>
-        <a href="index.html" class="back-btn">← RETURN TO TERMINAL</a>
+
+        <a href="index.html"
+            style="display: block; text-align: center; margin-top: 40px; color: #64748b; text-decoration: none; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Return
+            to Nexus</a>
     </div>
 
     <script>
-        function showMessage(message, type) {
-            const msgEl = document.getElementById("msg");
-            msgEl.textContent = message;
-            msgEl.className = type;
-            setTimeout(() => { msgEl.className = ""; msgEl.style.display = "none"; }, 5000);
-        }
-
-        function submitDelivery(event) {
+        function handleDeliverySubmission(event) {
             event.preventDefault();
 
+            const msg = document.getElementById("msg");
+            const submitBtn = event.target.querySelector("button");
+
             const data = {
-                name: document.getElementById("name").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                phone: document.getElementById("phone").value.trim(),
-                location: document.getElementById("location").value.trim(),
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
                 vehicleType: document.getElementById("vehicleType").value,
-                licenseNumber: document.getElementById("licenseNumber").value.trim()
+                licenseNumber: document.getElementById("license").value,
+                status: "Active"
             };
 
-            const submitBtn = document.querySelector("button[type='submit']");
             submitBtn.disabled = true;
-            submitBtn.textContent = "Processing...";
+            submitBtn.textContent = "SYNCHRONIZING...";
 
             fetch("/add-delivery", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             })
-                .then(res => {
-                    if (!res.ok) throw new Error("Server error");
-                    return res.json();
+                .then(res => res.json())
+                .then(() => {
+                    msg.textContent = "✓ NODE ACTIVATED IN VITALITY NETWORK";
+                    msg.className = "success";
+                    msg.style.display = "block";
+                    event.target.reset();
                 })
-                .then(response => {
-                    showMessage("✅ Registration submitted! Please wait for admin verification.", "success");
-                    document.getElementById("deliveryForm").reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Register as Delivery Partner";
+                .catch(err => {
+                    msg.textContent = "❌ CONNECTION INTERRUPTED: " + err.message;
+                    msg.className = "error";
+                    msg.style.display = "block";
                 })
-                .catch(error => {
-                    showMessage("❌ Error: " + error.message, "error");
+                .finally(() => {
                     submitBtn.disabled = false;
-                    submitBtn.textContent = "Register as Delivery Partner";
+                    submitBtn.textContent = "INITIALIZE SERVICE";
                 });
         }
     </script>
-
 </body>
 
 </html>

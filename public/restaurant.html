@@ -1,14 +1,15 @@
-<link
-  href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;600;900&display=swap"
   rel="stylesheet">
 
 <style>
   :root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-    --accent: #ec4899;
-    --glass: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --electric-green: #00ff87;
+    --sunset-pink: #ff007a;
+    --vivid-violet: #6e00ff;
+    --royal-blue: #00a2ff;
+    --bright-yellow: #f9ff00;
+    --glass: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
   }
 
   * {
@@ -19,111 +20,169 @@
   }
 
   body {
-    background: radial-gradient(circle at top left, #0f172a, #111827, #0f172a);
-    background-attachment: fixed;
+    background: #000;
     min-height: 100vh;
+    padding: 20px;
+    color: white;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
-    color: white;
   }
 
-  /* Smooth light blobs */
-  body::before {
-    content: '';
+  /* Extraordinary Mesh Gradient Background */
+  .mesh-bg {
     position: fixed;
-    top: -10%;
-    right: -10%;
-    width: 50%;
-    height: 50%;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
-    filter: blur(100px);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
+    background:
+      radial-gradient(at 0% 0%, hsla(158, 100%, 43%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(331, 100%, 50%, 1) 0, transparent 50%),
+      radial-gradient(at 50% 50%, hsla(199, 100%, 50%, 1) 0, transparent 50%);
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: rotateBg 15s linear infinite;
   }
 
-  .glass-panel {
+  @keyframes rotateBg {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .container {
     background: var(--glass);
-    backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border);
-    border-radius: 40px;
-    padding: 60px;
-    max-width: 600px;
+    backdrop-filter: blur(50px);
+    border: 2px solid var(--glass-border);
+    border-radius: 60px;
+    padding: 80px;
+    max-width: 650px;
     width: 100%;
-    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.5);
-    animation: slideUp 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
+    animation: popIn 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  @keyframes slideUp {
+  @keyframes popIn {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: scale(0.8);
     }
 
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: scale(1);
     }
   }
 
-  h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    text-align: center;
-    margin-bottom: 40px;
-    background: linear-gradient(to right, #fff, #a5b4fc);
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, white, var(--royal-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
+    letter-spacing: -3px;
+    text-transform: uppercase;
+    text-align: center;
   }
 
-  .tagline {
+  p {
     text-align: center;
     color: #94a3b8;
-    margin-top: -30px;
-    margin-bottom: 40px;
-    font-size: 15px;
-    font-weight: 300;
+    margin-bottom: 50px;
+    font-size: 18px;
   }
 
+  /* Neon Inputs */
   .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
   }
 
   label {
     display: block;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #64748b;
-    margin-bottom: 10px;
-    padding-left: 5px;
+    letter-spacing: 2px;
+    color: var(--royal-blue);
+    margin-bottom: 12px;
   }
 
   input,
   select,
   textarea {
     width: 100%;
-    padding: 16px 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
+    padding: 20px 25px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     transition: 0.3s;
   }
 
-  input:focus,
-  select:focus {
+  input:focus {
     outline: none;
-    border-color: var(--primary);
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    border-color: var(--royal-blue);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 30px rgba(0, 162, 255, 0.2);
   }
 
+  button[type="submit"] {
+    width: 100%;
+    padding: 25px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--royal-blue), var(--vivid-violet));
+    color: white;
+    font-weight: 900;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    cursor: pointer;
+    border: none;
+    transition: 0.5s;
+    box-shadow: 0 20px 40px rgba(110, 0, 255, 0.3);
+  }
+
+  button[type="submit"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(110, 0, 255, 0.5);
+    background: linear-gradient(135deg, var(--electric-green), var(--royal-blue));
+    color: black;
+  }
+
+  #msg {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: 800;
+    display: none;
+  }
+
+  #msg.success {
+    background: rgba(0, 255, 135, 0.1);
+    color: var(--electric-green);
+    border: 1px solid var(--electric-green);
+  }
+
+  #msg.error {
+    background: rgba(255, 0, 122, 0.1);
+    color: var(--sunset-pink);
+    border: 1px solid var(--sunset-pink);
+  }
+
+  /* Existing error styles adjusted for new theme */
   .error-msg {
-    color: var(--accent);
+    color: var(--sunset-pink);
+    /* Changed from var(--accent) */
     font-size: 11px;
     margin-top: 8px;
     display: none;
@@ -134,90 +193,40 @@
     display: block;
   }
 
-  button[type="submit"] {
-    width: 100%;
-    padding: 20px;
-    border: none;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    font-weight: 700;
-    font-size: 17px;
-    cursor: pointer;
-    transition: 0.4s;
-    margin-top: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.4);
-  }
-
-  button[type="submit"]:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 50px -10px rgba(99, 102, 241, 0.6);
-  }
-
-  #msg {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    padding: 20px 30px;
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    z-index: 1000;
-    display: none;
-    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  #msg.success {
-    background: rgba(34, 197, 94, 0.1);
-    color: #4ade80;
-    border-color: rgba(34, 197, 94, 0.2);
-  }
-
-  #msg.error {
-    background: rgba(239, 68, 68, 0.1);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.2);
+  input.error,
+  select.error,
+  textarea.error {
+    border-color: var(--sunset-pink);
+    box-shadow: 0 0 0 4px rgba(255, 0, 122, 0.2);
   }
 </style>
 </head>
 
 <body>
-  <div class="glass-panel">
-    <h2>Donor Hub</h2>
-    <p class="tagline">Record your surplus food and save a life today.</p>
+  <div class="mesh-bg"></div>
+
+  <div class="container">
+    <h1>Initialize Alert.</h1>
+    <p>Transmit your surplus data to the high-energy vitality network.</p>
 
     <form id="restaurantForm" onsubmit="submitRestaurant(event)">
-      <div class="form-group">
-        <label for="name">ESTABLISHMENT NAME</label>
-        <input id="name" type="text" placeholder="e.g. Grand Bistro" required>
-        <span class="error-msg" id="nameError"></span>
-      </div>
-
       <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div>
-          <label for="email">CONTACT EMAIL</label>
-          <input id="email" type="email" placeholder="contact@bistro.com" required>
-          <span class="error-msg" id="emailError"></span>
+          <label>Establishment Name</label>
+          <input id="name" type="text" placeholder="e.g. Zenith Kitchen" required>
+          <span class="error-msg" id="nameError"></span>
         </div>
         <div>
-          <label for="phone">PHONE LINE</label>
-          <input id="phone" type="tel" placeholder="+1 234 567 890" required>
-          <span class="error-msg" id="phoneError"></span>
+          <label>Digital ID (Email)</label>
+          <input id="email" type="email" placeholder="nexus@vitality.io" required>
+          <span class="error-msg" id="emailError"></span>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">PHONE LINE</label>
+        <input id="phone" type="tel" placeholder="+1 234 567 890" required>
+        <span class="error-msg" id="phoneError"></span>
       </div>
 
       <div class="form-group">
