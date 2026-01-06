@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delivery Membership</title>
+</head>
+<body>
+
+<h2>🚚 Delivery Partner Registration</h2>
+
+<form id="memberForm">
+  <input type="text" placeholder="Name" id="name" required><br><br>
+  <input type="text" placeholder="Phone" id="phone" required><br><br>
+  <input type="text" placeholder="Vehicle (Bike/Cycle)" id="vehicle" required><br><br>
+  <input type="text" placeholder="Area" id="area" required><br><br>
+  <input type="email" placeholder="Email" id="email"><br><br>
+
+  <button type="submit">Apply for Membership</button>
+</form>
+
+<p id="msg"></p>
+
+<script>
+document.getElementById("memberForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  fetch("/memberships", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name.value,
+      phone: phone.value,
+      vehicle: vehicle.value,
+      area: area.value,
+      email: email.value
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    document.getElementById("msg").innerText =
+      "✅ Membership submitted. Wait for admin approval.";
+    document.getElementById("memberForm").reset();
+  });
+});
+</script>
+
+</body>
+</html>
 
