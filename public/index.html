@@ -3,13 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Food To Need</title>
+
 <style>
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ===== BODY ===== */
 body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
@@ -25,43 +28,22 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Navbar Styles */
+/* ===== NAVBAR ===== */
 .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
-  padding: 18px 35px;
+  background: rgba(255,255,255,0.15);
+  padding: 18px;
   border-radius: 15px;
   margin-bottom: 35px;
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  flex-wrap: wrap;
-  gap: 20px;
-  animation: slideDown 0.6s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .navbar span {
+  font-size: 22px;
+  font-weight: 900;
   color: white;
-  font-size: 24px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link {
@@ -71,639 +53,135 @@ body {
   cursor: pointer;
   padding: 10px 20px;
   border-radius: 8px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  font-size: 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s;
-}
-
-.nav-link:hover::before {
-  left: 100%;
+  transition: 0.3s;
 }
 
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.1) translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+  background: rgba(255,255,255,0.3);
 }
 
+/* ===== CONTAINER ===== */
 .container {
   max-width: 1300px;
-  margin: 0 auto;
+  margin: auto;
   text-align: center;
 }
 
-/* Hero Section */
+/* ===== HERO ===== */
 .hero {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 182, 193, 0.15) 50%, rgba(135, 206, 235, 0.15) 100%);
-  padding: 65px 50px;
+  background: rgba(255,255,255,0.18);
+  padding: 60px 40px;
   border-radius: 25px;
   margin-bottom: 50px;
   backdrop-filter: blur(15px);
-  border: 3px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  animation: fadeInUp 0.8s ease 0.2s both;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-h1 {
+.hero h1 {
   color: white;
-  font-size: 56px;
-  margin-bottom: 15px;
-  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  font-weight: 900;
-  letter-spacing: -1px;
-  animation: bounceIn 1s ease;
-}
-
-@keyframes bounceIn {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); opacity: 1; }
+  font-size: 52px;
+  margin-bottom: 10px;
 }
 
 .tagline {
-  color: #fff;
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 22px;
   font-weight: 700;
-  background: linear-gradient(135deg, #fff, #ffd700, #ff69b4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #ffd700;
+  margin-bottom: 15px;
 }
 
-.hero > p:last-of-type {
-  font-size: 18px;
-  margin-bottom: 30px;
-  color: #fff !important;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+.hero p {
+  color: #fff;
+  margin-bottom: 25px;
 }
 
+/* ===== BUTTON GROUP ===== */
 .button-group {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  margin-bottom: 30px;
 }
 
+/* ===== BUTTONS ===== */
 button {
-  padding: 16px 40px;
+  padding: 16px 38px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: white;
+  transition: 0.3s;
 }
 
+/* Existing buttons */
+button:nth-child(1) {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
 button:nth-child(2) {
   background: linear-gradient(135deg, #f093fb, #f5576c);
-  box-shadow: 0 12px 30px rgba(245, 87, 108, 0.4);
 }
-
 button:nth-child(3) {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+button:nth-child(4) {
   background: linear-gradient(135deg, #4facfe, #00f2fe);
-  box-shadow: 0 12px 30px rgba(79, 172, 254, 0.4);
-}
-
-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-button:hover::before {
-  width: 300px;
-  height: 300px;
 }
 
 button:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 18px 45px rgba(102, 126, 234, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-button:active {
-  transform: translateY(-2px) scale(0.98);
-}
-
-/* About Us Section */
-.about-section {
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.15) 0%, rgba(255, 192, 203, 0.1) 50%, rgba(255, 218, 185, 0.15) 100%);
-  padding: 60px 50px;
-  border-radius: 25px;
-  margin-bottom: 50px;
-  backdrop-filter: blur(15px);
-  text-align: left;
-  color: white;
-  border: 3px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
-  animation: fadeInUp 0.8s ease 0.4s both;
-}
-
-.about-section h2 {
-  font-size: 42px;
-  margin-bottom: 25px;
-  color: #ffffff;
-  border-bottom: 4px solid;
-  border-image: linear-gradient(90deg, #ff69b4, #ffd700, #ff1493) 1;
-  padding-bottom: 20px;
-  font-weight: 900;
-}
-
-.about-section > p {
-  font-size: 17px;
-  line-height: 1.9;
-  margin-bottom: 18px;
-  color: #f0f0f0 !important;
-  font-weight: 500;
-}
-
-.about-features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-  margin-top: 40px;
-}
-
-.feature-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-  padding: 30px;
-  border-radius: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.feature-card:nth-child(1) {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.15));
-  border-color: rgba(76, 175, 80, 0.5);
-}
-
-.feature-card:nth-child(2) {
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.15));
-  border-color: rgba(244, 67, 54, 0.5);
-}
-
-.feature-card:nth-child(3) {
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(3, 169, 244, 0.15));
-  border-color: rgba(33, 150, 243, 0.5);
-}
-
-.feature-card:nth-child(4) {
-  background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(233, 30, 99, 0.15));
-  border-color: rgba(156, 39, 176, 0.5);
-}
-
-.feature-card:hover {
-  transform: translateY(-15px) scale(1.05);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
-}
-
-.feature-card h3 {
-  font-size: 24px;
-  margin-bottom: 12px;
-  color: #ffd700;
-  font-weight: 800;
-}
-
-.feature-card p {
-  font-size: 15px;
-  color: #f0f0f0 !important;
-  margin-bottom: 0;
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-/* How It Works */
-.about-section > div:last-child {
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.about-section > div:last-child h3 {
-  color: #ffd700;
-  margin-bottom: 25px;
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.about-section > div:last-child > div {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  text-align: center;
-}
-
-.about-section > div:last-child > div > div {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-  padding: 25px;
-  border-radius: 15px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.4s ease;
-}
-
-.about-section > div:last-child > div > div:hover {
-  transform: translateY(-10px);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
-
-.about-section > div:last-child > div > div h4 {
-  color: #ffd700;
-  margin-bottom: 10px;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.about-section > div:last-child > div > div p {
-  font-size: 14px;
-  color: #f0f0f0 !important;
-  font-weight: 500;
-}
-
-/* Contact Section */
-.contact-section {
-  background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(79, 195, 247, 0.1) 50%, rgba(129, 212, 250, 0.15) 100%);
-  padding: 60px 50px;
-  border-radius: 25px;
-  margin-bottom: 50px;
-  backdrop-filter: blur(15px);
-  color: white;
-  border: 3px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 20px 60px rgba(79, 195, 247, 0.2);
-  animation: fadeInUp 0.8s ease 0.6s both;
-}
-
-.contact-section h2 {
-  font-size: 42px;
-  margin-bottom: 20px;
-  color: #ffffff;
-  border-bottom: 4px solid;
-  border-image: linear-gradient(90deg, #00bcd4, #0097a7, #00838f) 1;
-  padding-bottom: 20px;
-  font-weight: 900;
-}
-
-.contact-section > p {
-  margin-bottom: 35px;
-  font-size: 18px;
-  color: #f0f0f0 !important;
-  font-weight: 500;
-}
-
-.contact-info {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 25px;
-  flex-wrap: wrap;
-  margin: 35px 0;
-}
-
-.contact-item {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-  padding: 35px;
-  border-radius: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  flex: 1;
-  min-width: 280px;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.contact-item:nth-child(1) {
-  background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 193, 7, 0.15));
-  border-color: rgba(255, 152, 0, 0.5);
-}
-
-.contact-item:nth-child(2) {
-  background: linear-gradient(135deg, rgba(233, 30, 99, 0.2), rgba(236, 64, 122, 0.15));
-  border-color: rgba(233, 30, 99, 0.5);
-}
-
-.contact-item:nth-child(3) {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(129, 199, 132, 0.15));
-  border-color: rgba(76, 175, 80, 0.5);
-}
-
-.contact-item:hover {
-  transform: translateY(-15px) scale(1.05);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
-}
-
-.contact-item h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #ffd700;
-  font-weight: 800;
-}
-
-.contact-item p {
-  font-size: 15px;
-  color: #f0f0f0 !important;
-  margin-bottom: 20px;
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-.contact-email {
-  display: inline-block;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  padding: 12px 30px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 700;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  margin-top: 10px;
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-  text-transform: uppercase;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-}
-
-.contact-email:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
-  background: linear-gradient(135deg, #764ba2, #f093fb);
-}
-
-.contact-email:active {
-  transform: translateY(-1px) scale(0.98);
-}
-
-/* Primary Contact Box */
-.contact-section > div:last-child {
-  margin-top: 35px;
-  padding: 30px;
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 152, 0, 0.15));
-  border-radius: 18px;
-  border: 3px dashed rgba(255, 193, 7, 0.5);
-  box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
-  }
-  50% {
-    box-shadow: 0 20px 50px rgba(255, 152, 0, 0.3);
-  }
-}
-
-.contact-section > div:last-child h3 {
-  color: #ffd700;
-  margin-bottom: 15px;
-  font-size: 24px;
-  font-weight: 900;
-}
-
-.contact-section > div:last-child p:first-of-type {
-  font-size: 20px;
-  margin: 15px 0;
-  color: #fff !important;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-}
-
-.contact-section > div:last-child p:last-child {
-  font-size: 14px;
-  color: #f0f0f0 !important;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Footer */
+/* ===== FOOTER ===== */
 .footer {
-  text-align: center;
-  color: #f0f0f0;
-  padding: 30px;
   margin-top: 50px;
-  border-top: 2px solid rgba(255, 255, 255, 0.3);
-  animation: fadeInUp 0.8s ease 0.8s both;
-}
-
-.footer p {
-  margin: 8px 0;
-  font-size: 15px;
+  text-align: center;
+  color: white;
   font-weight: 600;
-  letter-spacing: 0.3px;
-}
-
-.footer p:first-child {
-  font-size: 18px;
-  font-weight: 900;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 36px;
-  }
-  
-  .tagline {
-    font-size: 18px;
-  }
-  
-  .button-group {
-    flex-direction: column;
-  }
-  
-  button {
-    width: 100%;
-  }
-  
-  .about-section, .contact-section, .hero {
-    padding: 30px 20px;
-  }
-  
-  .navbar {
-    flex-direction: column;
-    padding: 15px 20px;
-  }
-  
-  .about-section h2, .contact-section h2 {
-    font-size: 28px;
-  }
 }
 </style>
 </head>
 
 <body>
-<!-- Navigation -->
+
+<!-- NAVBAR -->
 <div class="navbar">
-  <span style="color: white; font-size: 20px; font-weight: bold;">🍽 Food To Need</span>
+  <span>🍽 Food To Need</span>
   <a class="nav-link" onclick="scrollToSection('hero')">Home</a>
   <a class="nav-link" onclick="scrollToSection('about')">About Us</a>
   <a class="nav-link" onclick="scrollToSection('contact')">Contact</a>
 </div>
 
 <div class="container">
-  <!-- Hero Section -->
+
+  <!-- HERO -->
   <div class="hero" id="hero">
     <h1>🍽 Food To Need</h1>
     <p class="tagline">Connecting Food Surplus to Food Shortage</p>
-    <p style="font-size: 16px; margin-bottom: 20px;">A platform bridging restaurants with excess food to orphanages and charitable organizations in need</p>
-    
+    <p>A platform bridging restaurants with excess food to orphanages and charitable organizations in need</p>
+
+    <!-- 🔥 UPDATED BUTTON GROUP -->
     <div class="button-group">
       <button onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
       <button onclick="location.href='acceptor.html'">🏠 Acceptor Portal</button>
+      <button onclick="location.href='membership.html'">🚚 Delivery Membership</button>
       <button onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
     </div>
   </div>
 
-  <!-- About Us Section -->
-  <div class="about-section" id="about">
-    <h2>📖 About Us</h2>
-    <p>
-      <strong>Food To Need</strong> is a community-driven initiative designed to reduce food waste while fighting hunger. 
-      We connect restaurants, hotels, and food establishments with excess food to orphanages, old age homes, and charitable 
-      organizations that need it most.
-    </p>
-    <p>
-      Our mission is simple yet powerful: <strong>"No Food Should Go to Waste, No One Should Go Hungry"</strong>
-    </p>
-    <p>
-      By leveraging technology and community participation, we aim to create a sustainable ecosystem where:
-    </p>
-    
-    <div class="about-features">
-      <div class="feature-card">
-        <h3>♻️ Sustainable</h3>
-        <p>Reduce food waste and environmental impact by redistributing surplus food responsibly</p>
-      </div>
-      <div class="feature-card">
-        <h3>💝 Compassionate</h3>
-        <p>Help feed vulnerable populations and support charitable organizations in your community</p>
-      </div>
-      <div class="feature-card">
-        <h3>💻 Digital</h3>
-        <p>Easy-to-use platform connecting donors and recipients instantly</p>
-      </div>
-      <div class="feature-card">
-        <h3>👥 Community</h3>
-        <p>Build stronger communities through collective action and social responsibility</p>
-      </div>
-    </div>
-
-    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2);">
-      <h3 style="color: #ffd700; margin-bottom: 15px;">How It Works</h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center;">
-        <div>
-          <h4>📝 Register</h4>
-          <p>Restaurants and acceptors register on the platform with their details</p>
-        </div>
-        <div>
-          <h4>🍲 Submit</h4>
-          <p>Restaurants submit food availability; acceptors register their needs</p>
-        </div>
-        <div>
-          <h4>✅ Verify</h4>
-          <p>Admin team verifies all submissions for authenticity and safety</p>
-        </div>
-        <div>
-          <h4>🤝 Connect</h4>
-          <p>Verified restaurants and acceptors are connected for food distribution</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Contact Section -->
-  <div class="contact-section" id="contact">
-    <h2>📧 Contact Us</h2>
-    <p style="margin-bottom: 30px;">Have questions, suggestions, or want to get involved? We'd love to hear from you!</p>
-    
-    <div class="contact-info">
-      <div class="contact-item">
-        <h3>✉️ Email</h3>
-        <p>Send us your inquiries, feedback, or partnership proposals</p>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in" target="_blank" class="contact-email">📬 Send Email</a>
-      </div>
-      
-      <div class="contact-item">
-        <h3>💬 Feedback</h3>
-        <p>Help us improve! Share your experience and suggestions</p>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Feedback" target="_blank" class="contact-email">⭐ Share Feedback</a>
-      </div>
-      
-      <div class="contact-item">
-        <h3>🤝 Partnerships</h3>
-        <p>Interested in partnering with us? Let's collaborate!</p>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Partnership%20Inquiry" target="_blank" class="contact-email">🚀 Discuss Partnership</a>
-      </div>
-    </div>
-
-    <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
-      <h3 style="color: #ffd700; margin-bottom: 10px;">Primary Contact</h3>
-      <p style="font-size: 18px; margin: 10px 0;">📧 <strong>nrouthu@gitam.in</strong></p>
-      <p style="font-size: 14px; color: #e6f7ff;">We typically respond within 24 hours</p>
-    </div>
-  </div>
-
-  <!-- Footer -->
+  <!-- FOOTER -->
   <div class="footer">
-    <p><strong>🍽 Food To Need</strong> - Building a Hunger-Free Community</p>
-    <p>&copy; 2026 Food To Need Initiative. All rights reserved.</p>
-    <p>Developed with 💕 for a better tomorrow</p>
+    <p><strong>Food To Need</strong> – Building a Hunger-Free Community</p>
+    <p>© 2026 Food To Need Initiative</p>
   </div>
+
 </div>
 
 <script>
-function scrollToSection(sectionId) {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 </script>
 
