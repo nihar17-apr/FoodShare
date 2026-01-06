@@ -1,69 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistic Node | Heavenly Aurora</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --aurora-1: #00f2fe;
-            --aurora-2: #4facfe;
-            --aurora-3: #7028ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --text: #ffffff;
-        }
+    <title>Delivery Portal</title>
 
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
         }
 
         body {
-            background: #02001a;
-            color: var(--text);
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            padding: 20px;
         }
 
-        .aurora-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 0%, var(--aurora-2), transparent 60%),
-                radial-gradient(circle at 50% 100%, var(--aurora-3), transparent 60%);
-            filter: blur(120px);
-            opacity: 0.15;
-        }
-
-        .node-box {
-            background: var(--glass);
-            backdrop-filter: blur(50px);
-            border: 1px solid var(--glass-border);
-            border-radius: 60px;
-            padding: 80px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
-            animation: boxReveal 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes boxReveal {
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(60px);
+                transform: translateY(30px);
             }
 
             to {
@@ -72,175 +33,231 @@
             }
         }
 
-        .header-info {
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+            }
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            padding: 50px;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.8s ease, pulse 3s ease-in-out infinite;
+        }
+
+        h2 {
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 35px;
             text-align: center;
-            margin-bottom: 60px;
+            font-size: 32px;
+            font-weight: 700;
         }
 
-        .header-info h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: 48px;
-            line-height: 0.85;
-            margin-bottom: 25px;
-            letter-spacing: -2px;
-        }
-
-        .header-info p {
-            color: var(--aurora-1);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-        }
-
-        .field-wrap {
-            margin-bottom: 30px;
+        .form-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
         }
 
         label {
-            display: block;
-            font-size: 11px;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 15px;
         }
 
         input,
         select {
             width: 100%;
-            padding: 22px 30px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            color: white;
-            font-size: 16px;
-            transition: 0.4s;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
         }
 
-        input:focus {
+        input:focus,
+        select:focus {
             outline: none;
-            border-color: var(--aurora-1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        .activate-btn {
-            width: 100%;
-            padding: 25px;
-            background: white;
-            color: #02001a;
-            border: none;
-            border-radius: 100px;
-            font-weight: 950;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            cursor: pointer;
-            transition: 0.5s;
-            margin-top: 20px;
-        }
-
-        .activate-btn:hover {
-            transform: scale(1.05);
-            background: var(--aurora-1);
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.4);
-        }
-
-        #syncStatus {
-            margin-top: 40px;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            font-weight: 800;
-            display: none;
-            background: rgba(0, 242, 254, 0.1);
-            color: var(--aurora-1);
-            border: 1px solid var(--aurora-1);
-        }
-
-        .back-home {
-            display: block;
-            margin-top: 40px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.4);
-            text-decoration: none;
+        .error-msg {
+            color: #e74c3c;
             font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+            background-position: 200% center;
+        }
+
+        #msg {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        #msg.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+            display: block;
+        }
+
+        #msg.error {
+            background: rgba(231, 76, 60, 0.2);
+            color: #c62828;
+            border: 1px solid #c62828;
+            display: block;
         }
     </style>
 </head>
 
 <body>
-    <div class="aurora-bg"></div>
 
-    <div class="node-box">
-        <div class="header-info">
-            <h1>LOGISTIC<br>TERMINAL</h1>
-            <p>Operative Activation Unit</p>
-        </div>
+    <div class="container">
+        <h2>🚚 Delivery Portal</h2>
 
-        <form onsubmit="activateNode(event)">
-            <div class="field-wrap">
-                <label>OPERATIVE IDENTIFIER</label>
-                <input type="text" id="name" placeholder="Agent Alias" required>
+        <form id="deliveryForm" onsubmit="submitDelivery(event)">
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input id="name" type="text" placeholder="Enter your full name" required>
             </div>
 
-            <div class="field-wrap">
-                <label>SECURE SYNC (EMAIL)</label>
-                <input type="email" id="email" placeholder="contact@nexus.io" required>
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input id="email" type="email" placeholder="your@email.com" required>
             </div>
 
-            <div class="field-wrap">
-                <label>OPERATIONAL ZONE</label>
-                <select id="sector" required>
-                    <option value="">Select Domain</option>
-                    <option value="Urban">Primary Urban Core</option>
-                    <option value="Suburban">Metropolitan Ring</option>
-                    <option value="Industrial">Industrial Zone</option>
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input id="phone" type="tel" placeholder="(123) 456-7890" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Preferred Location/Area *</label>
+                <input id="location" type="text" placeholder="e.g., Downtown, North Side" required>
+            </div>
+
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type *</label>
+                <select id="vehicleType" required>
+                    <option value="">Select a vehicle</option>
+                    <option value="Bike">Bike/Motorcycle</option>
+                    <option value="Car">Car</option>
+                    <option value="Van">Van</option>
+                    <option value="Bicycle">Bicycle</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
 
-            <div class="field-wrap">
-                <label>TRANSLATION MODE (VEHICLE)</label>
-                <select id="vehicle" required>
-                    <option value="Electric">Hyper-Sustainable Electric</option>
-                    <option value="Bicycle">Zero-Carbon Kinetic</option>
-                    <option value="Compact">Compact Transport</option>
-                </select>
+            <div class="form-group">
+                <label for="licenseNumber">License Number (Optional)</label>
+                <input id="licenseNumber" type="text" placeholder="Enter license number if applicable">
             </div>
 
-            <button type="submit" class="activate-btn">INITIALIZE NODE</button>
+            <button type="submit">Register as Delivery Partner</button>
         </form>
 
-        <div id="syncStatus">✓ LOGISTIC NODE ACTIVE IN MATRIX</div>
-        <a href="index.html" class="back-home">← RETURN TO HUB</a>
+        <div id="msg"></div>
+        <p style="text-align: center; margin-top: 20px;"><a href="index.html"
+                style="color: #667eea; text-decoration: none; font-weight: 600;">← Back to Home</a></p>
     </div>
 
     <script>
-        function activateNode(e) {
-            e.preventDefault();
-            const status = document.getElementById("syncStatus");
+        function showMessage(message, type) {
+            const msgEl = document.getElementById("msg");
+            msgEl.textContent = message;
+            msgEl.className = type;
+            setTimeout(() => { msgEl.className = ""; msgEl.style.display = "none"; }, 5000);
+        }
 
-            const payload = {
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value,
-                location: document.getElementById("sector").value,
-                vehicle: document.getElementById("vehicle").value
+        function submitDelivery(event) {
+            event.preventDefault();
+
+            const data = {
+                name: document.getElementById("name").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                location: document.getElementById("location").value.trim(),
+                vehicleType: document.getElementById("vehicleType").value,
+                licenseNumber: document.getElementById("licenseNumber").value.trim()
             };
 
-            fetch('/add-delivery', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+            const submitBtn = document.querySelector("button[type='submit']");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+
+            fetch("/add-delivery", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
             })
-                .then(() => {
-                    status.style.display = "block";
-                    e.target.reset();
+                .then(res => {
+                    if (!res.ok) throw new Error("Server error");
+                    return res.json();
+                })
+                .then(response => {
+                    showMessage("✅ Registration submitted! Please wait for admin verification.", "success");
+                    document.getElementById("deliveryForm").reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Register as Delivery Partner";
+                })
+                .catch(error => {
+                    showMessage("❌ Error: " + error.message, "error");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Register as Delivery Partner";
                 });
         }
     </script>
+
 </body>
 
 </html>

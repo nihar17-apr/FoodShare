@@ -1,271 +1,427 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donor Hub | Heavenly Aurora</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --aurora-1: #00f2fe;
-      --aurora-2: #4facfe;
-      --aurora-3: #7028ff;
-      --glass: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --text: #ffffff;
-    }
+  <title>Restaurant Portal</title>
 
+  <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
     }
 
     body {
-      background: #02001a;
-      color: var(--text);
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow-x: hidden;
+      padding: 20px;
     }
 
-    .aurora-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: radial-gradient(circle at 100% 0%, var(--aurora-1), transparent 50%),
-        radial-gradient(circle at 0% 100%, var(--aurora-3), transparent 50%);
-      filter: blur(100px);
-      opacity: 0.15;
-    }
-
-    .glass-form-box {
-      background: var(--glass);
-      backdrop-filter: blur(40px);
-      border: 1px solid var(--glass-border);
-      border-radius: 60px;
-      padding: 80px;
-      width: 90%;
-      max-width: 650px;
-      box-shadow: 0 50px 150px rgba(0, 0, 0, 0.7);
-      animation: formPop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes formPop {
+    @keyframes slideUp {
       from {
         opacity: 0;
-        transform: scale(0.9) translateY(40px);
+        transform: translateY(30px);
       }
 
       to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: translateY(0);
       }
     }
 
-    .header-unit {
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+      }
+    }
+
+    .container {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      padding: 50px;
+      max-width: 500px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      animation: slideUp 0.8s ease, pulse 3s ease-in-out infinite;
+    }
+
+    h2 {
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 35px;
       text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .header-unit h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 50px;
-      line-height: 0.9;
-      margin-bottom: 20px;
-      letter-spacing: -2px;
-    }
-
-    .header-unit p {
-      color: var(--aurora-1);
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 4px;
+      font-size: 32px;
+      font-weight: 700;
     }
 
     .form-group {
-      margin-bottom: 30px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
     }
 
     label {
-      display: block;
-      font-size: 11px;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      font-size: 15px;
     }
 
     input,
-    select,
-    textarea {
+    textarea,
+    select {
       width: 100%;
-      padding: 22px 30px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--glass-border);
-      border-radius: 25px;
-      color: white;
-      font-size: 16px;
-      transition: 0.4s;
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(5px);
     }
 
-    input:focus {
+    input:focus,
+    textarea:focus,
+    select:focus {
       outline: none;
-      border-color: var(--aurora-1);
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.95);
     }
 
-    .submit-btn {
-      width: 100%;
-      padding: 25px;
-      background: white;
-      color: #02001a;
-      border: none;
-      border-radius: 100px;
-      font-weight: 900;
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      cursor: pointer;
-      transition: 0.5s;
-      margin-top: 20px;
+    input.error,
+    textarea.error {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
     }
 
-    .submit-btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 50px rgba(255, 255, 255, 0.3);
-      background: var(--aurora-1);
+    textarea {
+      resize: vertical;
+      min-height: 80px;
     }
 
-    #flashMsg {
-      margin-top: 40px;
-      padding: 20px;
-      border-radius: 20px;
-      text-align: center;
-      font-weight: 800;
-      display: none;
-    }
-
-    .success {
-      background: rgba(0, 242, 254, 0.1);
-      color: var(--aurora-1);
-      border: 1px solid var(--aurora-1);
-    }
-
-    .back-nav {
-      display: block;
-      margin-top: 40px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.4);
-      text-decoration: none;
+    .error-msg {
+      color: #e74c3c;
       font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      margin-top: 5px;
+      display: none;
+      animation: slideUp 0.3s ease;
     }
 
-    .back-nav:hover {
+    .error-msg.show {
+      display: block;
+    }
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 200% 200%;
       color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
+
+    button:hover:before {
+      left: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+      background-position: 200% center;
+    }
+
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #msg {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+      animation: slideUp 0.5s ease;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    #msg.success {
+      display: block;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 230, 130, 0.2) 100%);
+      color: #2e7d32;
+      border: 2px solid rgba(76, 175, 80, 0.5);
+    }
+
+    #msg.error {
+      display: block;
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
+      color: #c62828;
+      border: 2px solid rgba(231, 76, 60, 0.5);
+    }
+
+    .item-card .delete-btn:hover {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
     }
   </style>
 </head>
 
 <body>
-  <div class="aurora-bg"></div>
 
-  <div class="glass-form-box">
-    <div class="header-unit">
-      <h1>DONOR<br>PROTOCOL</h1>
-      <p>Initialize Abundance Sync</p>
-    </div>
+  <div class="container">
+    <h2>🍴 Restaurant Portal</h2>
 
-    <form id="donorForm" onsubmit="handleDonorSubmit(event)">
+    <form id="restaurantForm" onsubmit="submitRestaurant(event)">
       <div class="form-group">
-        <label>ESTABLISHMENT IDENTIFIER</label>
-        <input id="name" type="text" placeholder="e.g. Celestial Bakery" required>
+        <label for="name">Restaurant Name *</label>
+        <input id="name" type="text" placeholder="Enter your restaurant name" required>
+        <span class="error-msg" id="nameError"></span>
       </div>
 
       <div class="form-group">
-        <label>COORDINATE EMAIL</label>
-        <input id="email" type="email" placeholder="admin@celestial.com" required>
+        <label for="email">Email *</label>
+        <input id="email" type="email" placeholder="your@email.com" required>
+        <span class="error-msg" id="emailError"></span>
       </div>
 
       <div class="form-group">
-        <label>PHYSICAL LOCALE (ADDRESS)</label>
-        <input id="location" type="text" placeholder="Street / Sector" required>
-      </div>
-
-      <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div>
-          <label>RESOURCE CATEGORY</label>
-          <select id="food" required>
-            <option value="">Select Domain</option>
-            <option value="Bakery">Bakery</option>
-            <option value="Vegeterian">Vegetarian</option>
-            <option value="Non-Vegeterian">Non-Vegetarian</option>
-            <option value="Misc">Miscellaneous</option>
-          </select>
-        </div>
-        <div>
-          <label>PORTION COUNT</label>
-          <input id="quantity" type="number" placeholder="Qty" min="1" required>
-        </div>
+        <label for="phone">Phone Number *</label>
+        <input id="phone" type="tel" placeholder="(123) 456-7890" required>
+        <span class="error-msg" id="phoneError"></span>
       </div>
 
       <div class="form-group">
-        <label>SERVICE TIER</label>
-        <select id="membership" required>
-          <option value="Basic">Basic Transmission</option>
-          <option value="Verified">Verified Hub (Premium)</option>
+        <label for="location">Location/Address *</label>
+        <input id="location" type="text" placeholder="Street address" required>
+        <span class="error-msg" id="locationError"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="food">Food Item *</label>
+        <input id="food" type="text" placeholder="e.g., Biryani, Samosas" required>
+        <span class="error-msg" id="foodError"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity Available *</label>
+        <input id="quantity" type="number" placeholder="Number of portions" min="1" required>
+        <span class="error-msg" id="quantityError"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Food Category</label>
+        <select id="category">
+          <option value="">Select a category</option>
+          <option value="North Indian">North Indian</option>
+          <option value="South Indian">South Indian</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Fast Food">Fast Food</option>
+          <option value="Desserts">Desserts</option>
+          <option value="Beverages">Beverages</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
-      <button type="submit" class="submit-btn">ACTIVATE LINK</button>
+      <div class="form-group">
+        <label for="membership">Membership Plan *</label>
+        <select id="membership" required>
+          <option value="Basic">Basic (Free)</option>
+          <option value="Silver">Silver ($19/mo)</option>
+          <option value="Gold">Gold ($49/mo)</option>
+        </select>
+      </div>
+
+      <button type="submit">Submit Food Item</button>
     </form>
 
-    <div id="flashMsg"></div>
-    <a href="index.html" class="back-nav">← RETURN TO MAIN MATRIX</a>
+    <div id="msg"></div>
   </div>
 
   <script>
-    function handleDonorSubmit(e) {
-      e.preventDefault();
-      const msg = document.getElementById("flashMsg");
+    const messageEl = document.getElementById("msg");
+    const form = document.getElementById("restaurantForm");
 
-      const payload = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        location: document.getElementById("location").value,
-        food: document.getElementById("food").value,
-        quantity: document.getElementById("quantity").value,
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validatePhone(phone) {
+      const re = /^[\d\s\-\+\(\)]{10,}$/;
+      return re.test(phone.replace(/\s/g, ''));
+    }
+
+    function showError(fieldId, message) {
+      const field = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + "Error");
+      field.classList.add("error");
+      errorEl.textContent = message;
+      errorEl.classList.add("show");
+    }
+
+    function clearError(fieldId) {
+      const field = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + "Error");
+      field.classList.remove("error");
+      errorEl.classList.remove("show");
+    }
+
+    function validateForm() {
+      let isValid = true;
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const food = document.getElementById("food").value.trim();
+      const quantity = document.getElementById("quantity").value.trim();
+
+      if (!name || name.length < 3) {
+        showError("name", "Restaurant name must be at least 3 characters");
+        isValid = false;
+      } else {
+        clearError("name");
+      }
+
+      if (!email || !validateEmail(email)) {
+        showError("email", "Please enter a valid email");
+        isValid = false;
+      } else {
+        clearError("email");
+      }
+
+      if (!phone || !validatePhone(phone)) {
+        showError("phone", "Please enter a valid phone number");
+        isValid = false;
+      } else {
+        clearError("phone");
+      }
+
+      if (!location || location.length < 5) {
+        showError("location", "Please enter a valid location");
+        isValid = false;
+      } else {
+        clearError("location");
+      }
+
+      if (!food || food.length < 2) {
+        showError("food", "Please enter a food item");
+        isValid = false;
+      } else {
+        clearError("food");
+      }
+
+      if (!quantity || quantity < 1) {
+        showError("quantity", "Quantity must be at least 1");
+        isValid = false;
+      } else {
+        clearError("quantity");
+      }
+
+      return isValid;
+    }
+
+    function showMessage(message, type) {
+      messageEl.textContent = message;
+      messageEl.className = type;
+      messageEl.style.display = "block";
+      setTimeout(() => {
+        messageEl.style.display = "none";
+      }, 5000);
+    }
+
+    function submitRestaurant(event) {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        showMessage("❌ Please fix the errors above", "error");
+        return;
+      }
+
+      const data = {
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        food: document.getElementById("food").value.trim(),
+        quantity: parseInt(document.getElementById("quantity").value),
+        category: document.getElementById("category").value,
         membership: document.getElementById("membership").value
       };
 
-      fetch('/add-restaurant', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      const submitBtn = document.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      fetch("/add-restaurant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
       })
-        .then(r => r.json())
-        .then(d => {
-          msg.textContent = "✓ SIGNAL ESTABLISHED: NODE ACTIVE";
-          msg.className = "success";
-          msg.style.display = "block";
-          e.target.reset();
+        .then(res => {
+          if (!res.ok) throw new Error("Server error");
+          return res.json();
+        })
+        .then(response => {
+          showMessage("✅ Food item submitted successfully!", "success");
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Food Item";
+        })
+        .catch(error => {
+          showMessage("❌ Error submitting data: " + error.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Food Item";
         });
     }
+
   </script>
+
 </body>
 
 </html>

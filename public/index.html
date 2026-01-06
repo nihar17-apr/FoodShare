@@ -3,173 +3,75 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food To Need | Heavenly Sharing</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Syne:wght@700;800&display=swap"
-    rel="stylesheet">
+  <title>Food To Need</title>
   <style>
-    :root {
-      --aurora-1: #00f2fe;
-      --aurora-2: #4facfe;
-      --aurora-3: #7028ff;
-      --aurora-4: #f093fb;
-      --glass: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --text: #ffffff;
-      --text-dim: rgba(255, 255, 255, 0.6);
-      --primary: #00f2fe;
-    }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
-      cursor: default;
+      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
     }
 
     body {
-      background: #02001a;
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: white;
     }
 
-    /* Aurora Background Animation */
-    .aurora-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: #02001a;
-      overflow: hidden;
+    /* Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px 40px;
+      border-radius: 15px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
-    .aurora-layer {
-      position: absolute;
-      width: 150%;
-      height: 150%;
-      top: -25%;
-      left: -25%;
-      background: radial-gradient(circle at 20% 30%, var(--aurora-1), transparent 40%),
-        radial-gradient(circle at 80% 70%, var(--aurora-2), transparent 40%),
-        radial-gradient(circle at 50% 50%, var(--aurora-3), transparent 50%),
-        radial-gradient(circle at 30% 80%, var(--aurora-4), transparent 40%);
-      filter: blur(80px);
-      opacity: 0.3;
-      animation: drift 20s infinite alternate linear;
-    }
-
-    @keyframes drift {
-      from {
-        transform: rotate(0deg) scale(1);
-      }
-
-      to {
-        transform: rotate(10deg) scale(1.1);
-      }
-    }
-
-    /* Beautiful Typography Settings */
-    h1,
-    h2,
-    h3 {
-      font-family: 'Syne', sans-serif;
-      text-transform: uppercase;
+    .navbar span {
+      font-size: 28px;
+      font-weight: 800;
       letter-spacing: -1px;
     }
 
-    /* Navigation */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 30px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 800;
-      background: linear-gradient(to right, white, var(--aurora-1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -2px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 40px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
+    .nav-link {
       color: white;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      opacity: 0.6;
-      transition: 0.4s;
-      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
 
-    .nav-links a:hover {
-      opacity: 1;
-      text-shadow: 0 0 10px var(--aurora-1);
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
     }
 
     /* Hero Section */
     .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(60px, 12vw, 150px);
-      line-height: 0.9;
-      margin-bottom: 40px;
-      background: linear-gradient(135deg, #ffffff 30%, var(--aurora-1) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glowTitle 5s infinite alternate;
-    }
-
-    @keyframes glowTitle {
-      from {
-        text-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
-      }
-
-      to {
-        text-shadow: 0 0 50px rgba(0, 242, 254, 0.5);
-      }
-    }
-
-    .hero p {
-      font-size: 20px;
-      max-width: 600px;
-      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 100px 50px;
+      border-radius: 30px;
       margin-bottom: 50px;
-      animation: fadeIn 2s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(40px);
       }
 
       to {
@@ -178,261 +80,640 @@
       }
     }
 
-    /* Glass Buttons */
-    .btn-group {
-      display: flex;
-      gap: 20px;
-    }
-
-    .btn {
-      padding: 22px 50px;
-      border-radius: 100px;
-      font-size: 14px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      text-decoration: none;
-      transition: 0.5s;
-      border: 1px solid var(--glass-border);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: white;
-      color: #02001a;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: scale(1.05) translateY(-5px);
-      background: var(--aurora-1);
-      box-shadow: 0 0 50px var(--aurora-1);
-    }
-
-    .btn-outline {
-      background: var(--glass);
+    h1 {
       color: white;
-      backdrop-filter: blur(10px);
+      font-size: 56px;
+      margin-bottom: 15px;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      font-weight: 900;
+      letter-spacing: -1px;
+      animation: bounceIn 1s ease;
     }
 
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: white;
-      transform: translateY(-5px);
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
-    /* High-Level Sections */
-    .section {
-      padding: 150px 10%;
-      position: relative;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 100px;
-    }
-
-    .section-header h2 {
-      font-size: 60px;
-      margin-bottom: 20px;
-    }
-
-    .section-header p {
-      color: var(--text-dim);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 40px;
-    }
-
-    .glass-card {
-      background: var(--glass);
-      backdrop-filter: blur(30px);
-      border: 1px solid var(--glass-border);
-      border-radius: 40px;
-      padding: 60px;
-      transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .glass-card:hover {
-      transform: translateY(-20px) scale(1.02);
-      border-color: var(--aurora-1);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .glass-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1), transparent 70%);
-      opacity: 0;
-      transition: 0.6s;
-    }
-
-    .glass-card:hover::before {
-      opacity: 1;
-    }
-
-    .card-icon {
-      font-size: 40px;
-      margin-bottom: 30px;
-      display: block;
-      color: var(--aurora-1);
-    }
-
-    .glass-card h3 {
+    .tagline {
+      color: #fff;
       font-size: 24px;
       margin-bottom: 20px;
-      letter-spacing: 0;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #ffd700, #ff69b4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .glass-card p {
-      color: var(--text-dim);
-      font-size: 16px;
-      line-height: 1.8;
+    .hero>p:last-of-type {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #fff !important;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 16px 40px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-transform: uppercase;
+    }
+
+    button:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    button:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    button:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+
+    /* About Us Section */
+    .about-section {
+      background: linear-gradient(135deg, rgba(255, 105, 180, 0.15) 0%, rgba(255, 192, 203, 0.1) 50%, rgba(255, 218, 185, 0.15) 100%);
+      padding: 60px 50px;
+      border-radius: 25px;
+      margin-bottom: 50px;
+      backdrop-filter: blur(15px);
+      text-align: left;
+      color: white;
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .about-section h2 {
+      font-size: 42px;
+      margin-bottom: 25px;
+      color: #ffffff;
+      border-bottom: 4px solid;
+      border-image: linear-gradient(90deg, #ff69b4, #ffd700, #ff1493) 1;
+      padding-bottom: 20px;
+      font-weight: 900;
+    }
+
+    .about-section>p {
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 18px;
+      color: #f0f0f0 !important;
+      font-weight: 500;
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      padding: 30px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card:nth-child(1) {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.15));
+      border-color: rgba(76, 175, 80, 0.5);
+    }
+
+    .feature-card:nth-child(2) {
+      background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.15));
+      border-color: rgba(244, 67, 54, 0.5);
+    }
+
+    .feature-card:nth-child(3) {
+      background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(3, 169, 244, 0.15));
+      border-color: rgba(33, 150, 243, 0.5);
+    }
+
+    .feature-card:nth-child(4) {
+      background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(233, 30, 99, 0.15));
+      border-color: rgba(156, 39, 176, 0.5);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-15px) scale(1.05);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .feature-card h3 {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: #ffd700;
+      font-weight: 800;
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: #f0f0f0 !important;
+      margin-bottom: 0;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* How It Works */
+    .about-section>div:last-child {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .about-section>div:last-child h3 {
+      color: #ffd700;
+      margin-bottom: 25px;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .about-section>div:last-child>div {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+
+    .about-section>div:last-child>div>div {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      padding: 25px;
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .about-section>div:last-child>div>div:hover {
+      transform: translateY(-10px);
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-section>div:last-child>div>div h4 {
+      color: #ffd700;
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .about-section>div:last-child>div>div p {
+      font-size: 14px;
+      color: #f0f0f0 !important;
+      font-weight: 500;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(79, 195, 247, 0.1) 50%, rgba(129, 212, 250, 0.15) 100%);
+      padding: 60px 50px;
+      border-radius: 25px;
+      margin-bottom: 50px;
+      backdrop-filter: blur(15px);
+      color: white;
+      border: 3px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 20px 60px rgba(79, 195, 247, 0.2);
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    .contact-section h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      border-bottom: 4px solid;
+      border-image: linear-gradient(90deg, #00bcd4, #0097a7, #00838f) 1;
+      padding-bottom: 20px;
+      font-weight: 900;
+    }
+
+    .contact-section>p {
+      margin-bottom: 35px;
+      font-size: 18px;
+      color: #f0f0f0 !important;
+      font-weight: 500;
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 25px;
+      flex-wrap: wrap;
+      margin: 35px 0;
+    }
+
+    .contact-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      padding: 35px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      flex: 1;
+      min-width: 280px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-item:nth-child(1) {
+      background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 193, 7, 0.15));
+      border-color: rgba(255, 152, 0, 0.5);
+    }
+
+    .contact-item:nth-child(2) {
+      background: linear-gradient(135deg, rgba(233, 30, 99, 0.2), rgba(236, 64, 122, 0.15));
+      border-color: rgba(233, 30, 99, 0.5);
+    }
+
+    .contact-item:nth-child(3) {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(129, 199, 132, 0.15));
+      border-color: rgba(76, 175, 80, 0.5);
+    }
+
+    .contact-item:hover {
+      transform: translateY(-15px) scale(1.05);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .contact-item h3 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #ffd700;
+      font-weight: 800;
+    }
+
+    .contact-item p {
+      font-size: 15px;
+      color: #f0f0f0 !important;
+      margin-bottom: 20px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .contact-email {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      margin-top: 10px;
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .contact-email:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+      background: linear-gradient(135deg, #764ba2, #f093fb);
+    }
+
+    .contact-email:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    /* Primary Contact Box */
+    .contact-section>div:last-child {
+      margin-top: 35px;
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 152, 0, 0.15));
+      border-radius: 18px;
+      border: 3px dashed rgba(255, 193, 7, 0.5);
+      box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 20px 50px rgba(255, 152, 0, 0.3);
+      }
+    }
+
+    .contact-section>div:last-child h3 {
+      color: #ffd700;
+      margin-bottom: 15px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .contact-section>div:last-child p:first-of-type {
+      font-size: 20px;
+      margin: 15px 0;
+      color: #fff !important;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .contact-section>div:last-child p:last-child {
+      font-size: 14px;
+      color: #f0f0f0 !important;
+      font-weight: 500;
+      margin: 0;
     }
 
     /* Footer */
-    footer {
-      padding: 100px 60px;
-      background: rgba(0, 0, 0, 0.3);
+    .footer {
       text-align: center;
-      border-top: 1px solid var(--glass-border);
+      color: #f0f0f0;
+      padding: 30px;
+      margin-top: 50px;
+      border-top: 2px solid rgba(255, 255, 255, 0.3);
+      animation: fadeInUp 0.8s ease 0.8s both;
     }
 
-    .footer-logo {
-      font-size: 40px;
-      margin-bottom: 20px;
+    .footer p {
+      margin: 8px 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
     }
 
-    .copy {
-      font-size: 12px;
-      color: var(--text-dim);
-      letter-spacing: 2px;
-      text-transform: uppercase;
+    .footer p:first-child {
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
-      nav {
-        padding: 20px 30px;
+      h1 {
+        font-size: 36px;
       }
 
-      .nav-links {
-        display: none;
+      .tagline {
+        font-size: 18px;
       }
 
-      .hero h1 {
-        font-size: 80px;
+      .button-group {
+        flex-direction: column;
       }
 
-      .section {
-        padding: 100px 5%;
+      button {
+        width: 100%;
+      }
+
+      .about-section,
+      .contact-section,
+      .hero {
+        padding: 30px 20px;
+      }
+
+      .navbar {
+        flex-direction: column;
+        padding: 15px 20px;
+      }
+
+      .about-section h2,
+      .contact-section h2 {
+        font-size: 28px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="aurora-bg">
-    <div class="aurora-layer"></div>
+  <!-- Navigation -->
+  <div class="navbar">
+    <span style="color: white; font-size: 20px; font-weight: bold;">🍽 Food To Need</span>
+    <a class="nav-link" onclick="scrollToSection('hero')">Home</a>
+    <a class="nav-link" onclick="scrollToSection('about')">About Us</a>
+    <a class="nav-link" onclick="scrollToSection('membership')">Memberships</a>
+    <a class="nav-link" onclick="scrollToSection('contact')">Contact</a>
   </div>
 
-  <nav>
-    <div class="logo">FOODTO●NEED</div>
-    <div class="nav-links">
-      <a href="#about">Mission</a>
-      <a href="#impact">Impact</a>
-      <a href="#connect">Network</a>
-      <a href="admin.html" style="color: var(--aurora-1);">Sovereign Access</a>
-    </div>
-  </nav>
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero" id="hero">
+      <h1>🍽 Food To Need</h1>
+      <p class="tagline">Connecting Food Surplus to Food Shortage</p>
+      <p style="font-size: 16px; margin-bottom: 20px;">A platform bridging restaurants with excess food to orphanages
+        and charitable organizations in need</p>
 
-  <section class="hero">
-    <h1>DIVINE.<br>ABUNDANCE.</h1>
-    <p>We are the pulse of human kindness, synchronizing the world's feast with the world's hunger. Experience the
-      heavenly art of sharing.</p>
-    <div class="btn-group">
-      <a class="btn btn-primary" href="user.html">Discover Matrix</a>
-      <a class="btn btn-outline" href="restaurant.html">Join as Donor</a>
-      <a class="btn btn-outline" href="delivery.html">Logistic Node</a>
-    </div>
-  </section>
-
-  <section id="about" class="section">
-    <div class="section-header">
-      <h2>OUR ETHOS</h2>
-      <p>A beautiful synthesis of technology and empathy, designed to eliminate waste and celebrate life.</p>
-    </div>
-    <div class="grid">
-      <div class="glass-card">
-        <span class="card-icon">✧</span>
-        <h3>Pure Intent</h3>
-        <p>Our foundation is built on the purest mission: ensuring no nutrient goes uncelebrated. We treat every meal as
-          a divine gift.</p>
-      </div>
-      <div class="glass-card">
-        <span class="card-icon">✺</span>
-        <h3>Zenith Sync</h3>
-        <p>Real-time atmospheric synchronization between surplus zones and high-need hubs. Faster than light, smoother
-          than glass.</p>
-      </div>
-      <div class="glass-card">
-        <span class="card-icon">✦</span>
-        <h3>Eternal Loop</h3>
-        <p>A continuous cycle of giving that feeds not just the body, but the soul of the community. A truly eternal
-          network.</p>
+      <div class="button-group">
+        <button onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
+        <button onclick="location.href='user.html'">🏠 User Portal</button>
+        <button onclick="location.href='delivery.html'">🚚 Delivery Portal</button>
+        <button onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
       </div>
     </div>
-  </section>
 
-  <section id="impact" class="section" style="background: rgba(255,255,255,0.02);">
-    <div class="glass-card" style="max-width: 1000px; margin: 0 auto; text-align: center; border: none;">
-      <h2 style="font-size: 80px; margin-bottom: 20px;">100M+</h2>
-      <p style="font-size: 24px; color: var(--aurora-1); font-weight: 800; margin-bottom: 40px;">TRANSFERS OF KINDNESS
+    <!-- About Us Section -->
+    <div class="about-section" id="about">
+      <h2>📖 About Us</h2>
+      <p>
+        <strong>Food To Need</strong> is a community-driven initiative designed to reduce food waste while fighting
+        hunger.
+        We connect restaurants, hotels, and food establishments with excess food to orphanages, old age homes, and
+        charitable
+        organizations that need it most.
       </p>
-      <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
-        <div>
-          <h4 style="font-size: 30px;">500K</h4>
-          <p style="font-size: 12px; letter-spacing: 2px;">DONORS</p>
+      <p>
+        Our mission is simple yet powerful: <strong>"No Food Should Go to Waste, No One Should Go Hungry"</strong>
+      </p>
+      <p>
+        By leveraging technology and community participation, we aim to create a sustainable ecosystem where:
+      </p>
+
+      <div class="about-features">
+        <div class="feature-card">
+          <h3>♻️ Sustainable</h3>
+          <p>Reduce food waste and environmental impact by redistributing surplus food responsibly</p>
         </div>
-        <div>
-          <h4 style="font-size: 30px;">2M+</h4>
-          <p style="font-size: 12px; letter-spacing: 2px;">LIVES</p>
+        <div class="feature-card">
+          <h3>💝 Compassionate</h3>
+          <p>Help feed vulnerable populations and support charitable organizations in your community</p>
         </div>
-        <div>
-          <h4 style="font-size: 30px;">∞</h4>
-          <p style="font-size: 12px; letter-spacing: 2px;">HOPE</p>
+        <div class="feature-card">
+          <h3>💻 Digital</h3>
+          <p>Easy-to-use platform connecting donors and recipients instantly</p>
+        </div>
+        <div class="feature-card">
+          <h3>👥 Community</h3>
+          <p>Build stronger communities through collective action and social responsibility</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+        <h3 style="color: #ffd700; margin-bottom: 15px;">How It Works</h3>
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center;">
+          <div>
+            <h4>📝 Register</h4>
+            <p>Restaurants and acceptors register on the platform with their details</p>
+          </div>
+          <div>
+            <h4>🍲 Submit</h4>
+            <p>Restaurants submit food availability; acceptors register their needs</p>
+          </div>
+          <div>
+            <h4>✅ Verify</h4>
+            <p>Admin team verifies all submissions for authenticity and safety</p>
+          </div>
+          <div>
+            <h4>🤝 Connect</h4>
+            <p>Verified restaurants and acceptors are connected for food distribution</p>
+          </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <footer>
-    <div class="logo footer-logo">FOODTO●NEED</div>
-    <p class="copy">&copy; 2026 THE HEAVENLY NETWORK. ALL RIGHTS RESERVED.</p>
-  </footer>
+    <!-- Membership Section -->
+    <div class="about-section" id="membership"
+      style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 50%, rgba(240, 147, 251, 0.15) 100%); border-image: linear-gradient(90deg, #667eea, #764ba2, #f093fb) 1;">
+      <h2 style="border-image: linear-gradient(90deg, #667eea, #764ba2, #f093fb) 1;">💎 Membership Plans</h2>
+      <p>Join our premium network of donors and supporters. Choose a plan that fits your contribution level and get
+        exclusive benefits.</p>
+
+      <div class="about-features">
+        <div class="feature-card"
+          style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); border-color: rgba(255, 255, 255, 0.3);">
+          <h3 style="color: #fff;">⚪ Basic</h3>
+          <p style="font-size: 28px; font-weight: 800; color: #fff; margin: 15px 0;">Free</p>
+          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
+            <li style="margin-bottom: 10px;">✨ Standard Food Listing</li>
+            <li style="margin-bottom: 10px;">✨ Basic Support</li>
+            <li style="margin-bottom: 10px;">✨ Public Profile</li>
+          </ul>
+          <button onclick="location.href='restaurant.html'" style="width: 100%; padding: 12px; font-size: 14px;">Get
+            Started</button>
+        </div>
+
+        <div class="feature-card"
+          style="background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(169, 169, 169, 0.15)); border-color: #c0c0c0; transform: scale(1.05); box-shadow: 0 15px 45px rgba(0,0,0,0.3);">
+          <h3 style="color: #e5e4e2;">🥈 Silver</h3>
+          <p style="font-size: 28px; font-weight: 800; color: #e5e4e2; margin: 15px 0;">$19/mo</p>
+          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
+            <li style="margin-bottom: 10px;">✅ Verified Donor Badge</li>
+            <li style="margin-bottom: 10px;">🚀 Priority Pickup Notification</li>
+            <li style="margin-bottom: 10px;">📈 Monthly Impact Report</li>
+            <li style="margin-bottom: 10px;">🌟 Enhanced Visibility</li>
+          </ul>
+          <button onclick="location.href='restaurant.html'"
+            style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #bdc3c7, #2c3e50);">Upgrade
+            to Silver</button>
+        </div>
+
+        <div class="feature-card"
+          style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.15)); border-color: #ffd700;">
+          <h3 style="color: #ffd700;">🥇 Gold</h3>
+          <p style="font-size: 28px; font-weight: 800; color: #ffd700; margin: 15px 0;">$49/mo</p>
+          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
+            <li style="margin-bottom: 10px;">🏆 Elite Partner Status</li>
+            <li style="margin-bottom: 10px;">🔥 Featured listing on Home</li>
+            <li style="margin-bottom: 10px;">📊 Advanced Analytics</li>
+            <li style="margin-bottom: 10px;">🤝 Dedicated Account Manager</li>
+          </ul>
+          <button onclick="location.href='restaurant.html'"
+            style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #ffd700, #ff8c00);">Become
+            Gold</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section" id="contact">
+      <h2>📧 Contact Us</h2>
+      <p style="margin-bottom: 30px;">Have questions, suggestions, or want to get involved? We'd love to hear from you!
+      </p>
+
+      <div class="contact-info">
+        <div class="contact-item">
+          <h3>✉️ Email</h3>
+          <p>Send us your inquiries, feedback, or partnership proposals</p>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in" target="_blank"
+            class="contact-email">📬 Send Email</a>
+        </div>
+
+        <div class="contact-item">
+          <h3>💬 Feedback</h3>
+          <p>Help us improve! Share your experience and suggestions</p>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Feedback"
+            target="_blank" class="contact-email">⭐ Share Feedback</a>
+        </div>
+
+        <div class="contact-item">
+          <h3>🤝 Partnerships</h3>
+          <p>Interested in partnering with us? Let's collaborate!</p>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Partnership%20Inquiry"
+            target="_blank" class="contact-email">🚀 Discuss Partnership</a>
+        </div>
+      </div>
+
+      <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+        <h3 style="color: #ffd700; margin-bottom: 10px;">Primary Contact</h3>
+        <p style="font-size: 18px; margin: 10px 0;">📧 <strong>nrouthu@gitam.in</strong></p>
+        <p style="font-size: 14px; color: #e6f7ff;">We typically respond within 24 hours</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p><strong>🍽 Food To Need</strong> - Building a Hunger-Free Community</p>
+      <p>&copy; 2026 Food To Need Initiative. All rights reserved.</p>
+      <p>Developed with ❤️ for a better tomorrow</p>
+    </div>
+  </div>
 
   <script>
-    // Smooth Scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
+    function scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   </script>
 </body>
 
