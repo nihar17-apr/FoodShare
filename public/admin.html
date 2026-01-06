@@ -831,6 +831,34 @@
       </select>
     </div>
 
+    <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 30px;">
+      <div class="stat-card"
+        style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border: 2px solid #667eea;">
+        <h4>📦 Storage Ecosystem</h4>
+        <div id="storage-engine" class="val" style="font-size: 32px; margin: 10px 0;">MongoDB Atlas</div>
+        <p id="storage-status" style="color: #667eea; font-weight: 700;">ACTIVE | DISTRIBUTED CLUSTER</p>
+      </div>
+      <div class="stat-card"
+        style="background: linear-gradient(135deg, rgba(245, 124, 0, 0.1), rgba(255, 152, 0, 0.1)); border: 2px solid #f57c00;">
+        <h4>📊 Global Capacity</h4>
+        <div id="storage-cap" class="val" style="font-size: 32px; margin: 10px 0;">UNLIMITED</div>
+        <p style="color: #f57c00; font-weight: 700;">AUTO-SCALING ENABLED</p>
+      </div>
+    </div>
+
+    <script>
+      async function updateStorageStats() {
+        try {
+          const res = await fetch('/admin/storage-stats');
+          const data = await res.json();
+          document.getElementById("storage-engine").textContent = data.engine;
+          document.getElementById("storage-status").textContent = `STATUS: ${data.health.toUpperCase()} | ${data.engine.split(' ')[0].toUpperCase()}`;
+          document.getElementById("storage-cap").textContent = data.totalCapacity.split(' ')[0];
+        } catch (e) { }
+      }
+      setInterval(updateStorageStats, 5000);
+      updateStorageStats();
+    </script>
     <div class="stats">
       <div class="stat-card">
         <h4>Total Restaurants</h4>
