@@ -1,37 +1,46 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const mongoose = require("mongoose");
-
-// Import Models
-const Restaurant = require("./backend/models/restaurant");
-const Acceptor = require("./backend/models/acceptor");
-const Delivery = require("./backend/models/delivery");
-const Activity = require("./backend/models/activity");
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const DB_FILE = path.join(__dirname, "db.json");
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from public folder
+// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/foodshare";
-mongoose.connect(MONGODB_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch(err => console.error("❌ MongoDB Connection Error:", err));
+// Initialize DB file if not exists
+if (!fs.existsSync(DB_FILE)) {
+  fs.writeFileSync(DB_FILE, JSON.stringify({
+    restaurants: [],
+    acceptors: [],
+    deliveryPersons: [],
+    activityLogs: []
+  }, null, 2));
+}
+
+// Helper functions for JSON DB
+function readDB() {
+  const data = fs.readFileSync(DB_FILE, "utf-8");
+  return JSON.parse(data);
+}
+
+function writeDB(data) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+}
 
 // Admin credentials
 const ADMIN_ID = process.env.ADMIN_ID || "Nihar";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1234";
 
 /* ===============================
-   HOME ROUTE - Serve index.html
+   HOME ROUTE
 ================================ */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -40,42 +49,37 @@ app.get("/", (req, res) => {
 /* ===============================
    RESTAURANT PORTAL
 ================================ */
-app.post("/add-restaurant", async (req, res) => {
+app.post("/add-restaurant", (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
-
     if (!name || !email || !phone || !location || !food || !quantity) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const restaurant = new Restaurant({
-      name,
-      email,
-      phone,
-      location,
-      description,
-      items: [{
-        food,
-        quantity: parseInt(quantity),
-        category
-      }],
+    const db = readDB();
+    const restaurant = {
+      _id: Date.now().toString(),
+      name, email, phone, location, description,
+      items: [{ food, quantity: parseInt(quantity), category }],
       isVerified: false,
       rating: 0,
-      membership: membership || "Basic"
-    });
+      membership: membership || "Basic",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
 
-    await restaurant.save();
-
-    // Log activity
-    const activity = new Activity({
+    db.restaurants.push(restaurant);
+    db.activityLogs.push({
+      _id: Date.now().toString(),
       actorType: "Restaurant",
       actorName: name,
       actorEmail: email,
       action: "Submitted Food Donation",
-      details: `Food: ${food}, Quantity: ${quantity}, Category: ${category || 'N/A'}`
+      details: `Food: ${food}, Quantity: ${quantity}`,
+      timestamp: new Date()
     });
-    await activity.save();
 
+    writeDB(db);
     res.status(201).json({ message: "✅ Restaurant added successfully", data: restaurant });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -85,38 +89,33 @@ app.post("/add-restaurant", async (req, res) => {
 /* ===============================
    ACCEPTOR PORTAL
 ================================ */
-app.post("/add-acceptor", async (req, res) => {
+app.post("/add-acceptor", (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, membership } = req.body;
-
-    if (!name || !email || !phone || !location || !food || !quantity) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    const acceptor = new Acceptor({
-      name,
-      email,
-      phone,
-      location,
-      food,
+    const db = readDB();
+    const acceptor = {
+      _id: Date.now().toString(),
+      name, email, phone, location, food,
       quantity: parseInt(quantity),
       isVerified: false,
       rating: 0,
-      membership: membership || "Basic"
-    });
+      membership: membership || "Basic",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
 
-    await acceptor.save();
-
-    // Log activity
-    const activity = new Activity({
+    db.acceptors.push(acceptor);
+    db.activityLogs.push({
+      _id: Date.now().toString(),
       actorType: "Acceptor",
       actorName: name,
       actorEmail: email,
       action: "Requested Food",
-      details: `Food: ${food}, Quantity: ${quantity}`
+      details: `Food: ${food}, Quantity: ${quantity}`,
+      timestamp: new Date()
     });
-    await activity.save();
 
+    writeDB(db);
     res.status(201).json({ message: "✅ Acceptor added successfully", data: acceptor });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -126,59 +125,32 @@ app.post("/add-acceptor", async (req, res) => {
 /* ===============================
    DELIVERY PORTAL
 ================================ */
-app.post("/add-delivery", async (req, res) => {
+app.post("/add-delivery", (req, res) => {
   try {
     const { name, email, phone, location, vehicleType, licenseNumber } = req.body;
-
-    if (!name || !email || !phone || !location || !vehicleType) {
-      return res.status(400).json({ error: "Required fields are missing" });
-    }
-
-    const deliveryPerson = new Delivery({
-      name,
-      email,
-      phone,
-      location,
-      vehicleType,
-      licenseNumber,
+    const db = readDB();
+    const delivery = {
+      _id: Date.now().toString(),
+      name, email, phone, location, vehicleType, licenseNumber,
       isVerified: false,
-      status: "Available"
-    });
+      status: "Available",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
 
-    await deliveryPerson.save();
-
-    // Log activity
-    const activity = new Activity({
+    db.deliveryPersons.push(delivery);
+    db.activityLogs.push({
+      _id: Date.now().toString(),
       actorType: "Delivery",
       actorName: name,
       actorEmail: email,
       action: "Registered for Delivery",
-      details: `Vehicle: ${vehicleType}`
+      details: `Vehicle: ${vehicleType}`,
+      timestamp: new Date()
     });
-    await activity.save();
 
-    res.status(201).json({ message: "✅ Delivery person added successfully", data: deliveryPerson });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* ===============================
-   PUBLIC ROUTES (Verified Only)
-================================ */
-app.get("/restaurants", async (req, res) => {
-  try {
-    const restaurants = await Restaurant.find({ isVerified: true });
-    res.json(restaurants);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.get("/acceptors", async (req, res) => {
-  try {
-    const acceptors = await Acceptor.find({ isVerified: true });
-    res.json(acceptors);
+    writeDB(db);
+    res.status(201).json({ message: "✅ Delivery person added successfully", data: delivery });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -187,170 +159,81 @@ app.get("/acceptors", async (req, res) => {
 /* ===============================
    ADMIN ROUTES
 ================================ */
-app.get("/admin/restaurants", async (req, res) => {
-  try {
-    const restaurants = await Restaurant.find().sort({ createdAt: -1 });
-    res.json(restaurants);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get("/restaurants", (req, res) => {
+  const db = readDB();
+  res.json(db.restaurants.filter(r => r.isVerified));
 });
 
-app.get("/admin/acceptors", async (req, res) => {
-  try {
-    const acceptors = await Acceptor.find().sort({ createdAt: -1 });
-    res.json(acceptors);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get("/acceptors", (req, res) => {
+  const db = readDB();
+  res.json(db.acceptors.filter(a => a.isVerified));
 });
 
-app.get("/admin/activities", async (req, res) => {
-  try {
-    const activities = await Activity.find().sort({ timestamp: -1 });
-    res.json(activities);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.get("/admin/restaurants", (req, res) => res.json(readDB().restaurants));
+app.get("/admin/acceptors", (req, res) => res.json(readDB().acceptors));
+app.get("/admin/deliveries", (req, res) => res.json(readDB().deliveryPersons));
+app.get("/admin/activities", (req, res) => {
+  const logs = readDB().activityLogs;
+  res.json(logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
 });
 
-app.get("/admin/deliveries", async (req, res) => {
-  try {
-    const deliveries = await Delivery.find().sort({ createdAt: -1 });
-    res.json(deliveries);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.put("/verify-restaurant/:id", (req, res) => {
+  const db = readDB();
+  const r = db.restaurants.find(x => x._id === req.params.id);
+  if (r) { r.isVerified = true; r.updatedAt = new Date(); }
+  writeDB(db);
+  res.json({ message: "✅ Restaurant verified", data: r });
 });
 
-app.get("/get-restaurant/:id", async (req, res) => {
-  try {
-    const r = await Restaurant.findById(req.params.id);
-    if (!r) return res.status(404).json({ error: "Restaurant not found" });
-    res.json(r);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.put("/verify-acceptor/:id", (req, res) => {
+  const db = readDB();
+  const a = db.acceptors.find(x => x._id === req.params.id);
+  if (a) { a.isVerified = true; a.updatedAt = new Date(); }
+  writeDB(db);
+  res.json({ message: "✅ Acceptor verified", data: a });
 });
 
-app.get("/get-acceptor/:id", async (req, res) => {
-  try {
-    const a = await Acceptor.findById(req.params.id);
-    if (!a) return res.status(404).json({ error: "Acceptor not found" });
-    res.json(a);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.put("/verify-delivery/:id", (req, res) => {
+  const db = readDB();
+  const d = db.deliveryPersons.find(x => x._id === req.params.id);
+  if (d) { d.isVerified = true; d.updatedAt = new Date(); }
+  writeDB(db);
+  res.json({ message: "✅ Delivery person verified", data: d });
 });
 
-app.get("/get-delivery/:id", async (req, res) => {
-  try {
-    const d = await Delivery.findById(req.params.id);
-    if (!d) return res.status(404).json({ error: "Delivery person not found" });
-    res.json(d);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.delete("/delete-restaurant/:id", (req, res) => {
+  let db = readDB();
+  const item = db.restaurants.find(x => x._id === req.params.id);
+  db.restaurants = db.restaurants.filter(x => x._id !== req.params.id);
+  writeDB(db);
+  res.json({ message: "✅ Deleted", data: item });
 });
 
-/* ===============================
-   VERIFY ROUTES
-================================ */
-app.put("/verify-restaurant/:id", async (req, res) => {
-  try {
-    const r = await Restaurant.findByIdAndUpdate(
-      req.params.id,
-      { isVerified: true, updatedAt: new Date() },
-      { new: true }
-    );
-    res.json({ message: "✅ Restaurant verified", data: r });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.delete("/delete-acceptor/:id", (req, res) => {
+  let db = readDB();
+  const item = db.acceptors.find(x => x._id === req.params.id);
+  db.acceptors = db.acceptors.filter(x => x._id !== req.params.id);
+  writeDB(db);
+  res.json({ message: "✅ Deleted", data: item });
 });
 
-app.put("/verify-acceptor/:id", async (req, res) => {
-  try {
-    const a = await Acceptor.findByIdAndUpdate(
-      req.params.id,
-      { isVerified: true, updatedAt: new Date() },
-      { new: true }
-    );
-    res.json({ message: "✅ Acceptor verified", data: a });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+app.delete("/delete-delivery/:id", (req, res) => {
+  let db = readDB();
+  const item = db.deliveryPersons.find(x => x._id === req.params.id);
+  db.deliveryPersons = db.deliveryPersons.filter(x => x._id !== req.params.id);
+  writeDB(db);
+  res.json({ message: "✅ Deleted", data: item });
 });
 
-app.put("/verify-delivery/:id", async (req, res) => {
-  try {
-    const d = await Delivery.findByIdAndUpdate(
-      req.params.id,
-      { isVerified: true, updatedAt: new Date() },
-      { new: true }
-    );
-    res.json({ message: "✅ Delivery person verified", data: d });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* ===============================
-   DELETE ROUTES
-================================ */
-app.delete("/delete-restaurant/:id", async (req, res) => {
-  try {
-    const restaurant = await Restaurant.findByIdAndDelete(req.params.id);
-    res.json({ message: "✅ Restaurant deleted", data: restaurant });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.delete("/delete-acceptor/:id", async (req, res) => {
-  try {
-    const acceptor = await Acceptor.findByIdAndDelete(req.params.id);
-    res.json({ message: "✅ Acceptor deleted", data: acceptor });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.delete("/delete-delivery/:id", async (req, res) => {
-  try {
-    const dp = await Delivery.findByIdAndDelete(req.params.id);
-    res.json({ message: "✅ Delivery person deleted", data: dp });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* ===============================
-   ADMIN AUTHENTICATION
-================================ */
 app.post("/verify-admin", (req, res) => {
   const { adminId, password } = req.body;
-
   if (adminId === ADMIN_ID && password === ADMIN_PASSWORD) {
-    res.json({
-      message: "✅ Admin verified",
-      success: true,
-      admin: { adminId: ADMIN_ID }
-    });
+    res.json({ success: true, admin: { adminId: ADMIN_ID } });
   } else {
-    res.status(401).json({
-      error: "Invalid credentials",
-      success: false
-    });
+    res.status(401).json({ success: false });
   }
 });
 
-/* ===============================
-   SERVER START
-================================ */
 app.listen(PORT, () => {
-  console.log(`🚀 FoodShare Backend running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
-
-// Export for Vercel
-module.exports = app;
