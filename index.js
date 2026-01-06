@@ -1,123 +1,188 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const fs = require("fs");
 const mongoose = require("mongoose");
 
+// Configuration
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_FILE = path.join("/tmp", "db.json"); // Use /tmp for Vercel (non-persistent but won't crash)
-
-// Hybrid Storage Object
-let memoryDB = {
-  restaurants: [],
-  acceptors: [],
-  deliveryPersons: [],
-  activityLogs: []
-};
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/foodshare";
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// --- DATABASE LOGIC ---
-const MONGODB_URI = process.env.MONGODB_URI;
+// MongoDB Connection (Persistent Storage)
+// This ensures history is never lost unless manually deleted by admin.
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log("✅ Database Connected: History will be stored permanently."))
+  .catch(err => console.error("❌ Database Connection Error:", err));
 
-if (MONGODB_URI) {
-  mongoose.connect(MONGODB_URI)
-    .then(() => console.log("✅ Connected to MongoDB Atlas"))
-    .catch(err => console.error("❌ MongoDB Connection Error:", err));
+// Models (Separated for clean code)
+const Restaurant = require("./backend/models/restaurant");
+const Acceptor = require("./backend/models/acceptor");
+const Delivery = require("./backend/models/delivery");
+const Activity = require("./backend/models/activity");
 
-  // Define Schemas if using MongoDB
-  const schemaOptions = { timestamps: true };
-  const Restaurant = mongoose.models.Restaurant || mongoose.model("Restaurant", new mongoose.Schema({
-    name: String, email: String, phone: String, location: String, description: String,
-    items: Array, isVerified: Boolean, rating: Number, membership: String
-  }, schemaOptions));
+/* ===============================
+   RESTAURANT ROUTES
+================================ */
+app.post("/add-restaurant", async (req, res) => {
+  try {
+    const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
 
-  const Acceptor = mongoose.models.Acceptor || mongoose.model("Acceptor", new mongoose.Schema({
-    name: String, email: String, phone: String, location: String, food: String,
-    quantity: Number, isVerified: Boolean, rating: Number, membership: String
-  }, schemaOptions));
+    const restaurant = new Restaurant({
+      name, email, phone, location, description,
+      items: [{ food, quantity: parseInt(quantity), category }],
+      isVerified: false,
+      membership: membership || "Basic"
+    });
+    await restaurant.save();
 
-  const Delivery = mongoose.models.Delivery || mongoose.model("Delivery", new mongoose.Schema({
-    name: String, email: String, phone: String, location: String,
-    vehicleType: String, licenseNumber: String, isVerified: Boolean, status: String
-  }, schemaOptions));
+    await new Activity({
+      actorType: "Restaurant",
+      actorName: name,
+      actorEmail: email,
+      action: "Submitted Food Donation",
+      details: `Food: ${food}, Quantity: ${quantity}`
+    }).save();
 
-  const Activity = mongoose.models.Activity || mongoose.model("Activity", new mongoose.Schema({
-    actorType: String, actorName: String, actorEmail: String, action: String, details: String, timestamp: Date
-  }));
-
-  // Map Routes to MongoDB
-  app.post("/add-restaurant", async (req, res) => {
-    try {
-      const restaurant = new Restaurant({ ...req.body, items: [{ food: req.body.food, quantity: req.body.quantity, category: req.body.category }], isVerified: false, rating: 0, membership: req.body.membership || "Basic" });
-      await restaurant.save();
-      await new Activity({ actorType: "Restaurant", actorName: req.body.name, actorEmail: req.body.email, action: "Submitted Food Donation", details: `Food: ${req.body.food}`, timestamp: new Date() }).save();
-      res.status(201).json({ success: true, data: restaurant });
-    } catch (e) { res.status(500).json({ error: e.message }); }
-  });
-  // ... (Other MongoDB routes omitted for brevity but they follow the same pattern)
-} else {
-  // Use Local File / Memory Fallback (Safe for Vercel)
-  console.log("⚠️ No MONGODB_URI found. Using temporary file storage.");
-
-  function getDB() {
-    try {
-      if (fs.existsSync(DB_FILE)) return JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
-    } catch (e) { }
-    return memoryDB;
-  }
-
-  function saveDB(data) {
-    memoryDB = data;
-    try {
-      fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
-    } catch (e) {
-      // Ignore write errors on read-only environments like Vercel
-    }
-  }
-
-  app.post("/add-restaurant", (req, res) => {
-    const db = getDB();
-    const item = { _id: Date.now().toString(), ...req.body, isVerified: false, createdAt: new Date() };
-    db.restaurants.push(item);
-    db.activityLogs.push({ actorType: "Restaurant", actorName: req.body.name, action: "Submitted Donation", timestamp: new Date() });
-    saveDB(db);
-    res.json({ success: true, data: item });
-  });
-}
-
-// Basic Admin Routes (Working with either DB)
-app.get("/admin/activities", async (req, res) => {
-  if (mongoose.connection.readyState === 1) {
-    const logs = await mongoose.model("Activity").find().sort({ timestamp: -1 });
-    res.json(logs);
-  } else {
-    res.json(memoryDB.activityLogs.reverse());
+    res.status(201).json({ success: true, message: "✅ Restaurant added successfully", data: restaurant });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-app.get("/admin/restaurants", async (req, res) => {
-  if (mongoose.connection.readyState === 1) res.json(await mongoose.model("Restaurant").find());
-  else res.json(memoryDB.restaurants);
+app.get("/restaurants", async (req, res) => {
+  const data = await Restaurant.find({ isVerified: true });
+  res.json(data);
 });
 
-// Admin credentials
+/* ===============================
+   ACCEPTOR ROUTES
+================================ */
+app.post("/add-acceptor", async (req, res) => {
+  try {
+    const { name, email, phone, location, food, quantity, membership } = req.body;
+
+    const acceptor = new Acceptor({
+      name, email, phone, location, food,
+      quantity: parseInt(quantity),
+      isVerified: false,
+      membership: membership || "Basic"
+    });
+    await acceptor.save();
+
+    await new Activity({
+      actorType: "Acceptor",
+      actorName: name,
+      actorEmail: email,
+      action: "Requested Food",
+      details: `Food: ${food}, Quantity: ${quantity}`
+    }).save();
+
+    res.status(201).json({ success: true, message: "✅ Acceptor added successfully", data: acceptor });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/acceptors", async (req, res) => {
+  const data = await Acceptor.find({ isVerified: true });
+  res.json(data);
+});
+
+/* ===============================
+   DELIVERY ROUTES
+================================ */
+app.post("/add-delivery", async (req, res) => {
+  try {
+    const { name, email, phone, location, vehicleType, licenseNumber } = req.body;
+
+    const delivery = new Delivery({
+      name, email, phone, location, vehicleType, licenseNumber,
+      isVerified: false,
+      status: "Available"
+    });
+    await delivery.save();
+
+    await new Activity({
+      actorType: "Delivery",
+      actorName: name,
+      actorEmail: email,
+      action: "Registered for Delivery",
+      details: `Vehicle: ${vehicleType}`
+    }).save();
+
+    res.status(201).json({ success: true, message: "✅ Delivery person added successfully", data: delivery });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ===============================
+   ADMIN ACTIONS (Persistence Management)
+================================ */
+
+// Fetch all for admin dashboard
+app.get("/admin/restaurants", async (req, res) => res.json(await Restaurant.find().sort({ createdAt: -1 })));
+app.get("/admin/acceptors", async (req, res) => res.json(await Acceptor.find().sort({ createdAt: -1 })));
+app.get("/admin/deliveries", async (req, res) => res.json(await Delivery.find().sort({ createdAt: -1 })));
+app.get("/admin/activities", async (req, res) => res.json(await Activity.find().sort({ timestamp: -1 })));
+
+// Verification
+app.put("/verify-restaurant/:id", async (req, res) => {
+  const r = await Restaurant.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+  res.json({ success: true, data: r });
+});
+
+app.put("/verify-acceptor/:id", async (req, res) => {
+  const a = await Acceptor.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+  res.json({ success: true, data: a });
+});
+
+app.put("/verify-delivery/:id", async (req, res) => {
+  const d = await Delivery.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
+  res.json({ success: true, data: d });
+});
+
+// Deletion (History Management)
+app.delete("/delete-restaurant/:id", async (req, res) => {
+  await Restaurant.findByIdAndDelete(req.params.id);
+  res.json({ success: true, message: "Removed from database" });
+});
+
+app.delete("/delete-acceptor/:id", async (req, res) => {
+  await Acceptor.findByIdAndDelete(req.params.id);
+  res.json({ success: true, message: "Removed from database" });
+});
+
+app.delete("/delete-delivery/:id", async (req, res) => {
+  await Delivery.findByIdAndDelete(req.params.id);
+  res.json({ success: true, message: "Removed from database" });
+});
+
+app.delete("/delete-activity/:id", async (req, res) => {
+  await Activity.findByIdAndDelete(req.params.id);
+  res.json({ success: true, message: "Log entry deleted" });
+});
+
+// Admin Auth
 const ADMIN_ID = process.env.ADMIN_ID || "Nihar";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1234";
 
 app.post("/verify-admin", (req, res) => {
   const { adminId, password } = req.body;
-  if (adminId === ADMIN_ID && password === ADMIN_PASSWORD) res.json({ success: true });
-  else res.status(401).json({ success: false });
+  if (adminId === ADMIN_ID && password === ADMIN_PASSWORD) {
+    res.json({ success: true, message: "Welcome Admin" });
+  } else {
+    res.status(401).json({ success: false, error: "Invalid Credentials" });
+  }
 });
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
+// Fallback to Home
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 FoodToNeed Backend running at http://localhost:${PORT}`));

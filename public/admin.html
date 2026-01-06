@@ -1044,16 +1044,33 @@
         const card = document.createElement("div");
         card.className = "card";
         const date = new Date(log.timestamp).toLocaleString();
+        const icon = log.actorType === 'Restaurant' ? '🍴' : (log.actorType === 'Acceptor' ? '🏠' : '🚚');
         card.innerHTML = `
-      <h3>${log.actorType === 'Restaurant' ? '🍴' : '🏠'} ${log.actorName}</h3>
-      <p><strong>Type:</strong> ${log.actorType}</p>
-      <p><strong>Action:</strong> ${log.action}</p>
-      <p><strong>Details:</strong> ${log.details}</p>
-      <p><strong>Email:</strong> ${log.actorEmail || 'N/A'}</p>
-      <span class="badge">🕒 ${date}</span>
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <h3>${icon} ${log.actorName}</h3>
+          <p><strong>Action:</strong> <span style="color: #667eea; font-weight: 600;">${log.action}</span></p>
+          <p><strong>Details:</strong> ${log.details}</p>
+          <p><strong>Email:</strong> ${log.actorEmail || 'N/A'}</p>
+          <span class="badge">🕒 ${date}</span>
+        </div>
+        <button onclick="deleteActivity('${log._id}')" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;">Delete Log</button>
+      </div>
     `;
         out.appendChild(card);
       });
+    }
+
+    function deleteActivity(id) {
+      if (confirm("Permanently delete this activity log entry?")) {
+        fetch(`/delete-activity/${id}`, { method: "DELETE" })
+          .then(res => res.json())
+          .then(() => {
+            showMessage("✅ Log entry removed", "success");
+            loadActivityLogs();
+          })
+          .catch(err => showMessage("❌ Error deleting log", "error"));
+      }
     }
 
     function updateActiveButton(index) {
