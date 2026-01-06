@@ -9,51 +9,98 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-      background: #764ba2;
-      background-image:
-        radial-gradient(at 0% 0%, #667eea 0px, transparent 50%),
-        radial-gradient(at 100% 0%, #764ba2 0px, transparent 50%),
-        radial-gradient(at 100% 100%, #f093fb 0px, transparent 50%),
-        radial-gradient(at 0% 100%, #4facfe 0px, transparent 50%),
-        radial-gradient(at 50% 50%, #667eea 0px, transparent 50%);
-      background-size: 200% 200%;
-      animation: mixColors 15s ease infinite;
+      background: #02001a;
       min-height: 100vh;
-      padding: 20px;
+      overflow-x: hidden;
       color: white;
     }
 
-    @keyframes mixColors {
+    /* Cinematic Aurora Background */
+    .aurora-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      filter: blur(100px);
+      opacity: 0.6;
+    }
+
+    .blob {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: drift 20s infinite alternate;
+    }
+
+    .blob-1 {
+      background: #00f2fe;
+      top: -10%;
+      left: -10%;
+      animation-duration: 25s;
+    }
+
+    .blob-2 {
+      background: #7028ff;
+      top: 10%;
+      right: -10%;
+      animation-duration: 30s;
+      animation-delay: -5s;
+    }
+
+    .blob-3 {
+      background: #f093fb;
+      bottom: -10%;
+      left: 10%;
+      animation-duration: 22s;
+      animation-delay: -2s;
+    }
+
+    .blob-4 {
+      background: #4facfe;
+      bottom: 10%;
+      right: 10%;
+      animation-duration: 28s;
+      animation-delay: -8s;
+    }
+
+    @keyframes drift {
       0% {
-        background-position: 0% 50%;
+        transform: translate(0, 0) scale(1);
       }
 
-      50% {
-        background-position: 100% 50%;
+      33% {
+        transform: translate(100px, 150px) scale(1.2);
+      }
+
+      66% {
+        transform: translate(-50px, 200px) scale(0.8);
       }
 
       100% {
-        background-position: 0% 50%;
+        transform: translate(0, 0) scale(1);
       }
     }
 
-    /* Navbar Styles */
     .navbar {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
       padding: 20px 40px;
-      border-radius: 15px;
+      border-radius: 20px;
+      margin-top: 20px;
       margin-bottom: 40px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
     .navbar span {
@@ -83,12 +130,13 @@
 
     /* Hero Section */
     .hero {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
       padding: 100px 50px;
-      border-radius: 30px;
+      border-radius: 40px;
       margin-bottom: 50px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
     }
 
     @keyframes fadeInUp {
@@ -548,6 +596,12 @@
 </head>
 
 <body>
+  <div class="aurora-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+  </div>
   <!-- Navigation -->
   <div class="navbar">
     <span style="color: white; font-size: 20px; font-weight: bold;">🍽 Food To Need</span>
