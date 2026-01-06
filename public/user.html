@@ -1,4 +1,4 @@
-<title>Acceptor Portal</title>
+<title>User Portal - Food To Need</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -395,19 +395,43 @@
   <div class="container">
     <!-- Tab Buttons -->
     <div class="tab-container">
-      <button class="tab-button active" onclick="switchTab('form', event)">📋 Register</button>
-      <button class="tab-button" onclick="switchTab('restaurants', event)">🍴 Browse Restaurants</button>
+      <button class="tab-button active" onclick="switchTab('restaurants', event)">🍴 Browse Restaurants</button>
+      <button class="tab-button" onclick="switchTab('form', event)">📋 Register Your Need</button>
     </div>
 
-    <!-- Form Tab -->
-    <div id="form" class="tab-content active">
+    <!-- Restaurants Tab (Now FIRST) -->
+    <div id="restaurants" class="tab-content active">
+      <div class="restaurants-container">
+        <h2 style="color: white; text-align: center; margin-bottom: 30px;">🍴 Food Services Around You</h2>
+
+        <div class="search-section">
+          <input type="text" id="searchRestaurants" placeholder="🔍 Search restaurants, hotels, or food..."
+            onkeyup="filterRestaurants()">
+        </div>
+
+        <div id="map-container"
+          style="height: 450px; width: 100%; border-radius: 20px; margin-bottom: 25px; border: 4px solid rgba(255,255,255,0.4); overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.2);">
+          <div id="map" style="height: 100%;"></div>
+        </div>
+        <div id="nearby-status"
+          style="text-align: center; margin-bottom: 20px; font-size: 16px; color: #fff; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 30px;">
+          📍 Looking for live food services near you...</div>
+
+        <div id="restaurantsList">
+          <div class="loading-msg">Fetching real-time data...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Tab (Now SECOND) -->
+    <div id="form" class="tab-content">
       <div class="form-container">
-        <h2>🏠 Acceptor Portal</h2>
+        <h2>🏠 User Registration</h2>
 
         <form id="acceptorForm" onsubmit="submitAcceptor(event)">
           <div class="form-group">
-            <label for="name">Acceptor Name *</label>
-            <input id="name" type="text" placeholder="Enter your organization name" required>
+            <label for="name">Your Name / Organization *</label>
+            <input id="name" type="text" placeholder="Enter name" required>
             <span class="error-msg" id="nameError"></span>
           </div>
 
@@ -457,29 +481,6 @@
       </div>
     </div>
 
-    <!-- Restaurants Tab -->
-    <div id="restaurants" class="tab-content">
-      <div class="restaurants-container">
-        <h2 style="color: white; text-align: center; margin-bottom: 30px;">🍴 Available Restaurants</h2>
-
-        <div class="search-section">
-          <input type="text" id="searchRestaurants" placeholder="🔍 Search by restaurant name, location, or food..."
-            onkeyup="filterRestaurants()">
-        </div>
-
-        <div id="map-container"
-          style="height: 400px; width: 100%; border-radius: 15px; margin-bottom: 25px; border: 3px solid rgba(255,255,255,0.3); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-          <div id="map" style="height: 100%;"></div>
-        </div>
-        <div id="nearby-status"
-          style="text-align: center; margin-bottom: 15px; font-size: 14px; color: #fff; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-          📍 Detecting your location to find nearby donors...</div>
-
-        <div id="restaurantsList">
-          <div class="loading-msg">Loading restaurants...</div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -835,7 +836,7 @@
 
     function requestFromMap(hotelName, coord) {
       // Switch back to the registration tab
-      switchTab('form', { target: document.querySelector('.tab-button') });
+      switchTab('form', { target: document.querySelectorAll('.tab-button')[1] });
 
       document.getElementById("food").value = `Surplus food from ${hotelName}`;
       document.getElementById("location").value = `Coordinates: ${coord}`;
