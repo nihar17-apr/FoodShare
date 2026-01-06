@@ -1,6 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const mongoose = require("mongoose");
+
+// Import Models
+const Restaurant = require("./backend/models/restaurant");
+const Acceptor = require("./backend/models/acceptor");
+const Delivery = require("./backend/models/delivery");
+const Activity = require("./backend/models/activity");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,13 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-/* ===============================
-   IN-MEMORY STORAGE
-================================ */
-let restaurants = [];
-let acceptors = [];
-let deliveryPersons = [];
-let activityLogs = [];
+// MongoDB Connection
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/foodshare";
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
 // Admin credentials
 const ADMIN_ID = process.env.ADMIN_ID || "Nihar";
@@ -35,16 +40,15 @@ app.get("/", (req, res) => {
 /* ===============================
    RESTAURANT PORTAL
 ================================ */
-app.post("/add-restaurant", (req, res) => {
+app.post("/add-restaurant", async (req, res) => {
   try {
-    const { name, email, phone, location, food, quantity, category, description } = req.body;
+    const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
 
     if (!name || !email || !phone || !location || !food || !quantity) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const restaurant = {
-      _id: Date.now().toString(),
+    const restaurant = new Restaurant({
       name,
       email,
       phone,
@@ -57,23 +61,20 @@ app.post("/add-restaurant", (req, res) => {
       }],
       isVerified: false,
       rating: 0,
-      membership: req.body.membership || "Basic",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+      membership: membership || "Basic"
+    });
 
-    restaurants.push(restaurant);
+    await restaurant.save();
 
     // Log activity
-    activityLogs.push({
-      _id: Date.now().toString(),
+    const activity = new Activity({
       actorType: "Restaurant",
       actorName: name,
       actorEmail: email,
       action: "Submitted Food Donation",
-      details: `Food: ${food}, Quantity: ${quantity}, Category: ${category || 'N/A'}`,
-      timestamp: new Date()
+      details: `Food: ${food}, Quantity: ${quantity}, Category: ${category || 'N/A'}`
     });
+    await activity.save();
 
     res.status(201).json({ message: "✅ Restaurant added successfully", data: restaurant });
   } catch (err) {
@@ -84,16 +85,15 @@ app.post("/add-restaurant", (req, res) => {
 /* ===============================
    ACCEPTOR PORTAL
 ================================ */
-app.post("/add-acceptor", (req, res) => {
+app.post("/add-acceptor", async (req, res) => {
   try {
-    const { name, email, phone, location, food, quantity } = req.body;
+    const { name, email, phone, location, food, quantity, membership } = req.body;
 
     if (!name || !email || !phone || !location || !food || !quantity) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const acceptor = {
-      _id: Date.now().toString(),
+    const acceptor = new Acceptor({
       name,
       email,
       phone,
@@ -102,23 +102,20 @@ app.post("/add-acceptor", (req, res) => {
       quantity: parseInt(quantity),
       isVerified: false,
       rating: 0,
-      membership: req.body.membership || "Basic",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+      membership: membership || "Basic"
+    });
 
-    acceptors.push(acceptor);
+    await acceptor.save();
 
     // Log activity
-    activityLogs.push({
-      _id: Date.now().toString(),
+    const activity = new Activity({
       actorType: "Acceptor",
       actorName: name,
       actorEmail: email,
       action: "Requested Food",
-      details: `Food: ${food}, Quantity: ${quantity}`,
-      timestamp: new Date()
+      details: `Food: ${food}, Quantity: ${quantity}`
     });
+    await activity.save();
 
     res.status(201).json({ message: "✅ Acceptor added successfully", data: acceptor });
   } catch (err) {
@@ -129,7 +126,7 @@ app.post("/add-acceptor", (req, res) => {
 /* ===============================
    DELIVERY PORTAL
 ================================ */
-app.post("/add-delivery", (req, res) => {
+app.post("/add-delivery", async (req, res) => {
   try {
     const { name, email, phone, location, vehicleType, licenseNumber } = req.body;
 
@@ -137,8 +134,7 @@ app.post("/add-delivery", (req, res) => {
       return res.status(400).json({ error: "Required fields are missing" });
     }
 
-    const deliveryPerson = {
-      _id: Date.now().toString(),
+    const deliveryPerson = new Delivery({
       name,
       email,
       phone,
@@ -146,23 +142,20 @@ app.post("/add-delivery", (req, res) => {
       vehicleType,
       licenseNumber,
       isVerified: false,
-      status: "Available",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
+      status: "Available"
+    });
 
-    deliveryPersons.push(deliveryPerson);
+    await deliveryPerson.save();
 
     // Log activity
-    activityLogs.push({
-      _id: Date.now().toString(),
+    const activity = new Activity({
       actorType: "Delivery",
       actorName: name,
       actorEmail: email,
       action: "Registered for Delivery",
-      details: `Vehicle: ${vehicleType}`,
-      timestamp: new Date()
+      details: `Vehicle: ${vehicleType}`
     });
+    await activity.save();
 
     res.status(201).json({ message: "✅ Delivery person added successfully", data: deliveryPerson });
   } catch (err) {
@@ -173,101 +166,163 @@ app.post("/add-delivery", (req, res) => {
 /* ===============================
    PUBLIC ROUTES (Verified Only)
 ================================ */
-app.get("/restaurants", (req, res) => {
-  res.json(restaurants.filter(r => r.isVerified));
+app.get("/restaurants", async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find({ isVerified: true });
+    res.json(restaurants);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/acceptors", (req, res) => {
-  res.json(acceptors.filter(a => a.isVerified));
+app.get("/acceptors", async (req, res) => {
+  try {
+    const acceptors = await Acceptor.find({ isVerified: true });
+    res.json(acceptors);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 /* ===============================
    ADMIN ROUTES
 ================================ */
-app.get("/admin/restaurants", (req, res) => {
-  res.json(restaurants);
+app.get("/admin/restaurants", async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find().sort({ createdAt: -1 });
+    res.json(restaurants);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/admin/acceptors", (req, res) => {
-  res.json(acceptors);
+app.get("/admin/acceptors", async (req, res) => {
+  try {
+    const acceptors = await Acceptor.find().sort({ createdAt: -1 });
+    res.json(acceptors);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/admin/activities", (req, res) => {
-  const sorted = [...activityLogs].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  res.json(sorted);
+app.get("/admin/activities", async (req, res) => {
+  try {
+    const activities = await Activity.find().sort({ timestamp: -1 });
+    res.json(activities);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/admin/deliveries", (req, res) => {
-  res.json(deliveryPersons);
+app.get("/admin/deliveries", async (req, res) => {
+  try {
+    const deliveries = await Delivery.find().sort({ createdAt: -1 });
+    res.json(deliveries);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/get-restaurant/:id", (req, res) => {
-  const r = restaurants.find(x => x._id === req.params.id);
-  if (!r) return res.status(404).json({ error: "Restaurant not found" });
-  res.json(r);
+app.get("/get-restaurant/:id", async (req, res) => {
+  try {
+    const r = await Restaurant.findById(req.params.id);
+    if (!r) return res.status(404).json({ error: "Restaurant not found" });
+    res.json(r);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/get-acceptor/:id", (req, res) => {
-  const a = acceptors.find(x => x._id === req.params.id);
-  if (!a) return res.status(404).json({ error: "Acceptor not found" });
-  res.json(a);
+app.get("/get-acceptor/:id", async (req, res) => {
+  try {
+    const a = await Acceptor.findById(req.params.id);
+    if (!a) return res.status(404).json({ error: "Acceptor not found" });
+    res.json(a);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.get("/get-delivery/:id", (req, res) => {
-  const d = deliveryPersons.find(x => x._id === req.params.id);
-  if (!d) return res.status(404).json({ error: "Delivery person not found" });
-  res.json(d);
+app.get("/get-delivery/:id", async (req, res) => {
+  try {
+    const d = await Delivery.findById(req.params.id);
+    if (!d) return res.status(404).json({ error: "Delivery person not found" });
+    res.json(d);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 /* ===============================
    VERIFY ROUTES
 ================================ */
-app.put("/verify-restaurant/:id", (req, res) => {
-  const r = restaurants.find(x => x._id === req.params.id);
-  if (r) {
-    r.isVerified = true;
-    r.updatedAt = new Date();
+app.put("/verify-restaurant/:id", async (req, res) => {
+  try {
+    const r = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      { isVerified: true, updatedAt: new Date() },
+      { new: true }
+    );
+    res.json({ message: "✅ Restaurant verified", data: r });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  res.json({ message: "✅ Restaurant verified", data: r });
 });
 
-app.put("/verify-acceptor/:id", (req, res) => {
-  const a = acceptors.find(x => x._id === req.params.id);
-  if (a) {
-    a.isVerified = true;
-    a.updatedAt = new Date();
+app.put("/verify-acceptor/:id", async (req, res) => {
+  try {
+    const a = await Acceptor.findByIdAndUpdate(
+      req.params.id,
+      { isVerified: true, updatedAt: new Date() },
+      { new: true }
+    );
+    res.json({ message: "✅ Acceptor verified", data: a });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  res.json({ message: "✅ Acceptor verified", data: a });
 });
 
-app.put("/verify-delivery/:id", (req, res) => {
-  const d = deliveryPersons.find(x => x._id === req.params.id);
-  if (d) {
-    d.isVerified = true;
-    d.updatedAt = new Date();
+app.put("/verify-delivery/:id", async (req, res) => {
+  try {
+    const d = await Delivery.findByIdAndUpdate(
+      req.params.id,
+      { isVerified: true, updatedAt: new Date() },
+      { new: true }
+    );
+    res.json({ message: "✅ Delivery person verified", data: d });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  res.json({ message: "✅ Delivery person verified", data: d });
 });
 
 /* ===============================
    DELETE ROUTES
 ================================ */
-app.delete("/delete-restaurant/:id", (req, res) => {
-  const restaurant = restaurants.find(x => x._id === req.params.id);
-  restaurants = restaurants.filter(x => x._id !== req.params.id);
-  res.json({ message: "✅ Restaurant deleted", data: restaurant });
+app.delete("/delete-restaurant/:id", async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findByIdAndDelete(req.params.id);
+    res.json({ message: "✅ Restaurant deleted", data: restaurant });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.delete("/delete-acceptor/:id", (req, res) => {
-  const acceptor = acceptors.find(x => x._id === req.params.id);
-  acceptors = acceptors.filter(x => x._id !== req.params.id);
-  res.json({ message: "✅ Acceptor deleted", data: acceptor });
+app.delete("/delete-acceptor/:id", async (req, res) => {
+  try {
+    const acceptor = await Acceptor.findByIdAndDelete(req.params.id);
+    res.json({ message: "✅ Acceptor deleted", data: acceptor });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.delete("/delete-delivery/:id", (req, res) => {
-  const dp = deliveryPersons.find(x => x._id === req.params.id);
-  deliveryPersons = deliveryPersons.filter(x => x._id !== req.params.id);
-  res.json({ message: "✅ Delivery person deleted", data: dp });
+app.delete("/delete-delivery/:id", async (req, res) => {
+  try {
+    const dp = await Delivery.findByIdAndDelete(req.params.id);
+    res.json({ message: "✅ Delivery person deleted", data: dp });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 /* ===============================

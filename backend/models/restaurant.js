@@ -43,6 +43,11 @@ const restaurantSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  membership: {
+    type: String,
+    enum: ["Basic", "Silver", "Gold"],
+    default: "Basic"
+  },
   rating: {
     type: Number,
     default: 0,
