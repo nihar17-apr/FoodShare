@@ -48,4 +48,4 @@ const deliverySchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Delivery", deliverySchema);
+module.exports = mongoose.models.Delivery || mongoose.model("Delivery", deliverySchema);

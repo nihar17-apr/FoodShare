@@ -57,4 +57,4 @@ const acceptorSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Acceptor", acceptorSchema);
+module.exports = mongoose.models.Acceptor || mongoose.model("Acceptor", acceptorSchema);
