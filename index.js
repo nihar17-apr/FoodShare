@@ -1,83 +1,68 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 const mongoose = require("mongoose");
 
 // Configuration
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
+const LOCAL_DB = path.join(__dirname, "db.json");
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from public folder
-// Important: Use path.join to ensure correct mapping on Vercel
 app.use(express.static(path.join(__dirname, "public")));
 
-// --- IN-MEMORY FALLBACK ---
-// This prevents the 500 error if MongoDB is missing on Vercel
-let memoryDB = {
-  restaurants: [],
-  acceptors: [],
-  deliveryPersons: [],
-  activityLogs: []
+// --- PERSISTENCE ENGINE ---
+let memoryDB = { restaurants: [], acceptors: [], deliveryPersons: [], activityLogs: [] };
+
+// Initialize Local JSON DB if it exists
+if (fs.existsSync(LOCAL_DB)) {
+  try {
+    const data = fs.readFileSync(LOCAL_DB, "utf8");
+    memoryDB = JSON.parse(data);
+    console.log("📂 Loaded local data from db.json");
+  } catch (err) {
+    console.warn("⚠️ Could not read db.json, using fresh memory.");
+  }
+}
+
+// Helper to save data (Only works locally)
+const persistLocally = () => {
+  try {
+    fs.writeFileSync(LOCAL_DB, JSON.stringify(memoryDB, null, 2));
+  } catch (e) {
+    // Silently fail on Vercel (read-only environment)
+  }
 };
 
 // Database Connection
 if (MONGODB_URI) {
   mongoose.connect(MONGODB_URI)
-    .then(() => console.log("✅ MongoDB Connected Successfully"))
-    .catch(err => console.error("❌ MongoDB Connection Error:", err));
+    .then(() => console.log("✅ Successfully connected to MongoDB Atlas (Cloud Database)"))
+    .catch(err => console.error("❌ MongoDB Atlas Connection Error:", err));
 } else {
-  console.warn("⚠️ No MONGODB_URI found. All data will be temporary (RAM only).");
+  console.warn("⚠️ MONGODB_URI not found. Details will be saved locally in 'db.json'.");
 }
 
-// Models (Safe for serverless environments)
+// Models
 const Restaurant = require("./backend/models/restaurant");
 const Acceptor = require("./backend/models/acceptor");
 const Delivery = require("./backend/models/delivery");
 const Activity = require("./backend/models/activity");
 
-// Helper to check DB status
 const isConnected = () => mongoose.connection.readyState === 1;
 
 /* ===============================
-   PUBLIC ROUTES
-================================ */
-app.get("/restaurants", async (req, res) => {
-  try {
-    if (isConnected()) {
-      const data = await Restaurant.find({ isVerified: true });
-      return res.json(data);
-    }
-    res.json(memoryDB.restaurants.filter(r => r.isVerified));
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch restaurants" });
-  }
-});
-
-app.get("/acceptors", async (req, res) => {
-  try {
-    if (isConnected()) {
-      const data = await Acceptor.find({ isVerified: true });
-      return res.json(data);
-    }
-    res.json(memoryDB.acceptors.filter(a => a.isVerified));
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch acceptors" });
-  }
-});
-
-/* ===============================
-   POST HANDLERS (With persistence)
+   RESTAURANT ROUTES
 ================================ */
 app.post("/add-restaurant", async (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
-    const newRecord = {
+    const record = {
       name, email, phone, location, description,
       items: [{ food, quantity: parseInt(quantity || 0), category }],
       isVerified: false,
@@ -86,59 +71,71 @@ app.post("/add-restaurant", async (req, res) => {
     };
 
     if (isConnected()) {
-      const dbRecord = new Restaurant(newRecord);
+      const dbRecord = new Restaurant(record);
       await dbRecord.save();
       await new Activity({ actorType: "Restaurant", actorName: name, actorEmail: email, action: "Submitted Donation", details: `Food: ${food}`, timestamp: new Date() }).save();
       return res.status(201).json({ success: true, data: dbRecord });
     }
 
-    // Memory fallback
-    const memRecord = { _id: Date.now().toString(), ...newRecord };
+    const memRecord = { _id: Date.now().toString(), ...record };
     memoryDB.restaurants.push(memRecord);
-    memoryDB.activityLogs.push({ actorType: "Restaurant", actorName: name, action: "Submitted Donation", timestamp: new Date() });
-    res.status(201).json({ success: true, data: memRecord, note: "Saved to temporary memory" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    memoryDB.activityLogs.push({ _id: Date.now().toString(), actorType: "Restaurant", actorName: name, action: "Submitted Donation", details: `Food: ${food}`, timestamp: new Date() });
+    persistLocally();
+    res.status(201).json({ success: true, data: memRecord });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.get("/restaurants", async (req, res) => {
+  if (isConnected()) return res.json(await Restaurant.find({ isVerified: true }));
+  res.json(memoryDB.restaurants.filter(r => r.isVerified));
+});
+
+/* ===============================
+   ACCEPTOR ROUTES
+================================ */
 app.post("/add-acceptor", async (req, res) => {
   try {
     const { name, email, phone, location, food, quantity, membership } = req.body;
-    const newRecord = { name, email, phone, location, food, quantity: parseInt(quantity || 0), isVerified: false, membership: membership || "Basic", createdAt: new Date() };
+    const record = { name, email, phone, location, food, quantity: parseInt(quantity || 0), isVerified: false, membership: membership || "Basic", createdAt: new Date() };
 
     if (isConnected()) {
-      const dbRecord = new Acceptor(newRecord);
+      const dbRecord = new Acceptor(record);
       await dbRecord.save();
       await new Activity({ actorType: "Acceptor", actorName: name, actorEmail: email, action: "Requested Food", details: `Food: ${food}`, timestamp: new Date() }).save();
       return res.status(201).json({ success: true, data: dbRecord });
     }
 
-    const memRecord = { _id: Date.now().toString(), ...newRecord };
+    const memRecord = { _id: Date.now().toString(), ...record };
     memoryDB.acceptors.push(memRecord);
+    persistLocally();
     res.status(201).json({ success: true, data: memRecord });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.get("/acceptors", async (req, res) => {
+  if (isConnected()) return res.json(await Acceptor.find({ isVerified: true }));
+  res.json(memoryDB.acceptors.filter(a => a.isVerified));
+});
+
+/* ===============================
+   DELIVERY ROUTES
+================================ */
 app.post("/add-delivery", async (req, res) => {
   try {
     const { name, email, phone, location, vehicleType, licenseNumber } = req.body;
-    const newRecord = { name, email, phone, location, vehicleType, licenseNumber, isVerified: false, status: "Available", createdAt: new Date() };
+    const record = { name, email, phone, location, vehicleType, licenseNumber, isVerified: false, status: "Available", createdAt: new Date() };
 
     if (isConnected()) {
-      const dbRecord = new Delivery(newRecord);
+      const dbRecord = new Delivery(record);
       await dbRecord.save();
       return res.status(201).json({ success: true, data: dbRecord });
     }
 
-    const memRecord = { _id: Date.now().toString(), ...newRecord };
+    const memRecord = { _id: Date.now().toString(), ...record };
     memoryDB.deliveryPersons.push(memRecord);
+    persistLocally();
     res.status(201).json({ success: true, data: memRecord });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 /* ===============================
@@ -164,137 +161,43 @@ app.get("/admin/deliveries", async (req, res) => {
   res.json(memoryDB.deliveryPersons);
 });
 
-// Admin Verification (ID Check)
-const ADMIN_ID = process.env.ADMIN_ID || "Nihar";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1234";
-
-app.post("/verify-admin", (req, res) => {
-  const { adminId, password } = req.body;
-  if (adminId === ADMIN_ID && password === ADMIN_PASSWORD) {
-    res.json({ success: true });
-  } else {
-    res.status(401).json({ success: false, error: "Invalid credentials" });
-  }
-});
-
 /* ===============================
    VERIFICATION & DELETION
 ================================ */
 app.put("/verify-restaurant/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      const data = await Restaurant.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
-      return res.json({ success: true, data });
-    }
-    const item = memoryDB.restaurants.find(x => x._id === req.params.id);
-    if (item) item.isVerified = true;
-    res.json({ success: true, data: item });
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.put("/verify-acceptor/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      const data = await Acceptor.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
-      return res.json({ success: true, data });
-    }
-    const item = memoryDB.acceptors.find(x => x._id === req.params.id);
-    if (item) item.isVerified = true;
-    res.json({ success: true, data: item });
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.put("/verify-delivery/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      const data = await Delivery.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true });
-      return res.json({ success: true, data });
-    }
-    const item = memoryDB.deliveryPersons.find(x => x._id === req.params.id);
-    if (item) item.isVerified = true;
-    res.json({ success: true, data: item });
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  if (isConnected()) return res.json({ success: true, data: await Restaurant.findByIdAndUpdate(req.params.id, { isVerified: true }, { new: true }) });
+  const item = memoryDB.restaurants.find(x => x._id === req.params.id);
+  if (item) item.isVerified = true;
+  persistLocally();
+  res.json({ success: true, data: item });
 });
 
 app.delete("/delete-restaurant/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      await Restaurant.findByIdAndDelete(req.params.id);
-      return res.json({ success: true });
-    }
-    memoryDB.restaurants = memoryDB.restaurants.filter(x => x._id !== req.params.id);
-    res.json({ success: true });
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.delete("/delete-acceptor/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      await Acceptor.findByIdAndDelete(req.params.id);
-      return res.json({ success: true });
-    }
-    memoryDB.acceptors = memoryDB.acceptors.filter(x => x._id !== req.params.id);
-    res.json({ success: true });
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-app.delete("/delete-delivery/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      await Delivery.findByIdAndDelete(req.params.id);
-      return res.json({ success: true });
-    }
-    memoryDB.deliveryPersons = memoryDB.deliveryPersons.filter(x => x._id !== req.params.id);
-    res.json({ success: true });
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  if (isConnected()) await Restaurant.findByIdAndDelete(req.params.id);
+  else memoryDB.restaurants = memoryDB.restaurants.filter(x => x._id !== req.params.id);
+  persistLocally();
+  res.json({ success: true });
 });
 
 app.delete("/delete-activity/:id", async (req, res) => {
-  try {
-    if (isConnected()) {
-      await Activity.findByIdAndDelete(req.params.id);
-      return res.json({ success: true });
-    }
-    memoryDB.activityLogs = memoryDB.activityLogs.filter(x => x._id !== req.params.id);
-    res.json({ success: true });
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  if (isConnected()) await Activity.findByIdAndDelete(req.params.id);
+  else memoryDB.activityLogs = memoryDB.activityLogs.filter(x => x._id !== req.params.id);
+  persistLocally();
+  res.json({ success: true });
 });
 
-app.get("/get-restaurant/:id", async (req, res) => {
-  try {
-    if (isConnected()) return res.json(await Restaurant.findById(req.params.id));
-    res.json(memoryDB.restaurants.find(x => x._id === req.params.id));
-  } catch (err) { res.status(500).json({ error: err.message }); }
+// Admin Auth
+const ADMIN_ID = process.env.ADMIN_ID || "Nihar";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "1234";
+
+app.post("/verify-admin", (req, res) => {
+  if (req.body.adminId === ADMIN_ID && req.body.password === ADMIN_PASSWORD) res.json({ success: true });
+  else res.status(401).json({ success: false });
 });
 
-app.get("/get-acceptor/:id", async (req, res) => {
-  try {
-    if (isConnected()) return res.json(await Acceptor.findById(req.params.id));
-    res.json(memoryDB.acceptors.find(x => x._id === req.params.id));
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
-app.get("/get-delivery/:id", async (req, res) => {
-  try {
-    if (isConnected()) return res.json(await Delivery.findById(req.params.id));
-    res.json(memoryDB.deliveryPersons.find(x => x._id === req.params.id));
-  } catch (err) { res.status(500).json({ error: err.message }); }
-});
-
-/* ===============================
-   HOME & CATCH-ALL
-================================ */
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 FoodShare System Live at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 System Live at http://localhost:${PORT}`));
 
 module.exports = app;
