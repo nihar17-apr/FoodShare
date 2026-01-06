@@ -284,7 +284,12 @@
 
             <div class="form-group">
                 <label for="location">Preferred Location/Area *</label>
-                <input id="location" type="text" placeholder="e.g., Downtown, North Side" required>
+                <div style="display: flex; gap: 10px;">
+                    <input id="location" type="text" placeholder="e.g., Downtown, North Side" required style="flex: 1;">
+                    <button type="button" onclick="getLocation()"
+                        style="width: auto; margin-top: 0; padding: 10px 15px; background: #667eea; font-size: 20px;"
+                        title="Get Current Location">📍</button>
+                </div>
             </div>
 
             <div class="form-group">
@@ -318,6 +323,36 @@
             msgEl.textContent = message;
             msgEl.className = type;
             setTimeout(() => { msgEl.className = ""; msgEl.style.display = "none"; }, 5000);
+        }
+
+        function getLocation() {
+            const locInput = document.getElementById("location");
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser");
+                return;
+            }
+
+            locInput.value = "📍 Locating...";
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await res.json();
+                        const address = data.display_name ? data.display_name.split(",").slice(0, 3).join(",") : "My Location";
+                        locInput.value = `${address} Coordinates: ${lat},${lon}`;
+                    } catch (e) {
+                        locInput.value = `Coordinates: ${lat},${lon}`;
+                    }
+                },
+                () => {
+                    alert("Unable to retrieve your location");
+                    locInput.value = "";
+                }
+            );
         }
 
         function submitDelivery(event) {
