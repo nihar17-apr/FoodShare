@@ -15,86 +15,67 @@
 /* ===== BODY ===== */
 body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background: linear-gradient(135deg, #ffb3ff, #b3c6ff, #80b3ff);
   min-height: 100vh;
-  padding: 20px;
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 /* ===== NAVBAR ===== */
 .navbar {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  background: rgba(255,255,255,0.15);
-  padding: 18px;
-  border-radius: 15px;
-  margin-bottom: 35px;
+  padding: 18px 50px;
+  background: rgba(255,255,255,0.25);
   backdrop-filter: blur(20px);
+  border-radius: 20px;
+  margin: 20px;
 }
 
-.navbar span {
+.navbar .logo {
   font-size: 22px;
   font-weight: 900;
   color: white;
 }
 
-.nav-link {
+.navbar .links a {
+  margin-left: 40px;
   color: white;
   text-decoration: none;
   font-weight: 700;
   cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 8px;
-  transition: 0.3s;
 }
 
-.nav-link:hover {
-  background: rgba(255,255,255,0.3);
-}
-
-/* ===== CONTAINER ===== */
-.container {
-  max-width: 1300px;
-  margin: auto;
-  text-align: center;
+.navbar .links a:hover {
+  text-decoration: underline;
 }
 
 /* ===== HERO ===== */
 .hero {
-  background: rgba(255,255,255,0.18);
-  padding: 60px 40px;
-  border-radius: 25px;
-  margin-bottom: 50px;
-  backdrop-filter: blur(15px);
+  margin: 40px;
+  padding: 80px 40px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.25);
+  text-align: center;
 }
 
 .hero h1 {
+  font-size: 48px;
   color: white;
-  font-size: 52px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.tagline {
+.hero h3 {
   font-size: 22px;
-  font-weight: 700;
-  color: #ffd700;
+  color: #fff;
   margin-bottom: 15px;
 }
 
 .hero p {
-  color: #fff;
-  margin-bottom: 25px;
+  color: #f2f2f2;
+  margin-bottom: 35px;
 }
 
-/* ===== BUTTON GROUP ===== */
+/* ===== BUTTONS ===== */
 .button-group {
   display: flex;
   justify-content: center;
@@ -102,43 +83,67 @@ body {
   flex-wrap: wrap;
 }
 
-/* ===== BUTTONS ===== */
-button {
-  padding: 16px 38px;
-  border: none;
+.btn {
+  padding: 14px 28px;
   border-radius: 12px;
-  font-size: 16px;
+  border: none;
+  color: white;
   font-weight: 700;
   cursor: pointer;
+  font-size: 15px;
+}
+
+.restaurant { background: #6c63ff; }
+.acceptor { background: #ff6584; }
+.membership { background: #00b0ff; }
+.admin { background: #00e5ff; }
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  margin: 60px 40px;
+  padding: 60px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 30px;
   color: white;
-  transition: 0.3s;
+  text-align: center;
 }
 
-/* Existing buttons */
-button:nth-child(1) {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-button:nth-child(2) {
-  background: linear-gradient(135deg, #f093fb, #f5576c);
-}
-button:nth-child(3) {
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-}
-button:nth-child(4) {
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
+.section h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
-button:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+.section p {
+  font-size: 18px;
+  max-width: 900px;
+  margin: auto;
+  line-height: 1.7;
 }
 
 /* ===== FOOTER ===== */
 .footer {
-  margin-top: 50px;
   text-align: center;
   color: white;
-  font-weight: 600;
+  padding: 30px;
+  font-weight: 700;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .navbar .links a {
+    margin-left: 15px;
+  }
+  .hero h1 {
+    font-size: 34px;
+  }
 }
 </style>
 </head>
@@ -147,43 +152,65 @@ button:hover {
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <span>🍽 Food To Need</span>
-  <a class="nav-link" onclick="scrollToSection('hero')">Home</a>
-  <a class="nav-link" onclick="scrollToSection('about')">About Us</a>
-  <a class="nav-link" onclick="scrollToSection('contact')">Contact</a>
+  <div class="logo">🍽 Food To Need</div>
+  <div class="links">
+    <a onclick="scrollToSection('hero')">Home</a>
+    <a onclick="scrollToSection('about')">About Us</a>
+    <a onclick="scrollToSection('contact')">Contact</a>
+  </div>
 </div>
 
-<div class="container">
+<!-- HERO -->
+<div class="hero" id="hero">
+  <h1>🍽 Food To Need</h1>
+  <h3>Connecting Food Surplus to Food Shortage</h3>
+  <p>
+    A platform bridging restaurants with excess food to orphanages and charitable organizations in need
+  </p>
 
-  <!-- HERO -->
-  <div class="hero" id="hero">
-    <h1>🍽 Food To Need</h1>
-    <p class="tagline">Connecting Food Surplus to Food Shortage</p>
-    <p>A platform bridging restaurants with excess food to orphanages and charitable organizations in need</p>
-
-    <!-- 🔥 UPDATED BUTTON GROUP -->
-    <div class="button-group">
-      <button onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
-      <button onclick="location.href='acceptor.html'">🏠 Acceptor Portal</button>
-      <button onclick="location.href='membership.html'">🚚 Delivery Membership</button>
-      <button onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
-    </div>
+  <div class="button-group">
+    <button class="btn restaurant" onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
+    <button class="btn acceptor" onclick="location.href='acceptor.html'">🏠 Acceptor Portal</button>
+    <button class="btn membership" onclick="location.href='membership.html'">🚚 Delivery Membership</button>
+    <button class="btn admin" onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
   </div>
+</div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <p><strong>Food To Need</strong> – Building a Hunger-Free Community</p>
-    <p>© 2026 Food To Need Initiative</p>
-  </div>
+<!-- ABOUT -->
+<div class="section" id="about">
+  <h2>📖 About Us</h2>
+  <p>
+    Food To Need is a community-driven initiative designed to reduce food waste
+    while fighting hunger. We connect restaurants, hotels, and food providers
+    with NGOs, orphanages, and people in need using a simple and secure platform.
+  </p>
+</div>
 
+<!-- CONTACT -->
+<div class="section" id="contact">
+  <h2>📞 Contact Us</h2>
+  <p>
+    📧 Email: <strong>nrouthu@gitam.in</strong><br><br>
+    📍 Location: India<br><br>
+    We usually respond within 24 hours.
+  </p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Food To Need – Building a Hunger-Free Community</p>
+  <p>© 2026 Food To Need Initiative</p>
 </div>
 
 <script>
 function scrollToSection(id) {
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: "smooth" });
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" });
+  }
 }
 </script>
 
 </body>
 </html>
+
