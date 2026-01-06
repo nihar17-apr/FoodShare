@@ -828,6 +828,9 @@
       <button class="logout-btn" onclick="handleLogout()">Logout</button>
     </div>
 
+    <div id="dbStatusBadge" style="text-align: right; padding: 10px; font-size: 11px; font-weight: 600; color: #777;">
+      Database: <span id="dbStatusText">Checking...</span>
+    </div>
     <div class="button-group">
       <button class="active" onclick="loadRestaurants()">🍴 Restaurants</button>
       <button onclick="loadAcceptors()">🏠 Acceptors</button>
@@ -912,6 +915,16 @@
         isLoggedIn = true;
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("dashboardSection").style.display = "block";
+
+        // Fetch Database Status
+        fetch("/admin/db-status")
+          .then(res => res.json())
+          .then(data => {
+            const el = document.getElementById("dbStatusText");
+            el.textContent = data.status;
+            el.style.color = data.status.includes("Connected") ? "#27ae60" : "#e74c3c";
+          }).catch(() => { });
+
         loadRestaurants();
       } else {
         errorDiv.textContent = "❌ Invalid admin ID or password";
