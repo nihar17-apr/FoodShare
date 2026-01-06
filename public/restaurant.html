@@ -1,410 +1,443 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Restaurant Portal</title>
+  <title>Restaurant Portal</title>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-body{
-  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  min-height: 100vh;
-  padding: 40px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    body {
+      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+      50% {
+        background-position: 100% 50%;
+      }
 
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-  50% { box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3); }
-}
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-.container {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  padding: 50px;
-  max-width: 500px;
-  width: 100%;
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  animation: slideUp 0.8s ease, pulse 3s ease-in-out infinite;
-}
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
 
-h2 {
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 35px;
-  text-align: center;
-  font-size: 32px;
-  font-weight: 700;
-}
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-.form-group {
-  margin-bottom: 18px;
-  display: flex;
-  flex-direction: column;
-}
+    @keyframes pulse {
 
-label {
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
+      0%,
+      100% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      }
 
-input, textarea, select {
-  width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  font-size: 14px;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
-}
+      50% {
+        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+      }
+    }
 
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.95);
-}
+    .container {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      padding: 50px;
+      max-width: 500px;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      animation: slideUp 0.8s ease, pulse 3s ease-in-out infinite;
+    }
 
-input.error, textarea.error {
-  border-color: #e74c3c;
-  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
-}
+    h2 {
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 35px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+    }
 
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+    }
 
-.error-msg {
-  color: #e74c3c;
-  font-size: 12px;
-  margin-top: 5px;
-  display: none;
-  animation: slideUp 0.3s ease;
-}
+    label {
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
 
-.error-msg.show {
-  display: block;
-}
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(5px);
+    }
 
-button {
-  padding: 14px 28px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  background-size: 200% 200%;
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-  position: relative;
-  overflow: hidden;
-}
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.95);
+    }
 
-button:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transition: left 0.5s ease;
-  z-index: 1;
-}
+    input.error,
+    textarea.error {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
+    }
 
-button:hover:before {
-  left: 100%;
-}
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
 
-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-  background-position: 200% center;
-}
+    .error-msg {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+      animation: slideUp 0.3s ease;
+    }
 
-button:active {
-  transform: translateY(-1px);
-}
+    .error-msg.show {
+      display: block;
+    }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 200% 200%;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
 
-#msg {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: 600;
-  display: none;
-  animation: slideUp 0.5s ease;
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-}
+    button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.5s ease;
+      z-index: 1;
+    }
 
-#msg.success {
-  display: block;
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 230, 130, 0.2) 100%);
-  color: #2e7d32;
-  border: 2px solid rgba(76, 175, 80, 0.5);
-}
+    button:hover:before {
+      left: 100%;
+    }
 
-#msg.error {
-  display: block;
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
-  color: #c62828;
-  border: 2px solid rgba(231, 76, 60, 0.5);
-}
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+      background-position: 200% center;
+    }
 
-.item-card .delete-btn:hover {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-</style>
+    button:active {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    #msg {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+      animation: slideUp 0.5s ease;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    #msg.success {
+      display: block;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(102, 230, 130, 0.2) 100%);
+      color: #2e7d32;
+      border: 2px solid rgba(76, 175, 80, 0.5);
+    }
+
+    #msg.error {
+      display: block;
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
+      color: #c62828;
+      border: 2px solid rgba(231, 76, 60, 0.5);
+    }
+
+    .item-card .delete-btn:hover {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h2>🍴 Restaurant Portal</h2>
+  <div class="container">
+    <h2>🍴 Restaurant Portal</h2>
 
-  <form id="restaurantForm" onsubmit="submitRestaurant(event)">
-    <div class="form-group">
-      <label for="name">Restaurant Name *</label>
-      <input id="name" type="text" placeholder="Enter your restaurant name" required>
-      <span class="error-msg" id="nameError"></span>
-    </div>
+    <form id="restaurantForm" onsubmit="submitRestaurant(event)">
+      <div class="form-group">
+        <label for="name">Restaurant Name *</label>
+        <input id="name" type="text" placeholder="Enter your restaurant name" required>
+        <span class="error-msg" id="nameError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="email">Email *</label>
-      <input id="email" type="email" placeholder="your@email.com" required>
-      <span class="error-msg" id="emailError"></span>
-    </div>
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input id="email" type="email" placeholder="your@email.com" required>
+        <span class="error-msg" id="emailError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="phone">Phone Number *</label>
-      <input id="phone" type="tel" placeholder="(123) 456-7890" required>
-      <span class="error-msg" id="phoneError"></span>
-    </div>
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input id="phone" type="tel" placeholder="(123) 456-7890" required>
+        <span class="error-msg" id="phoneError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="location">Location/Address *</label>
-      <input id="location" type="text" placeholder="Street address" required>
-      <span class="error-msg" id="locationError"></span>
-    </div>
+      <div class="form-group">
+        <label for="location">Location/Address *</label>
+        <input id="location" type="text" placeholder="Street address" required>
+        <span class="error-msg" id="locationError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="food">Food Item *</label>
-      <input id="food" type="text" placeholder="e.g., Biryani, Samosas" required>
-      <span class="error-msg" id="foodError"></span>
-    </div>
+      <div class="form-group">
+        <label for="food">Food Item *</label>
+        <input id="food" type="text" placeholder="e.g., Biryani, Samosas" required>
+        <span class="error-msg" id="foodError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="quantity">Quantity Available *</label>
-      <input id="quantity" type="number" placeholder="Number of portions" min="1" required>
-      <span class="error-msg" id="quantityError"></span>
-    </div>
+      <div class="form-group">
+        <label for="quantity">Quantity Available *</label>
+        <input id="quantity" type="number" placeholder="Number of portions" min="1" required>
+        <span class="error-msg" id="quantityError"></span>
+      </div>
 
-    <div class="form-group">
-      <label for="category">Food Category</label>
-      <select id="category">
-        <option value="">Select a category</option>
-        <option value="North Indian">North Indian</option>
-        <option value="South Indian">South Indian</option>
-        <option value="Chinese">Chinese</option>
-        <option value="Fast Food">Fast Food</option>
-        <option value="Desserts">Desserts</option>
-        <option value="Beverages">Beverages</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label for="category">Food Category</label>
+        <select id="category">
+          <option value="">Select a category</option>
+          <option value="North Indian">North Indian</option>
+          <option value="South Indian">South Indian</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Fast Food">Fast Food</option>
+          <option value="Desserts">Desserts</option>
+          <option value="Beverages">Beverages</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
-    <button type="submit">Submit Food Item</button>
-  </form>
+      <div class="form-group">
+        <label for="membership">Membership Plan *</label>
+        <select id="membership" required>
+          <option value="Basic">Basic (Free)</option>
+          <option value="Silver">Silver ($19/mo)</option>
+          <option value="Gold">Gold ($49/mo)</option>
+        </select>
+      </div>
 
-  <div id="msg"></div>
-</div>
+      <button type="submit">Submit Food Item</button>
+    </form>
 
-<script>
-const messageEl = document.getElementById("msg");
-const form = document.getElementById("restaurantForm");
+    <div id="msg"></div>
+  </div>
 
-function validateEmail(email) {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
+  <script>
+    const messageEl = document.getElementById("msg");
+    const form = document.getElementById("restaurantForm");
 
-function validatePhone(phone) {
-  const re = /^[\d\s\-\+\(\)]{10,}$/;
-  return re.test(phone.replace(/\s/g, ''));
-}
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
 
-function showError(fieldId, message) {
-  const field = document.getElementById(fieldId);
-  const errorEl = document.getElementById(fieldId + "Error");
-  field.classList.add("error");
-  errorEl.textContent = message;
-  errorEl.classList.add("show");
-}
+    function validatePhone(phone) {
+      const re = /^[\d\s\-\+\(\)]{10,}$/;
+      return re.test(phone.replace(/\s/g, ''));
+    }
 
-function clearError(fieldId) {
-  const field = document.getElementById(fieldId);
-  const errorEl = document.getElementById(fieldId + "Error");
-  field.classList.remove("error");
-  errorEl.classList.remove("show");
-}
+    function showError(fieldId, message) {
+      const field = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + "Error");
+      field.classList.add("error");
+      errorEl.textContent = message;
+      errorEl.classList.add("show");
+    }
 
-function validateForm() {
-  let isValid = true;
-  const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const location = document.getElementById("location").value.trim();
-  const food = document.getElementById("food").value.trim();
-  const quantity = document.getElementById("quantity").value.trim();
+    function clearError(fieldId) {
+      const field = document.getElementById(fieldId);
+      const errorEl = document.getElementById(fieldId + "Error");
+      field.classList.remove("error");
+      errorEl.classList.remove("show");
+    }
 
-  if (!name || name.length < 3) {
-    showError("name", "Restaurant name must be at least 3 characters");
-    isValid = false;
-  } else {
-    clearError("name");
-  }
+    function validateForm() {
+      let isValid = true;
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const food = document.getElementById("food").value.trim();
+      const quantity = document.getElementById("quantity").value.trim();
 
-  if (!email || !validateEmail(email)) {
-    showError("email", "Please enter a valid email");
-    isValid = false;
-  } else {
-    clearError("email");
-  }
+      if (!name || name.length < 3) {
+        showError("name", "Restaurant name must be at least 3 characters");
+        isValid = false;
+      } else {
+        clearError("name");
+      }
 
-  if (!phone || !validatePhone(phone)) {
-    showError("phone", "Please enter a valid phone number");
-    isValid = false;
-  } else {
-    clearError("phone");
-  }
+      if (!email || !validateEmail(email)) {
+        showError("email", "Please enter a valid email");
+        isValid = false;
+      } else {
+        clearError("email");
+      }
 
-  if (!location || location.length < 5) {
-    showError("location", "Please enter a valid location");
-    isValid = false;
-  } else {
-    clearError("location");
-  }
+      if (!phone || !validatePhone(phone)) {
+        showError("phone", "Please enter a valid phone number");
+        isValid = false;
+      } else {
+        clearError("phone");
+      }
 
-  if (!food || food.length < 2) {
-    showError("food", "Please enter a food item");
-    isValid = false;
-  } else {
-    clearError("food");
-  }
+      if (!location || location.length < 5) {
+        showError("location", "Please enter a valid location");
+        isValid = false;
+      } else {
+        clearError("location");
+      }
 
-  if (!quantity || quantity < 1) {
-    showError("quantity", "Quantity must be at least 1");
-    isValid = false;
-  } else {
-    clearError("quantity");
-  }
+      if (!food || food.length < 2) {
+        showError("food", "Please enter a food item");
+        isValid = false;
+      } else {
+        clearError("food");
+      }
 
-  return isValid;
-}
+      if (!quantity || quantity < 1) {
+        showError("quantity", "Quantity must be at least 1");
+        isValid = false;
+      } else {
+        clearError("quantity");
+      }
 
-function showMessage(message, type) {
-  messageEl.textContent = message;
-  messageEl.className = type;
-  messageEl.style.display = "block";
-  setTimeout(() => {
-    messageEl.style.display = "none";
-  }, 5000);
-}
+      return isValid;
+    }
 
-function submitRestaurant(event) {
-  event.preventDefault();
-  
-  if (!validateForm()) {
-    showMessage("❌ Please fix the errors above", "error");
-    return;
-  }
+    function showMessage(message, type) {
+      messageEl.textContent = message;
+      messageEl.className = type;
+      messageEl.style.display = "block";
+      setTimeout(() => {
+        messageEl.style.display = "none";
+      }, 5000);
+    }
 
-  const data = {
-    name: document.getElementById("name").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    phone: document.getElementById("phone").value.trim(),
-    location: document.getElementById("location").value.trim(),
-    food: document.getElementById("food").value.trim(),
-    quantity: parseInt(document.getElementById("quantity").value),
-    category: document.getElementById("category").value
-  };
+    function submitRestaurant(event) {
+      event.preventDefault();
 
-  const submitBtn = document.querySelector("button[type='submit']");
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
+      if (!validateForm()) {
+        showMessage("❌ Please fix the errors above", "error");
+        return;
+      }
 
-  fetch("/add-restaurant", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Server error");
-    return res.json();
-  })
-  .then(response => {
-    showMessage("✅ Food item submitted successfully!", "success");
-    form.reset();
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Food Item";
-  })
-  .catch(error => {
-    showMessage("❌ Error submitting data: " + error.message, "error");
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Food Item";
-  });
-}
+      const data = {
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        food: document.getElementById("food").value.trim(),
+        quantity: parseInt(document.getElementById("quantity").value),
+        category: document.getElementById("category").value,
+        membership: document.getElementById("membership").value
+      };
 
-</script>
+      const submitBtn = document.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      fetch("/add-restaurant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+        .then(res => {
+          if (!res.ok) throw new Error("Server error");
+          return res.json();
+        })
+        .then(response => {
+          showMessage("✅ Food item submitted successfully!", "success");
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Food Item";
+        })
+        .catch(error => {
+          showMessage("❌ Error submitting data: " + error.message, "error");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Food Item";
+        });
+    }
+
+  </script>
 
 </body>
+
 </html>

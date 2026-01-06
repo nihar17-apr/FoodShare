@@ -557,8 +557,7 @@
       animation: slideUp 0.4s ease;
     }
 
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    }
+
 
     .modal-header {
       display: flex;
@@ -1109,6 +1108,13 @@
         const verifiedBadge = d.isVerified ?
           '<span class="badge" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(129, 199, 132, 0.2) 100%); color: #2e7d32; border: 1px solid rgba(76, 175, 80, 0.5); padding: 8px 16px;">✅ Verified</span>' :
           '<span class="badge" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.3) 0%, rgba(255, 152, 0, 0.2) 100%); color: #f57c00; border: 1px solid rgba(255, 152, 0, 0.5); padding: 8px 16px;">⏳ Pending</span>';
+
+        const membershipBadge = d.membership === "Gold" ?
+          '<span class="badge" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: white; border: none; padding: 8px 16px;">🥇 GOLD</span>' :
+          d.membership === "Silver" ?
+            '<span class="badge" style="background: linear-gradient(135deg, #bdc3c7, #2c3e50); color: white; border: none; padding: 8px 16px;">🥈 SILVER</span>' :
+            '<span class="badge" style="background: rgba(0,0,0,0.1); color: #666; border: 1px solid #ccc; padding: 8px 16px;">⚪ BASIC</span>';
+
         const rating = d.rating ? `<strong>⭐ Rating:</strong> ${d.rating}/5<br>` : '';
         const email = d.email ? `<strong>📧 Email:</strong> <a href="mailto:${d.email}" style="color: #667eea; text-decoration: none;">${d.email}</a><br>` : '';
         const phone = d.phone ? `<strong>📱 Phone:</strong> ${d.phone}<br>` : '';
@@ -1140,6 +1146,7 @@
           <div>
             <h3 style="margin: 0 0 10px 0;">${icon} ${d.name}</h3>
             ${verifiedBadge}
+            ${membershipBadge}
           </div>
           <span style="font-size: 12px; color: #999; background: rgba(0,0,0,0.05); padding: 6px 12px; border-radius: 6px;">📅 ${createdDate}</span>
         </div>
@@ -1296,7 +1303,15 @@
       </div>
       ` : ''}
     </div>
-  `;
+
+    <div class="detail-section">
+      <h3>💎 Membership</h3>
+      <div class="detail-item">
+        <strong>Plan:</strong>
+        <span style="font-weight: bold; color: ${data.membership === 'Gold' ? '#ff8c00' : data.membership === 'Silver' ? '#2c3e50' : '#666'}">${data.membership || 'Basic'}</span>
+      </div>
+    </div>
+    `;
 
       if (data.rating) {
         html += `

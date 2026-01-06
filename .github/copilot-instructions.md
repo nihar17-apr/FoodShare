@@ -19,30 +19,50 @@ Quick run & debug
    - Root: `npm start` will run the canonical backend.
    - Canonical backend: `cd FoodShare/backend && npm start`.
 
-Key files and patterns
-- API surface lives in `FoodShare/backend/server.js` (restaurant & acceptor flows, admin routes). See public vs admin endpoints for how data is filtered (`/restaurants` returns verified only; `/admin/restaurants` returns all).
-- Mongoose models: `FoodShare/backend/models/*.js` — use these when persisting to MongoDB. Example: [FoodShare/backend/models/restaurant.js](FoodShare/backend/models/restaurant.js#L1-L40).
-- Static UI: `FoodShare/public/*` — pages `restaurant.html`, `acceptor.html`, `admin.html` are single-page forms that POST to the backend endpoints.
-- Fallback behaviour: the canonical backend uses a `mongoConnected` flag — when false it writes to `inMemoryRestaurants` / `inMemoryAcceptors`. Look for `mongoConnected` in `FoodShare/backend/server.js`.
+# Copilot instructions — FoodShare
 
-API quick reference (examples)
-- POST `/add-restaurant` — create restaurant (body: name,email,phone,location,food,quantity,category)
-- GET `/restaurants` — public list (verified only)
-- GET `/admin/restaurants` — admin list (all)
-- PUT `/verify-restaurant/:id` — mark verified
-- DELETE `/delete-restaurant/:id`
-- same routes exist for acceptors (`/add-acceptor`, `/acceptors`, `/admin/acceptors`, etc.)
-- POST `/verify-admin` — simple hardcoded admin check (credentials currently `adminId: Nihar`, `password: 1234`).
+Short summary
+- Canonical server: FoodShare/backend/server.js (full-featured, MongoDB-backed, port 5000).
+- Dev/minimal servers: root `index.js` and `backend/server.js` at repo root are lightweight duplicates (port 3000). Prefer editing the canonical server unless intentionally working on a minimal copy.
 
-Conventions & guidance for agents
-- Prefer editing the canonical files under `FoodShare/backend/` and the UI in `FoodShare/public/`. Avoid changing the duplicated servers in the repo root unless the task explicitly targets the minimal copy.
-- Persisting changes: migrations to MongoDB should update both the Mongoose models (`FoodShare/backend/models`) and the backend handlers in `FoodShare/backend/server.js` to keep field names aligned (for example, `items` subdocuments in `restaurant` schema).
-- Error handling: handlers log errors and return 5xx on exceptions — follow the existing try/catch style used in `FoodShare/backend/server.js` when adding new endpoints.
-- Tests/build: there are no automated tests or build scripts. Use manual requests (curl/Postman) and run the server directly. Example quick check: `curl http://localhost:5000/admin/restaurants`.
+Quick run & debug
+- Start MongoDB for persistent data: run `mongod` or start the MongoDB service on Windows.
+- Run canonical backend (recommended):
+  - `node FoodShare/backend/server.js` or `cd FoodShare/backend && npm start`
+  - Server logs `MongoDB Connected` on success; if not, it falls back to in-memory storage and logs a warning.
+- Run minimal/dev server: `node index.js` (runs at `http://localhost:3000`).
+- Override admin credentials at runtime with env vars: `ADMIN_ID` and `ADMIN_PASSWORD` (defaults: Nihar / 1234).
 
-Security & gotchas
-- Admin credentials are hardcoded in `FoodShare/backend/server.js` — remove or replace with proper auth before any real deployment.
-- Multiple server copies: edits to one copy are not automatically reflected in others — ensure you update the canonical implementation.
-- MongoDB requirement: if `mongod` is not running the server will still operate but data will be lost after restart (in-memory fallback).
+Architecture & important files
+- API entrypoint: FoodShare/backend/server.js — implements restaurant, acceptor, and admin routes. Look for `mongoConnected` to see DB vs in-memory behavior.
+- Mongoose models: FoodShare/backend/models/*.js (restaurant.js, acceptor.js, admin.js, activityLog.js). Update schema and server handlers together when adding fields.
+- Static UI: FoodShare/public/* (restaurant.html, acceptor.html, admin.html, dashboard.html). There are duplicate copies at repository root `public/` and `FoodShare/public/`.
 
-If anything here is outdated or you want a different canonical path, tell me where you prefer to centralize development and I will update these instructions.
+Data flow & behavior notes
+- On startup the canonical server attempts MongoDB at `mongodb://localhost:27017/foodshare`. If the connection fails the code uses `inMemoryRestaurants` / `inMemoryAcceptors` guarded by `mongoConnected`.
+- Persisted edits require updating both model definitions and any code that reads/writes those fields in `server.js`.
+
+Common endpoints (examples)
+- POST `/add-restaurant` (body: name,email,phone,location,food,quantity,category)
+- GET `/restaurants` (public — verified only)
+- GET `/admin/restaurants` (admin — returns all)
+- PUT `/verify-restaurant/:id` and DELETE `/delete-restaurant/:id`
+- Same patterns exist under acceptor routes (`/add-acceptor`, `/acceptors`, `/admin/acceptors`).
+- Admin auth: POST `/verify-admin` — currently hardcoded check; replace before production.
+
+Agent conventions & tips
+- Prefer edits in `FoodShare/backend/` and `FoodShare/public/` (canonical). Only modify root copies when intentionally working on the lightweight server or UI.
+- When adding fields: update model file in `FoodShare/backend/models/` and corresponding handler(s) in `FoodShare/backend/server.js` (search for field names to ensure consistency).
+- Follow existing try/catch + logging patterns used in `server.js` for error responses (500 on exceptions).
+- No automated tests are present — validate changes with curl/Postman or by running the server locally.
+
+Quick examples
+- Start canonical server:
+
+  ADMIN_ID=admin ADMIN_PASSWORD=secret node FoodShare/backend/server.js
+
+- Quick curl check (admin list):
+
+  curl http://localhost:5000/admin/restaurants
+
+If anything here is stale or you'd like more detail (API spec, field lists, or a small test harness), tell me which area to expand and I'll update this file.

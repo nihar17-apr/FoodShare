@@ -56,6 +56,7 @@ app.post("/add-restaurant", (req, res) => {
       }],
       isVerified: false,
       rating: 0,
+      membership: req.body.membership || "Basic",
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -100,6 +101,7 @@ app.post("/add-acceptor", (req, res) => {
       quantity: parseInt(quantity),
       isVerified: false,
       rating: 0,
+      membership: req.body.membership || "Basic",
       createdAt: new Date(),
       updatedAt: new Date()
     };
