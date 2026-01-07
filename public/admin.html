@@ -1487,27 +1487,34 @@
       showData(sorted, currentType);
     }
 
-    function verifyItem(id, type) {
+    async function verifyItem(id, type) {
       if (!id) {
         showMessage("Error: Invalid ID", "error");
         return;
       }
       if (confirm("Verify this " + type + "?")) {
-        fetch(`/verify-${type}/${id}`, { method: "PUT" })
-          .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-          })
-          .then(() => {
+        try {
+          const res = await fetch(`/verify-${type}/${id}`, { method: "PUT" });
+          const result = await res.json();
+
+          if (result.success) {
+            let msg = `✅ ${type} verified!`;
+            if (result.matchInfo) msg += `\n${result.matchInfo}`;
+            if (result.pricing) {
+              msg += `\nCost: $${result.pricing.acceptorCost.toFixed(2)} | Profit: $${result.pricing.platformProfit.toFixed(2)}`;
+            }
+            alert(msg); // Use alert for detailed info
             showMessage(`✅ ${type} verified successfully!`, "success");
             if (currentType === type) {
               currentType === "restaurant" ? loadRestaurants() : loadAcceptors();
             }
-          })
-          .catch(err => {
-            console.error("Error verifying:", err);
-            showMessage("❌ Error verifying " + type + ": " + err.message, "error");
-          });
+          } else {
+            throw new Error(result.error || "Verification failed");
+          }
+        } catch (err) {
+          console.error("Error verifying:", err);
+          showMessage("❌ Error verifying " + type + ": " + err.message, "error");
+        }
       }
     }
 

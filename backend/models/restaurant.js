@@ -29,10 +29,17 @@ const restaurantSchema = new mongoose.Schema({
   },
   items: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
       food: String,
       quantity: Number,
       category: String,
+      foodValue: {
+        type: Number,
+        default: 0
+      },
+      expiryTime: {
+        type: Date,
+        required: true
+      },
       createdAt: {
         type: Date,
         default: Date.now

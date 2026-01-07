@@ -481,6 +481,19 @@
       </div>
 
       <div class="form-group">
+        <label for="foodValue">Estimated Food Value ($) *</label>
+        <input id="foodValue" type="number" placeholder="Actual value of food" min="1" required>
+        <span class="error-msg" id="foodValueError"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="expiryHours">Freshness Window (Hours) *</label>
+        <input id="expiryHours" type="number" placeholder="Valid for how many hours?" min="1" max="48" value="6"
+          required>
+        <span class="error-msg" id="expiryHoursError"></span>
+      </div>
+
+      <div class="form-group">
         <label for="category">Food Category</label>
         <select id="category">
           <option value="">Select a category</option>
@@ -648,7 +661,9 @@
         food: document.getElementById("food").value.trim(),
         quantity: parseInt(document.getElementById("quantity").value),
         category: document.getElementById("category").value,
-        membership: document.getElementById("membership").value
+        membership: document.getElementById("membership").value,
+        foodValue: parseFloat(document.getElementById("foodValue").value),
+        expiryHours: parseInt(document.getElementById("expiryHours").value)
       };
 
       const submitBtn = document.querySelector("button[type='submit']");

@@ -75,11 +75,20 @@ app.get("/acceptors", async (req, res) => {
 ================================ */
 app.post("/add-restaurant", async (req, res) => {
   try {
-    const { name, email, phone, location, food, quantity, category, description, membership } = req.body;
+    const { name, email, phone, location, food, quantity, category, description, membership, foodValue, expiryHours } = req.body;
+    const expiryDate = new Date();
+    expiryDate.setHours(expiryDate.getHours() + Number(expiryHours || 6)); // Default 6 hours
+
     const record = {
       _id: Date.now().toString(),
       name, email, phone, location, description,
-      items: [{ food, quantity: Number(quantity), category }],
+      items: [{
+        food,
+        quantity: Number(quantity),
+        category,
+        foodValue: Number(foodValue || 100),
+        expiryTime: expiryDate
+      }],
       isVerified: false,
       membership: membership || "Basic",
       createdAt: new Date()
@@ -87,12 +96,12 @@ app.post("/add-restaurant", async (req, res) => {
 
     if (isLive()) {
       const dbData = await new Restaurant(record).save();
-      await new Activity({ actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() }).save();
+      await new Activity({ actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food} (Val: ${foodValue})`, timestamp: new Date() }).save();
       return res.status(201).json({ success: true, data: dbData });
     }
 
     memoryDB.restaurants.push(record);
-    memoryDB.activityLogs.push({ _id: Date.now().toString(), actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food}`, timestamp: new Date() });
+    memoryDB.activityLogs.push({ _id: Date.now().toString(), actorType: "Restaurant", actorName: name, actorEmail: email, action: "Donated Food", details: `${quantity} portions of ${food} (Val: ${foodValue})`, timestamp: new Date() });
     commitData();
     res.status(201).json({ success: true, data: record, status: systemStatus });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -146,39 +155,66 @@ app.put("/verify-acceptor/:id", async (req, res) => {
     const requestedFood = acceptorRecord.food.toLowerCase();
     const requestedQty = acceptorRecord.quantity;
     let matched = false;
-    let matchDetails = "No matching verified restaurant found.";
+    let matchDetails = "No matching fresh verified food found.";
+    let pricingInfo = null;
 
     if (isLive()) {
       const restaurants = await Restaurant.find({ isVerified: true });
       for (let rest of restaurants) {
-        let item = rest.items.find(i => i.food.toLowerCase() === requestedFood && i.quantity >= requestedQty);
+        let item = rest.items.find(i =>
+          i.food.toLowerCase() === requestedFood &&
+          i.quantity >= requestedQty &&
+          new Date(i.expiryTime) > new Date()
+        );
         if (item) {
+          const unitValue = item.foodValue / (item.quantity || 1);
+          const totalActualValue = unitValue * requestedQty;
+          pricingInfo = {
+            actualValue: totalActualValue,
+            restaurantPayout: totalActualValue * 0.10,
+            acceptorCost: totalActualValue * 0.20,
+            platformProfit: totalActualValue * 0.10
+          };
+
           item.quantity -= requestedQty;
           await rest.save();
           matched = true;
-          matchDetails = `Matched with ${rest.name}. Deducted ${requestedQty} portions. Remaining: ${item.quantity}`;
+          matchDetails = `Matched with ${rest.name}. Payout: ${pricingInfo.restaurantPayout.toFixed(2)}, Cost: ${pricingInfo.acceptorCost.toFixed(2)}`;
           break;
         }
       }
       acceptorRecord.isVerified = true;
       await acceptorRecord.save();
-      await new Activity({ actorType: "System", actorName: "Allocation Engine", action: "Matched Food", details: `Acceptor ${acceptorRecord.name} matched. ${matchDetails}`, timestamp: new Date() }).save();
+      await new Activity({ actorType: "System", actorName: "Pricing Engine", action: "Matched & Priced", details: `Acceptor ${acceptorRecord.name} matched. ${matchDetails}`, timestamp: new Date() }).save();
     } else {
       const verifiedRests = memoryDB.restaurants.filter(r => r.isVerified);
       for (let rest of verifiedRests) {
-        let item = rest.items.find(i => i.food.toLowerCase() === requestedFood && i.quantity >= requestedQty);
+        let item = rest.items.find(i =>
+          i.food.toLowerCase() === requestedFood &&
+          i.quantity >= requestedQty &&
+          new Date(i.expiryTime) > new Date()
+        );
         if (item) {
+          const unitValue = item.foodValue / (item.quantity || 1);
+          const totalActualValue = unitValue * requestedQty;
+          pricingInfo = {
+            actualValue: totalActualValue,
+            restaurantPayout: totalActualValue * 0.10,
+            acceptorCost: totalActualValue * 0.20,
+            platformProfit: totalActualValue * 0.10
+          };
+
           item.quantity -= requestedQty;
           matched = true;
-          matchDetails = `Matched with ${rest.name}. Deducted ${requestedQty} portions. Remaining: ${item.quantity}`;
+          matchDetails = `Matched with ${rest.name}. Payout: ${pricingInfo.restaurantPayout.toFixed(2)}, Cost: ${pricingInfo.acceptorCost.toFixed(2)}`;
           break;
         }
       }
       acceptorRecord.isVerified = true;
-      memoryDB.activityLogs.push({ actorType: "System", actorName: "Allocation Engine", action: "Matched Food", details: `Acceptor ${acceptorRecord.name} matched. ${matchDetails}`, timestamp: new Date() });
+      memoryDB.activityLogs.push({ actorType: "System", actorName: "Pricing Engine", action: "Matched & Priced", details: `Acceptor ${acceptorRecord.name} matched. ${matchDetails}`, timestamp: new Date() });
       commitData();
     }
-    res.json({ success: true, data: acceptorRecord, matchInfo: matchDetails });
+    res.json({ success: true, data: acceptorRecord, matchInfo: matchDetails, pricing: pricingInfo });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -234,7 +270,20 @@ const seedData = async () => {
       ];
 
       for (const r of sampleRestaurants) {
-        const record = { ...r, _id: Date.now().toString() + Math.random(), items: [{ food: r.food, quantity: r.quantity, category: "Meals" }], createdAt: new Date() };
+        const expiry = new Date();
+        expiry.setHours(expiry.getHours() + 24); // Seed data lasts 24h
+        const record = {
+          ...r,
+          _id: Date.now().toString() + Math.random(),
+          items: [{
+            food: r.food,
+            quantity: r.quantity,
+            category: "Meals",
+            foodValue: r.quantity * 10, // Default $10 per portion for seed
+            expiryTime: expiry
+          }],
+          createdAt: new Date()
+        };
         if (isLive()) await new Restaurant(record).save();
         else memoryDB.restaurants.push(record);
       }
