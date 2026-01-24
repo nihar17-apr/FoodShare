@@ -11,7 +11,7 @@ const activityRoutes = require("./backend/routes/activityRoutes");
 const adminRoutes = require("./backend/routes/adminRoutes");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // Connect to Database
 connectDB();
@@ -29,7 +29,9 @@ app.use("/", activityRoutes);
 app.use("/", adminRoutes);
 
 // SPA Fallback
-app.get("*", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 // Seed Data
 setTimeout(seedData, 5000);

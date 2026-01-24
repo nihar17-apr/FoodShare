@@ -1,6 +1,6 @@
-const Restaurant = require("./backend/models/restaurant");
-const Activity = require("./backend/models/activity");
-const { memoryDB, commitData, isLive } = require("./backend/config/storage");
+const Restaurant = require("../models/restaurant");
+const Activity = require("../models/activity");
+const { memoryDB, commitData, isLive } = require("../config/storage");
 
 const seedData = async () => {
     try {

@@ -1,6 +1,104 @@
 {
-  "restaurants": [],
+  "restaurants": [
+    {
+      "name": "Grand Imperial Hotel",
+      "email": "info@grandimperial.com",
+      "location": "Mumbai Central",
+      "food": "Lunch Buffet",
+      "quantity": 50,
+      "membership": "Gold",
+      "isVerified": true,
+      "_id": "17692539949460.3567260674735162",
+      "items": [
+        {
+          "food": "Lunch Buffet",
+          "quantity": 50,
+          "category": "Meals",
+          "foodValue": 500,
+          "expiryTime": "2026-01-25T11:26:34.945Z"
+        }
+      ],
+      "createdAt": "2026-01-24T11:26:34.946Z"
+    },
+    {
+      "name": "Oceanic Resort",
+      "email": "contact@oceanic.io",
+      "location": "Goa Beach Road",
+      "food": "Seafood Platter",
+      "quantity": 30,
+      "membership": "Silver",
+      "isVerified": true,
+      "_id": "17692539949460.5716522133635759",
+      "items": [
+        {
+          "food": "Seafood Platter",
+          "quantity": 30,
+          "category": "Meals",
+          "foodValue": 300,
+          "expiryTime": "2026-01-25T11:26:34.946Z"
+        }
+      ],
+      "createdAt": "2026-01-24T11:26:34.946Z"
+    },
+    {
+      "name": "The Green Bistro",
+      "email": "hello@greenbistro.com",
+      "location": "Bangalore Tech Park",
+      "food": "Organic Salads",
+      "quantity": 20,
+      "membership": "Gold",
+      "isVerified": true,
+      "_id": "17692539949460.780609137763906",
+      "items": [
+        {
+          "food": "Organic Salads",
+          "quantity": 20,
+          "category": "Meals",
+          "foodValue": 200,
+          "expiryTime": "2026-01-25T11:26:34.946Z"
+        }
+      ],
+      "createdAt": "2026-01-24T11:26:34.946Z"
+    },
+    {
+      "name": "Urban Tandoor",
+      "email": "order@urbantandoor.in",
+      "location": "Delhi Metro Heights",
+      "food": "North Indian Meals",
+      "quantity": 45,
+      "membership": "Basic",
+      "isVerified": true,
+      "_id": "17692539949460.20068602584398243",
+      "items": [
+        {
+          "food": "North Indian Meals",
+          "quantity": 45,
+          "category": "Meals",
+          "foodValue": 450,
+          "expiryTime": "2026-01-25T11:26:34.946Z"
+        }
+      ],
+      "createdAt": "2026-01-24T11:26:34.946Z"
+    }
+  ],
   "acceptors": [],
   "deliveryPersons": [],
-  "activityLogs": []
+  "activityLogs": [
+    {
+      "actorType": "System",
+      "actorName": "Storage Engine",
+      "action": "Ecosystem Wake-up",
+      "details": "Memory optimized for Big Data.",
+      "timestamp": "2026-01-24T11:26:34.946Z",
+      "_id": "17692539949460.6284937059147365"
+    },
+    {
+      "actorType": "Admin",
+      "actorName": "Nihar",
+      "action": "Storage Audit",
+      "details": "Cluster capacity verified as Unlimited.",
+      "timestamp": "2026-01-24T11:26:34.946Z",
+      "_id": "17692539949460.5610771310281827"
+    }
+  ]
 }
