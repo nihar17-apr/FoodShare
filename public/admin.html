@@ -1,1804 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <title>Admin Dashboard</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Food To Need</title>
+  <link rel="stylesheet" href="css/main.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: white;
-      background: #0a0015;
-    }
-
-    /* VIBRANT Full-Screen Animated Background */
-    .aurora-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: linear-gradient(45deg, #1a0533, #0d1b2a, #1b0a3c, #0a1929);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-      overflow: hidden;
-    }
-
-    @keyframes gradientShift {
-
-      0%,
-      100% {
-        background-position: 0% 50%;
-      }
-
-      25% {
-        background-position: 100% 0%;
-      }
-
-      50% {
-        background-position: 100% 100%;
-      }
-
-      75% {
-        background-position: 0% 100%;
-      }
-    }
-
-    .aurora-bg::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(ellipse 100% 80% at 20% 20%, rgba(255, 0, 100, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 100% at 80% 10%, rgba(100, 0, 255, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 90% 70% at 70% 90%, rgba(0, 180, 255, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 90% at 10% 80%, rgba(255, 120, 0, 0.5) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0, 255, 180, 0.4) 0%, transparent 60%);
-      animation: colorPulse 6s ease-in-out infinite alternate;
-    }
-
-    @keyframes colorPulse {
-      0% {
-        opacity: 0.9;
-        transform: scale(1);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-
-    .aurora-bg::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background:
-        radial-gradient(circle at 25% 25%, rgba(255, 50, 200, 0.7) 0%, transparent 30%),
-        radial-gradient(circle at 75% 25%, rgba(50, 150, 255, 0.7) 0%, transparent 30%),
-        radial-gradient(circle at 50% 75%, rgba(255, 220, 50, 0.6) 0%, transparent 30%),
-        radial-gradient(circle at 25% 75%, rgba(50, 255, 200, 0.6) 0%, transparent 30%),
-        radial-gradient(circle at 75% 75%, rgba(200, 50, 255, 0.6) 0%, transparent 30%);
-      animation: colorWave 12s linear infinite;
-    }
-
-    @keyframes colorWave {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-
-      100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-      }
-    }
-
-    /* Glassmorphism Styling for Login and Dashboard */
-    .login-box,
-    .dashboard-container {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.7;
-      animation: floatBlob 25s ease-in-out infinite;
-    }
-
-    .blob-1 {
-      width: 60vw;
-      height: 60vw;
-      background: radial-gradient(circle, #ff006e 0%, #ff006e 20%, transparent 70%);
-      top: -20%;
-      left: -20%;
-      animation-duration: 30s;
-    }
-
-    .blob-2 {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #8338ec 0%, #8338ec 20%, transparent 70%);
-      top: 10%;
-      right: -15%;
-      animation-duration: 25s;
-      animation-delay: -8s;
-    }
-
-    .blob-3 {
-      width: 55vw;
-      height: 55vw;
-      background: radial-gradient(circle, #3a86ff 0%, #3a86ff 20%, transparent 70%);
-      bottom: -15%;
-      left: 20%;
-      animation-duration: 28s;
-      animation-delay: -12s;
-    }
-
-    .blob-4 {
-      width: 45vw;
-      height: 45vw;
-      background: radial-gradient(circle, #00f5d4 0%, #00f5d4 20%, transparent 70%);
-      bottom: 20%;
-      right: -10%;
-      animation-duration: 22s;
-      animation-delay: -5s;
-    }
-
-    .blob-5 {
-      width: 40vw;
-      height: 40vw;
-      background: radial-gradient(circle, #fb5607 0%, #fb5607 20%, transparent 70%);
-      top: 40%;
-      left: 30%;
-      animation-duration: 35s;
-      animation-delay: -15s;
-    }
-
-    .blob-6 {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #ffbe0b 0%, #ffbe0b 20%, transparent 70%);
-      top: 60%;
-      right: 30%;
-      animation-duration: 32s;
-      animation-delay: -20s;
-    }
-
-    @keyframes floatBlob {
-
-      0%,
-      100% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      20% {
-        transform: translate(10vw, -8vh) scale(1.1);
-      }
-
-      40% {
-        transform: translate(-8vw, 12vh) scale(0.9);
-      }
-
-      60% {
-        transform: translate(15vw, 5vh) scale(1.15);
-      }
-
-      80% {
-        transform: translate(-12vw, -10vh) scale(0.95);
-      }
-    }
-
-    @keyframes mixColors {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-      }
-
-      50% {
-        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
-      }
-    }
-
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .login-box {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-      width: 100%;
-      max-width: 400px;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 1.5s ease, pulse 6s ease-in-out infinite;
-    }
-
-    .login-box h2 {
-      text-align: center;
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 30px;
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 10px;
-      font-size: 15px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      font-size: 14px;
-      font-family: inherit;
-      transition: all 0.6s ease;
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .login-btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      background-size: 200% 200%;
-      color: white;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.6s ease;
-      margin-top: 20px;
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .login-btn:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: left 0.8s ease;
-    }
-
-    .login-btn:hover:before {
-      left: 100%;
-    }
-
-    .login-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-      background-position: 200% center;
-    }
-
-    .login-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .login-error {
-      color: #c62828;
-      background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(244, 135, 126, 0.2) 100%);
-      padding: 14px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      border: 2px solid rgba(231, 76, 60, 0.5);
-      display: none;
-      animation: slideUp 0.3s ease;
-    }
-
-    .login-error.show {
-      display: block;
-    }
-
-    /* Dashboard Styles */
-    .dashboard-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: none;
-    }
-
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 40px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 1.5s ease;
-    }
-
-    .dashboard-header h2 {
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 0;
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .logout-btn {
-      padding: 12px 28px;
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.6s ease;
-      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
-    }
-
-    .logout-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(231, 76, 60, 0.5);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 40px;
-    }
-
-    button {
-      padding: 14px 32px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      color: #667eea;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.6s ease;
-      font-size: 16px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-    }
-
-    button:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
-      background: rgba(255, 255, 255, 0.98);
-    }
-
-    button.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      color: white;
-      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
-    }
-
-    h2 {
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 32px;
-      font-weight: 700;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .filter-section {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 1.5s ease;
-    }
-
-    .filter-section input {
-      padding: 12px 18px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 10px;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.8);
-      transition: all 0.6s ease;
-    }
-
-    .filter-section input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .stats {
+    .admin-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-      animation: slideUp 1.5s ease;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    .stat-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 28px;
-      border-radius: 15px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      transition: all 0.6s ease;
+    .stat-val {
+      font-size: 2.5rem;
+      font-weight: 800;
     }
 
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
     }
 
-    .stat-card h4 {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 14px;
-      margin-bottom: 12px;
-      font-weight: 600;
+    .data-table th,
+    .data-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .stat-card .number {
-      font-size: 42px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .tab-btn {
+      margin-right: 0.5rem;
     }
 
-    #output {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      padding: 28px;
-      border-radius: 15px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-      transition: all 0.6s ease;
-      border: 2px solid rgba(102, 126, 234, 0.2);
-      backdrop-filter: blur(10px);
-      animation: slideUp 1.5s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 18px 50px rgba(102, 126, 234, 0.3);
-      border-color: rgba(102, 126, 234, 0.5);
-    }
-
-    .card h3 {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 15px;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .card p {
-      color: #666;
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .card p strong {
-      color: #333;
-    }
-
-    .card .badge {
-      display: inline-block;
-      padding: 8px 16px;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-      color: #667eea;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 10px;
-      margin-right: 8px;
-      border: 1px solid rgba(102, 126, 234, 0.3);
-    }
-
-    .card .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .card button {
-      flex: 1;
-      padding: 10px;
-      font-size: 13px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.6s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-    }
-
-    .card button:hover {
-      background: linear-gradient(135deg, #5568d3 0%, #6a3e8f 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .card button.delete {
-      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
-    }
-
-    .card button.delete:hover {
-      background: linear-gradient(135deg, #d63026 0%, #a93226 100%);
-      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-    }
-
-    .card button.verify {
-      background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
-    }
-
-    .card button.verify:hover {
-      background: linear-gradient(135deg, #239b56 0%, #1e8449 100%);
-      box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
-    }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-      border-radius: 15px;
-      color: #999;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(10px);
-    }
-
-    .empty-state h3 {
-      color: #667eea;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    #msg {
+    .login-overlay {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px 28px;
-      border-radius: 12px;
-      color: white;
-      font-weight: 600;
-      display: none;
-      z-index: 1000;
-      animation: slideIn 0.6s ease-out;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    #msg.success {
-      background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-      display: block;
-    }
-
-    #msg.error {
-      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-      display: block;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
+      inset: 0;
+      background: var(--bg-main);
       z-index: 2000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      overflow: auto;
-      animation: fadeIn 0.6s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    .modal-content {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
-      margin: 5% auto;
-      padding: 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 600px;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      animation: slideUp 1.0s ease;
-    }
-
-
-
-    .modal-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 25px;
-      border-bottom: 2px solid rgba(102, 126, 234, 0.2);
-      padding-bottom: 15px;
+      justify-content: center;
     }
 
-    .modal-header h2 {
-      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 0;
-      font-size: 26px;
+    .badge-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
       font-weight: 700;
     }
 
-    .close-btn {
-      font-size: 28px;
-      font-weight: bold;
-      color: #999;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      width: 30px;
-      height: 30px;
-      transition: all 0.3s ease;
+    .pending {
+      background: oklch(60% 0.15 60 / 0.2);
+      color: oklch(80% 0.1 60);
     }
 
-    .close-btn:hover {
-      color: #667eea;
-      transform: rotate(90deg);
-    }
-
-    .detail-section {
-      margin-bottom: 20px;
-      padding: 18px;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-      border-radius: 12px;
-      border-left: 4px solid #667eea;
-      transition: all 0.3s ease;
-    }
-
-    .detail-section:hover {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    }
-
-    .detail-section h3 {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-top: 0;
-      margin-bottom: 12px;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .detail-item {
-      margin-bottom: 12px;
-      display: flex;
-      align-items: flex-start;
-      padding: 8px;
-      border-radius: 6px;
-      transition: background 0.3s ease;
-    }
-
-    .detail-item:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    .detail-item strong {
-      color: #667eea;
-      min-width: 120px;
-      font-weight: 600;
-    }
-
-    .detail-item span {
-      color: #666;
-      word-break: break-word;
-    }
-
-    .items-list {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-      padding: 18px;
-      border-radius: 12px;
-      border-left: 4px solid #667eea;
-      border-top: 2px solid rgba(102, 126, 234, 0.3);
-    }
-
-    .items-list h4 {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-top: 0;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-
-    .item-entry {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 12px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border-left: 4px solid #667eea;
-      font-size: 14px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-    }
-
-    .item-entry:hover {
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
-    }
-
-    .item-entry strong {
-      color: #333;
-      font-weight: 600;
-    }
-
-    .item-entry .category {
-      display: inline-block;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-      color: #667eea;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      margin-left: 8px;
-      font-weight: 600;
-      border: 1px solid rgba(102, 126, 234, 0.3);
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 25px;
-      border-top: 2px solid rgba(102, 126, 234, 0.2);
-      padding-top: 20px;
-    }
-
-    .modal-actions button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .modal-actions button:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: left 0.5s ease;
-    }
-
-    .modal-actions button:hover:before {
-      left: 100%;
-    }
-
-    .modal-actions button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    }
-
-    .modal-actions .approve-btn {
-      background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-      color: white;
-    }
-
-    .modal-actions .approve-btn:hover {
-      background: linear-gradient(135deg, #239b56 0%, #1e8449 100%);
-    }
-
-    .modal-actions .reject-btn {
-      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-      color: white;
-    }
-
-    .modal-actions .reject-btn:hover {
-      background: linear-gradient(135deg, #d63026 0%, #a93226 100%);
-    }
-
-    .modal-actions .close-modal-btn {
-      background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
-      color: white;
-    }
-
-    .modal-actions .close-modal-btn:hover {
-      background: linear-gradient(135deg, #839497 0%, #717d82 100%);
-    }
-
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: white;
-    }
-
-    .loading::after {
-      content: "";
-      animation: dots 1.5s steps(4, end) infinite;
-    }
-
-    @keyframes dots {
-
-      0%,
-      20% {
-        content: "";
-      }
-
-      40% {
-        content: ".";
-      }
-
-      60% {
-        content: "..";
-      }
-
-      80%,
-      100% {
-        content: "...";
-      }
+    .verified {
+      background: oklch(70% 0.15 150 / 0.2);
+      color: oklch(85% 0.1 150);
     }
   </style>
 </head>
 
 <body>
-  <div class="aurora-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
-    <div class="blob blob-5"></div>
-    <div class="blob blob-6"></div>
-  </div>
+  <div class="aurora-bg"></div>
 
-  <!-- Login Section -->
-  <div id="loginSection" class="login-container">
-    <div class="login-box">
-      <h2>👨‍💼 Admin Login</h2>
-      <div id="loginError" class="login-error"></div>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="username">Admin ID</label>
-          <input id="username" type="text" placeholder="Enter admin ID" required>
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input id="password" type="password" placeholder="Enter password" required>
-        </div>
-
-        <button type="submit" class="login-btn">Login</button>
-      </form>
+  <!-- Admin Login -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="glass-card" style="width: 400px; text-align: center">
+      <h2 class="gradient-text">Admin Login</h2>
+      <input type="password" id="adminPass" placeholder="Enter System Password" style="margin: 1.5rem 0">
+      <button class="btn btn-primary" style="width: 100%" onclick="checkPass()">Access Dashboard</button>
+      <p id="loginError" style="color: oklch(70% 0.15 20); margin-top: 1rem; display: none">Access Denied</p>
     </div>
   </div>
 
-  <!-- Dashboard Section -->
-  <div id="dashboardSection" class="dashboard-container">
-    <div class="dashboard-header">
-      <h2>👨‍💼 Admin Dashboard</h2>
-      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+  <nav class="navbar">
+    <div class="nav-brand">Admin Control Center</div>
+    <div class="nav-links">
+      <button class="btn glass-card" onclick="logout()">Logout</button>
     </div>
+  </nav>
 
-    <div id="dbStatusBadge" style="text-align: right; padding: 10px; font-size: 11px; font-weight: 600; color: #777;">
-      Database: <span id="dbStatusText">Checking...</span>
-    </div>
-    <div class="button-group">
-      <button class="active" onclick="loadRestaurants()">🍴 Restaurants</button>
-      <button onclick="loadAcceptors()">🏠 Users</button>
-      <button onclick="loadDeliveries()">🚚 Deliveries</button>
-      <button onclick="loadActivityLogs()">📜 Activity Logs</button>
-    </div>
-
-    <div class="filter-section">
-      <input type="text" id="searchInput" placeholder="🔍 Search by name, location, or food..." onkeyup="filterData()">
-      <select id="sortBy" onchange="sortData()">
-        <option value="recent">Recent First</option>
-        <option value="oldest">Oldest First</option>
-        <option value="name">By Name (A-Z)</option>
-      </select>
-    </div>
-
-    <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 30px;">
-      <div class="stat-card"
-        style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border: 2px solid #667eea;">
-        <h4>📦 Storage Ecosystem</h4>
-        <div id="storage-engine" class="val" style="font-size: 32px; margin: 10px 0;">MongoDB Atlas</div>
-        <p id="storage-status" style="color: #667eea; font-weight: 700;">ACTIVE | DISTRIBUTED CLUSTER</p>
+  <main class="container">
+    <div class="admin-stats">
+      <div class="glass-card" data-reveal>
+        <div style="font-size: 0.8rem; opacity: 0.7">Total Donors</div>
+        <div class="stat-val gradient-text" id="statDonors">0</div>
       </div>
-      <div class="stat-card"
-        style="background: linear-gradient(135deg, rgba(245, 124, 0, 0.1), rgba(255, 152, 0, 0.1)); border: 2px solid #f57c00;">
-        <h4>📊 Global Capacity</h4>
-        <div id="storage-cap" class="val" style="font-size: 32px; margin: 10px 0;">UNLIMITED</div>
-        <p style="color: #f57c00; font-weight: 700;">AUTO-SCALING ENABLED</p>
+      <div class="glass-card" data-reveal>
+        <div style="font-size: 0.8rem; opacity: 0.7">Pending Approvals</div>
+        <div class="stat-val gradient-text" id="statPending">0</div>
+      </div>
+      <div class="glass-card" data-reveal>
+        <div style="font-size: 0.8rem; opacity: 0.7">Verified NGOs</div>
+        <div class="stat-val gradient-text" id="statNGOs">0</div>
       </div>
     </div>
 
-    <script>
-      async function updateStorageStats() {
-        try {
-          const res = await fetch('/admin/storage-stats');
-          const data = await res.json();
-          document.getElementById("storage-engine").textContent = data.engine;
-          document.getElementById("storage-status").textContent = `STATUS: ${data.health.toUpperCase()} | ${data.engine.split(' ')[0].toUpperCase()}`;
-          document.getElementById("storage-cap").textContent = data.totalCapacity.split(' ')[0];
-        } catch (e) { }
-      }
-      setInterval(updateStorageStats, 5000);
-      updateStorageStats();
-    </script>
-    <div class="stats">
-      <div class="stat-card">
-        <h4>Total Restaurants</h4>
-        <div class="number" id="restaurantCount">0</div>
+    <div class="glass-card">
+      <div class="tab-nav" style="margin-bottom: 1rem">
+        <button class="btn btn-primary tab-btn" onclick="showTab('donors')">Donors</button>
+        <button class="btn glass-card tab-btn" onclick="showTab('receivers')">Receivers</button>
+        <button class="btn glass-card tab-btn" onclick="showTab('delivery')">Delivery</button>
       </div>
-      <div class="stat-card">
-        <h4>Total Users</h4>
-        <div class="number" id="acceptorCount">0</div>
-      </div>
-      <div class="stat-card">
-        <h4>Total Food Items</h4>
-        <div class="number" id="foodCount">0</div>
-      </div>
-      <div class="stat-card">
-        <h4>Total Quantity</h4>
-        <div class="number" id="quantityCount">0</div>
-      </div>
-      <div class="stat-card">
-        <h4>Delivery Partners</h4>
-        <div class="number" id="deliveryCount">0</div>
+
+      <div id="tableContainer">
+        <table class="data-table">
+          <thead>
+            <tr id="tableHead"></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
       </div>
     </div>
-
-    <div id="output"></div>
-    <div id="msg"></div>
-
-    <!-- Detail Modal -->
-    <div id="detailModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 id="modalTitle">Details</h2>
-          <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-
-        <div id="modalBody"></div>
-
-        <div class="modal-actions">
-          <button class="approve-btn" onclick="verifyFromModal()">✓ Approve</button>
-          <button class="reject-btn" onclick="deleteFromModal()">🗑 Reject</button>
-          <button class="close-modal-btn" onclick="closeModal()">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <script>
-    // Admin Credentials
-    const ADMIN_USERNAME = "Nihar";
-    const ADMIN_PASSWORD = "1234";
+    let currentTab = 'donors';
 
-    let isLoggedIn = false;
-    let allData = [];
-    let currentType = "restaurant";
-    let sortOrder = "recent";
-    let modalData = null;
-
-    // Login Handler
-    function handleLogin(event) {
-      event.preventDefault();
-
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const errorDiv = document.getElementById("loginError");
-
-      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-        isLoggedIn = true;
-        document.getElementById("loginSection").style.display = "none";
-        document.getElementById("dashboardSection").style.display = "block";
-
-        // Fetch Database Status
-        fetch("/admin/db-status")
-          .then(res => res.json())
-          .then(data => {
-            const el = document.getElementById("dbStatusText");
-            el.textContent = data.status;
-            el.style.color = data.status.includes("Connected") ? "#27ae60" : "#e74c3c";
-          }).catch(() => { });
-
-        loadRestaurants();
+    function checkPass() {
+      if (document.getElementById('adminPass').value === 'admin123') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        fetchData();
       } else {
-        errorDiv.textContent = "❌ Invalid admin ID or password";
-        errorDiv.classList.add("show");
-        setTimeout(() => {
-          errorDiv.classList.remove("show");
-        }, 3000);
+        document.getElementById('loginError').style.display = 'block';
       }
     }
 
-    // Logout Handler
-    function handleLogout() {
-      if (confirm("Are you sure you want to logout?")) {
-        isLoggedIn = false;
-        document.getElementById("loginSection").style.display = "flex";
-        document.getElementById("dashboardSection").style.display = "none";
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
+    function logout() { location.reload(); }
+
+    async function fetchData() {
+      let endpoint = '/admin/restaurants';
+      if (currentTab === 'receivers') endpoint = '/admin/acceptors';
+      if (currentTab === 'delivery') endpoint = '/admin/deliveries';
+
+      const res = await fetch(endpoint);
+      const data = await res.json();
+      renderTable(data);
+
+      // Update stats
+      if (currentTab === 'donors') {
+        document.getElementById('statDonors').textContent = data.length;
+        document.getElementById('statPending').textContent = data.filter(d => !d.isVerified).length;
       }
     }
 
-    function showMessage(message, type) {
-      const msgEl = document.getElementById("msg");
-      msgEl.textContent = message;
-      msgEl.className = type;
-      setTimeout(() => {
-        msgEl.className = "";
-      }, 3000);
-    }
+    function renderTable(data) {
+      const body = document.getElementById('tableBody');
+      const head = document.getElementById('tableHead');
 
-    function loadRestaurants() {
-      currentType = "restaurant";
-      updateActiveButton(0);
-      document.getElementById("output").innerHTML = '<div class="loading">Loading restaurants...</div>';
-
-      fetch("/admin/restaurants")
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(data => {
-          console.log("Restaurants data:", data);
-          allData = Array.isArray(data) ? data : [];
-          updateStats();
-          showData(allData, "restaurant");
-        })
-        .catch(err => {
-          console.error("Error loading restaurants:", err);
-          document.getElementById("output").innerHTML = `<div class="empty-state"><h3>Error loading restaurants</h3><p>${err.message}</p></div>`;
-          showMessage("Error loading restaurants: " + err.message, "error");
-        });
-    }
-
-    function loadAcceptors() {
-      currentType = "acceptor";
-      updateActiveButton(1);
-      document.getElementById("output").innerHTML = '<div class="loading">Loading acceptors...</div>';
-
-      fetch("/admin/acceptors")
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(data => {
-          console.log("Acceptors data:", data);
-          allData = Array.isArray(data) ? data : [];
-          updateStats();
-          showData(allData, "acceptor");
-        })
-        .catch(err => {
-          console.error("Error loading acceptors:", err);
-          document.getElementById("output").innerHTML = `<div class="empty-state"><h3>Error loading acceptors</h3><p>${err.message}</p></div>`;
-          showMessage("Error loading acceptors: " + err.message, "error");
-        });
-    }
-
-    function loadDeliveries() {
-      currentType = "delivery";
-      updateActiveButton(2);
-      document.getElementById("output").innerHTML = '<div class="loading">Loading delivery partners...</div>';
-
-      fetch("/admin/deliveries")
-        .then(res => res.json())
-        .then(data => {
-          allData = data;
-          updateStats();
-          showData(data, "delivery");
-        })
-        .catch(err => {
-          document.getElementById("output").innerHTML = `<div class="empty-state"><h3>Error loading deliveries</h3></div>`;
-        });
-    }
-
-    function loadActivityLogs() {
-      currentType = "activity";
-      updateActiveButton(3);
-      document.getElementById("output").innerHTML = '<div class="loading">Loading activity logs...</div>';
-
-      fetch("/admin/activities")
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(data => {
-          console.log("Activity logs data:", data);
-          showActivityLogs(Array.isArray(data) ? data : []);
-        })
-        .catch(err => {
-          console.error("Error loading activity logs:", err);
-          document.getElementById("output").innerHTML = `<div class="empty-state"><h3>Error loading activity logs</h3><p>${err.message}</p></div>`;
-          showMessage("Error loading activities: " + err.message, "error");
-        });
-    }
-
-    function showActivityLogs(logs) {
-      const out = document.getElementById("output");
-      out.innerHTML = "";
-
-      if (!logs || logs.length === 0) {
-        out.innerHTML = `
-      <div class="empty-state">
-        <h3>📭 No activity logs found</h3>
-        <p>There are currently no activity records to display.</p>
-      </div>
-    `;
-        return;
+      if (currentTab === 'donors') {
+        head.innerHTML = `<th>Name</th><th>Location</th><th>Item</th><th>Status</th><th>Actions</th>`;
+        body.innerHTML = data.map(d => `
+                <tr>
+                    <td>${d.name}</td>
+                    <td>${d.location}</td>
+                    <td>${d.items && d.items[0] ? d.items[0].food : 'N/A'}</td>
+                    <td><span class="badge-status ${d.isVerified ? 'verified' : 'pending'}">${d.isVerified ? 'Verified' : 'Pending'}</span></td>
+                    <td>
+                        ${!d.isVerified ? `<button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.7rem;" onclick="verifyItem('${d._id}', 'restaurant')">Approve</button>` : ''}
+                        <button class="glass-card" style="padding: 4px 10px; font-size: 0.7rem;" onclick="deleteItem('${d._id}', 'restaurant')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+      } else if (currentTab === 'receivers') {
+        head.innerHTML = `<th>Name</th><th>Location</th><th>Needs</th><th>Status</th><th>Actions</th>`;
+        body.innerHTML = data.map(d => `
+                <tr>
+                    <td>${d.name}</td>
+                    <td>${d.location}</td>
+                    <td>${d.needs || 'Regular'}</td>
+                    <td><span class="badge-status ${d.isVerified ? 'verified' : 'pending'}">${d.isVerified ? 'Verified' : 'Pending'}</span></td>
+                    <td>
+                        ${!d.isVerified ? `<button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.7rem;" onclick="verifyItem('${d._id}', 'acceptor')">Approve</button>` : ''}
+                        <button class="glass-card" style="padding: 4px 10px; font-size: 0.7rem;" onclick="deleteItem('${d._id}', 'acceptor')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+      } else {
+        head.innerHTML = `<th>Name</th><th>Area</th><th>Vehicle</th><th>Actions</th>`;
+        body.innerHTML = data.map(d => `
+                <tr>
+                    <td>${d.name}</td>
+                    <td>${d.location}</td>
+                    <td>${d.vehicleType}</td>
+                    <td>
+                        <button class="glass-card" style="padding: 4px 10px; font-size: 0.7rem;" onclick="deleteItem('${d._id}', 'delivery')">Remove</button>
+                    </td>
+                </tr>
+            `).join('');
       }
-
-      logs.forEach(log => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const date = new Date(log.timestamp).toLocaleString();
-        const icon = log.actorType === 'Restaurant' ? '🍴' : (log.actorType === 'Acceptor' ? '🏠' : '🚚');
-        card.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div style="flex: 1;">
-          <h3 style="margin-bottom: 5px;">${icon} ${log.actorName}</h3>
-          <p><strong>Action:</strong> <span style="color: #667eea; font-weight: 700; background: rgba(102, 126, 234, 0.1); padding: 2px 8px; border-radius: 4px;">${log.action}</span></p>
-          <p style="margin: 8px 0; color: #555;"><strong>Details:</strong> ${log.details}</p>
-          <div style="display: flex; gap: 15px; font-size: 13px; color: #888;">
-            <span>📧 ${log.actorEmail || 'N/A'}</span>
-            <span>🕒 ${date}</span>
-          </div>
-        </div>
-        <button onclick="deleteActivity('${log._id}')" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid #e74c3c; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s ease;">Delete Log</button>
-      </div>
-    `;
-        out.appendChild(card);
-      });
-    }
-
-    function deleteActivity(id) {
-      if (confirm("Permanently delete this activity log entry?")) {
-        fetch(`/delete-activity/${id}`, { method: "DELETE" })
-          .then(res => res.json())
-          .then(() => {
-            showMessage("✅ Log entry removed", "success");
-            loadActivityLogs();
-          })
-          .catch(err => showMessage("❌ Error deleting log", "error"));
-      }
-    }
-
-    function updateActiveButton(index) {
-      document.querySelectorAll(".button-group button").forEach((btn, i) => {
-        btn.classList.toggle("active", i === index);
-      });
-    }
-
-    function updateStats() {
-      fetch("/admin/restaurants")
-        .then(res => {
-          if (!res.ok) throw new Error("Failed to fetch restaurants");
-          return res.json();
-        })
-        .then(restaurants => {
-          if (Array.isArray(restaurants)) {
-            document.getElementById("restaurantCount").textContent = restaurants.length;
-          }
-        })
-        .catch(err => console.error("Error updating restaurant stats:", err));
-
-      fetch("/admin/acceptors")
-        .then(res => {
-          if (!res.ok) throw new Error("Failed to fetch acceptors");
-          return res.json();
-        })
-        .then(acceptors => {
-          if (Array.isArray(acceptors)) {
-            document.getElementById("acceptorCount").textContent = acceptors.length;
-          }
-        })
-        .catch(err => console.error("Error updating acceptor stats:", err));
-
-      fetch("/admin/deliveries")
-        .then(res => res.json())
-        .then(deliveries => {
-          document.getElementById("deliveryCount").textContent = deliveries.length;
-        })
-        .catch(err => console.error(err));
-    }
-
-    function showData(data, type) {
-      const out = document.getElementById("output");
-      out.innerHTML = "";
-
-      console.log(`Showing ${data.length} ${type}s`);
-
-      if (!data || data.length === 0) {
-        out.innerHTML = `
-      <div class="empty-state">
-        <h3>📭 No ${type}s found</h3>
-        <p>There are currently no ${type} records to display.</p>
-        <p style="font-size: 12px; color: #999;">Waiting for ${type}s to register...</p>
-      </div>
-    `;
-        document.getElementById("foodCount").textContent = 0;
-        document.getElementById("quantityCount").textContent = 0;
-        return;
-      }
-
-      let totalQuantity = 0;
-      let totalFoodItems = 0;
-
-      data.forEach(d => {
-        console.log("Processing item:", d);
-
-        // Count food items
-        if (type === "restaurant" && d.items && d.items.length > 0) {
-          totalFoodItems += d.items.length;
-          d.items.forEach(item => {
-            totalQuantity += parseInt(item.quantity) || 0;
-          });
-        } else if (type === "restaurant" && d.food) {
-          totalFoodItems += 1;
-          totalQuantity += parseInt(d.quantity) || 0;
-        } else if (type === "acceptor") {
-          totalFoodItems += 1;
-          totalQuantity += parseInt(d.quantity) || 0;
-        }
-
-        const verifiedBadge = d.isVerified ?
-          '<span class="badge" style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(129, 199, 132, 0.2) 100%); color: #2e7d32; border: 1px solid rgba(76, 175, 80, 0.5); padding: 8px 16px;">✅ Verified</span>' :
-          '<span class="badge" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.3) 0%, rgba(255, 152, 0, 0.2) 100%); color: #f57c00; border: 1px solid rgba(255, 152, 0, 0.5); padding: 8px 16px;">⏳ Pending</span>';
-
-        const membershipBadge = d.membership === "Gold" ?
-          '<span class="badge" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: white; border: none; padding: 8px 16px;">🥇 GOLD</span>' :
-          d.membership === "Silver" ?
-            '<span class="badge" style="background: linear-gradient(135deg, #bdc3c7, #2c3e50); color: white; border: none; padding: 8px 16px;">🥈 SILVER</span>' :
-            '<span class="badge" style="background: rgba(0,0,0,0.1); color: #666; border: 1px solid #ccc; padding: 8px 16px;">⚪ BASIC</span>';
-
-        const rating = d.rating ? `<strong>⭐ Rating:</strong> ${d.rating}/5<br>` : '';
-        const email = d.email ? `<strong>📧 Email:</strong> <a href="mailto:${d.email}" style="color: #667eea; text-decoration: none;">${d.email}</a><br>` : '';
-        const phone = d.phone ? `<strong>📱 Phone:</strong> ${d.phone}<br>` : '';
-        const description = d.description ? `<p style="font-style: italic; color: #777; margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.05); border-left: 3px solid #667eea; border-radius: 4px;">"${d.description}"</p>` : '';
-
-        // Format items list for restaurants
-        let itemsDisplay = '';
-        if (type === "restaurant" && d.items && d.items.length > 0) {
-          itemsDisplay = '<div class="items-list"><strong>📦 Food Items Submitted:</strong><div style="margin-top: 10px;">';
-          d.items.forEach(item => {
-            const category = item.category ? ` <span class="category">${item.category}</span>` : '';
-            const qty = parseInt(item.quantity) || 0;
-            const stockColor = qty === 0 ? "#e74c3c" : (qty < 10 ? "#f39c12" : "#667eea");
-            const stockStatus = qty === 0 ? " (OUT OF STOCK)" : (qty < 10 ? " (LOW STOCK)" : "");
-            itemsDisplay += `<div class="item-entry">• <strong>${item.food || item.itemName}</strong> - <span style="color: ${stockColor}; font-weight: 700;">${qty} portions</span>${stockStatus}${category}</div>`;
-          });
-          itemsDisplay += '</div></div>';
-        } else if (type === "restaurant" && d.food) {
-          const category = d.category ? ` <span class="category">${d.category}</span>` : '';
-          itemsDisplay = `<div class="items-list"><strong>🍽️ Food Item:</strong> <span style="color: #667eea; font-weight: 600;">${d.food}</span>${category}<br><strong>📦 Quantity:</strong> <span style="color: #667eea; font-weight: 600;">${d.quantity} portions</span></div>`;
-        } else if (type === "acceptor" && d.food) {
-          itemsDisplay = `<div class="items-list"><strong>🍽️ Food Need:</strong> <span style="color: #667eea; font-weight: 600;">${d.food}</span><br><strong>📦 Quantity Needed:</strong> <span style="color: #667eea; font-weight: 600;">${d.quantity} portions</span></div>`;
-        }
-
-        const createdDate = d.createdAt ? new Date(d.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
-
-        const icon = type === "restaurant" ? "🏨" : (type === "acceptor" ? "🏠" : "🚚");
-
-        out.innerHTML += `
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
-          <div>
-            <h3 style="margin: 0 0 10px 0;">${icon} ${d.name}</h3>
-            ${verifiedBadge}
-            ${type !== 'delivery' ? membershipBadge : ''}
-          </div>
-          <span style="font-size: 12px; color: #999; background: rgba(0,0,0,0.05); padding: 6px 12px; border-radius: 6px;">📅 ${createdDate}</span>
-        </div>
-        ${description}
-        <div style="margin: 12px 0; padding: 12px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border-radius: 8px; border-left: 3px solid #667eea;">
-          <p style="margin: 8px 0;"><strong>📍 Location:</strong> ${d.location}</p>
-          ${email}
-          ${phone}
-          ${rating}
-          ${d.vehicleType ? `<p><strong>🚲 Vehicle:</strong> ${d.vehicleType}</p>` : ''}
-          ${d.status ? `<p><strong>🚦 Status:</strong> ${d.status}</p>` : ''}
-        </div>
-        ${itemsDisplay}
-        <div class="actions">
-          ${!d.isVerified ? `<button onclick="verifyItem('${d._id}', '${type}')" class="verify">✓ Approve</button>` : '<button disabled style="opacity: 0.5; cursor: not-allowed;">✓ Already Verified</button>'}
-          <button onclick="deleteItem('${d._id}', '${type}')" class="delete">🗑 Reject</button>
-          <button onclick="viewDetails('${d._id}', '${type}')" style="background: linear-gradient(135deg, #00bcd4, #0097a7); color: white; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);">👁 View</button>
-        </div>
-      </div>
-    `;
-      });
-
-      document.getElementById("foodCount").textContent = totalFoodItems;
-      document.getElementById("quantityCount").textContent = totalQuantity;
-    }
-
-    function filterData() {
-      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-      const filtered = allData.filter(d => {
-        return (d.name && d.name.toLowerCase().includes(searchTerm)) ||
-          (d.location && d.location.toLowerCase().includes(searchTerm)) ||
-          (d.food && d.food.toLowerCase().includes(searchTerm));
-      });
-      showData(filtered, currentType);
-    }
-
-    function sortData() {
-      sortOrder = document.getElementById("sortBy").value;
-      const sorted = [...allData];
-
-      if (sortOrder === "recent") {
-        sorted.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-      } else if (sortOrder === "oldest") {
-        sorted.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
-      } else if (sortOrder === "name") {
-        sorted.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-      }
-
-      showData(sorted, currentType);
     }
 
     async function verifyItem(id, type) {
-      if (!id) {
-        showMessage("Error: Invalid ID", "error");
-        return;
-      }
-      if (confirm("Verify this " + type + "?")) {
-        try {
-          const res = await fetch(`/verify-${type}/${id}`, { method: "PUT" });
-          const result = await res.json();
+      const route = type === 'restaurant' ? `/verify-restaurant/${id}` : `/verify-acceptor/${id}`;
+      await fetch(route, { method: 'PUT' });
+      fetchData();
+    }
 
-          if (result.success) {
-            let msg = `✅ ${type} verified!`;
-            if (result.matchInfo) msg += `\n${result.matchInfo}`;
-            if (result.pricing) {
-              msg += `\nCost: $${result.pricing.acceptorCost.toFixed(2)} | Profit: $${result.pricing.platformProfit.toFixed(2)}`;
-            }
-            alert(msg); // Use alert for detailed info
-            showMessage(`✅ ${type} verified successfully!`, "success");
-            if (currentType === type) {
-              currentType === "restaurant" ? loadRestaurants() : loadAcceptors();
-            }
-          } else {
-            throw new Error(result.error || "Verification failed");
-          }
-        } catch (err) {
-          console.error("Error verifying:", err);
-          showMessage("❌ Error verifying " + type + ": " + err.message, "error");
-        }
+    async function deleteItem(id, type) {
+      if (confirm("Confirm deletion?")) {
+        let route = `/delete-restaurant/${id}`;
+        if (type === 'acceptor') route = `/delete-acceptor/${id}`;
+        if (type === 'delivery') route = `/delete-delivery/${id}`;
+        await fetch(route, { method: 'DELETE' });
+        fetchData();
       }
     }
 
-    function deleteItem(id, type) {
-      if (!id) {
-        showMessage("Error: Invalid ID", "error");
-        return;
-      }
-      if (confirm("Are you sure you want to delete this " + type + "?")) {
-        fetch(`/delete-${type}/${id}`, { method: "DELETE" })
-          .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-          })
-          .then(() => {
-            showMessage(`✅ ${type} deleted successfully!`, "success");
-            if (currentType === type) {
-              currentType === "restaurant" ? loadRestaurants() : loadAcceptors();
-            }
-          })
-          .catch(err => {
-            console.error("Error deleting:", err);
-            showMessage("❌ Error deleting " + type + ": " + err.message, "error");
-          });
-      }
+    function showTab(t) {
+      currentTab = t;
+      fetchData();
     }
-
-    function viewDetails(id, type) {
-      if (!id) {
-        showMessage("Error: Invalid ID", "error");
-        return;
-      }
-      fetch(`/get-${type}/${id}`)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.json();
-        })
-        .then(data => {
-          modalData = { id, type, data };
-          displayDetailModal(data, type);
-          document.getElementById("detailModal").style.display = "block";
-        })
-        .catch(err => {
-          console.error("Error loading details:", err);
-          showMessage("❌ Error loading details: " + err.message, "error");
-        });
-    }
-
-    function displayDetailModal(data, type) {
-      const modal = document.getElementById("detailModal");
-      const title = document.getElementById("modalTitle");
-      const body = document.getElementById("modalBody");
-
-      const icon = type === "restaurant" ? "🏨" : "🏠";
-      title.textContent = `${icon} ${data.name} - ${type.charAt(0).toUpperCase() + type.slice(1)} Details`;
-
-      let html = `
-    <div class="detail-section">
-      <h3>📋 Basic Information</h3>
-      <div class="detail-item">
-        <strong>Name:</strong>
-        <span>${data.name}</span>
-      </div>
-      <div class="detail-item">
-        <strong>Location:</strong>
-        <span>${data.location}</span>
-      </div>
-      ${data.email ? `
-      <div class="detail-item">
-        <strong>Email:</strong>
-        <span>${data.email}</span>
-      </div>
-      ` : ''}
-      ${data.phone ? `
-      <div class="detail-item">
-        <strong>Phone:</strong>
-        <span>${data.phone}</span>
-      </div>
-      ` : ''}
-      ${data.description ? `
-      <div class="detail-item">
-        <strong>Description:</strong>
-        <span style="font-style: italic; color: #777;">${data.description}</span>
-      </div>
-      ` : ''}
-    </div>
-
-    <div class="detail-section">
-      <h3>💎 Membership</h3>
-      <div class="detail-item">
-        <strong>Plan:</strong>
-        <span style="font-weight: bold; color: ${data.membership === 'Gold' ? '#ff8c00' : data.membership === 'Silver' ? '#2c3e50' : '#666'}">${data.membership || 'Basic'}</span>
-      </div>
-    </div>
-    `;
-
-      if (data.rating) {
-        html += `
-    <div class="detail-section">
-      <h3>⭐ Rating</h3>
-      <div class="detail-item">
-        <strong>Rating:</strong>
-        <span>${data.rating} / 5</span>
-      </div>
-    </div>
-    `;
-      }
-
-      if (data.isVerified) {
-        html += `
-    <div class="detail-section">
-      <h3>✓ Verification Status</h3>
-      <div class="detail-item">
-        <strong>Status:</strong>
-        <span style="color: #27ae60; font-weight: bold;">✓ Verified</span>
-      </div>
-    </div>
-    `;
-      }
-
-      if (type === "restaurant" && data.items && data.items.length > 0) {
-        html += `
-    <div class="items-list">
-      <h4>🍽 Food Items (${data.items.length} items)</h4>
-    `;
-
-        let totalQty = 0;
-        data.items.forEach((item, index) => {
-          const category = item.category ? `<span class="category">${item.category}</span>` : '';
-          const qty = parseInt(item.quantity) || 0;
-          totalQty += qty;
-          html += `
-        <div class="item-entry">
-          <div><strong>${index + 1}. ${item.food || item.itemName}</strong>${category}</div>
-          <div style="color: #999; font-size: 13px; margin-top: 5px;">Quantity: <strong>${qty} portions</strong></div>
-        </div>
-      `;
-        });
-
-        html += `
-      <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; font-weight: 600; color: #1e6bb8;">
-        Total Quantity: ${totalQty} portions
-      </div>
-    </div>
-    `;
-      } else if (type === "delivery") {
-        html += `
-    <div class="detail-section">
-      <h3>🚲 Vehicle & Status</h3>
-      <div class="detail-item">
-        <strong>Vehicle Type:</strong>
-        <span>${data.vehicleType}</span>
-      </div>
-      <div class="detail-item">
-        <strong>License Number:</strong>
-        <span>${data.licenseNumber || 'Not provided'}</span>
-      </div>
-      <div class="detail-item">
-        <strong>Status:</strong>
-        <span>${data.status}</span>
-      </div>
-    </div>
-    `;
-      } else if (type === "acceptor" && data.food) {
-        html += `
-    <div class="detail-section">
-      <h3>🍽 Food Item</h3>
-      <div class="detail-item">
-        <strong>Food:</strong>
-        <span>${data.food}</span>
-      </div>
-      <div class="detail-item">
-        <strong>Quantity:</strong>
-        <span>${data.quantity} portions</span>
-      </div>
-    </div>
-    `;
-      }
-
-      if (data.createdAt) {
-        html += `
-    <div class="detail-section">
-      <h3>📅 Timestamp</h3>
-      <div class="detail-item">
-        <strong>Created:</strong>
-        <span>${new Date(data.createdAt).toLocaleString()}</span>
-      </div>
-    </div>
-    `;
-      }
-
-      // Add action buttons
-      html += `
-  <div class="modal-actions" style="border-top: 1px solid #ddd; margin-top: 15px; padding-top: 15px; display: flex; gap: 10px; justify-content: center;">
-  `;
-
-      if (!data.isVerified) {
-        html += `<button class="btn-approve" onclick="verifyFromModal()" style="background: #27ae60; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">✅ Approve</button>`;
-      } else {
-        html += `<span style="color: #27ae60; font-weight: bold;">✓ Already Verified</span>`;
-      }
-
-      html += `<button class="btn-reject" onclick="deleteFromModal()" style="background: #e74c3c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">❌ Reject</button>`;
-      html += `<button class="btn-close" onclick="closeModal()" style="background: #95a5a6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Close</button>`;
-      html += `</div>`;
-
-      body.innerHTML = html;
-    }
-
-    function closeModal() {
-      document.getElementById("detailModal").style.display = "none";
-      modalData = null;
-    }
-
-    function verifyFromModal() {
-      if (!modalData) {
-        showMessage("Error: No modal data", "error");
-        return;
-      }
-
-      if (confirm("Verify this " + modalData.type + "?")) {
-        fetch(`/verify-${modalData.type}/${modalData.id}`, { method: "PUT" })
-          .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-          })
-          .then(data => {
-            let msg = `✅ ${modalData.type} verified!`;
-            if (data.matchInfo) msg += `\n\n🔎 Inventory Update: ${data.matchInfo}`;
-
-            alert(msg);
-            closeModal();
-            if (currentType === modalData.type) {
-              currentType === "restaurant" ? loadRestaurants() : loadAcceptors();
-            }
-          })
-          .catch(err => {
-            console.error("Error verifying:", err);
-            showMessage("❌ Error verifying " + modalData.type + ": " + err.message, "error");
-          });
-      }
-    }
-
-    function deleteFromModal() {
-      if (!modalData) {
-        showMessage("Error: No modal data", "error");
-        return;
-      }
-
-      if (confirm("Are you sure you want to delete this " + modalData.type + "?")) {
-        fetch(`/delete-${modalData.type}/${modalData.id}`, { method: "DELETE" })
-          .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            return res.json();
-          })
-          .then(() => {
-            showMessage(`✅ ${modalData.type} deleted successfully!`, "success");
-            closeModal();
-            if (currentType === modalData.type) {
-              currentType === "restaurant" ? loadRestaurants() : loadAcceptors();
-            }
-          })
-          .catch(err => {
-            console.error("Error deleting:", err);
-            showMessage("❌ Error deleting " + modalData.type + ": " + err.message, "error");
-          });
-      }
-    }
-
-    // Close modal when clicking outside of it
-    window.onclick = function (event) {
-      const modal = document.getElementById("detailModal");
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    // Initially show login screen
-    window.addEventListener("load", () => {
-      document.getElementById("loginSection").style.display = "flex";
-      document.getElementById("dashboardSection").style.display = "none";
-    });
   </script>
-
 </body>
 
 </html>

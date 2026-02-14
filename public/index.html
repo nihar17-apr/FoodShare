@@ -4,932 +4,164 @@
 <head>
   <meta charset="UTF-8">
   <title>Food To Need</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: white;
-      background: #0a0015;
-    }
-
-    /* VIBRANT Full-Screen Animated Background */
-    .aurora-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: linear-gradient(45deg, #1a0533, #0d1b2a, #1b0a3c, #0a1929);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
-      overflow: hidden;
-    }
-
-    @keyframes gradientShift {
-
-      0%,
-      100% {
-        background-position: 0% 50%;
-      }
-
-      25% {
-        background-position: 100% 0%;
-      }
-
-      50% {
-        background-position: 100% 100%;
-      }
-
-      75% {
-        background-position: 0% 100%;
-      }
-    }
-
-    /* Layer 1: Large colorful gradients */
-    .aurora-bg::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(ellipse 100% 80% at 20% 20%, rgba(255, 0, 100, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 100% at 80% 10%, rgba(100, 0, 255, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 90% 70% at 70% 90%, rgba(0, 180, 255, 0.6) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 90% at 10% 80%, rgba(255, 120, 0, 0.5) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0, 255, 180, 0.4) 0%, transparent 60%);
-      animation: colorPulse 6s ease-in-out infinite alternate;
-    }
-
-    @keyframes colorPulse {
-      0% {
-        opacity: 0.9;
-        transform: scale(1);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-
-    /* Layer 2: Moving color waves */
-    .aurora-bg::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background:
-        radial-gradient(circle at 25% 25%, rgba(255, 50, 200, 0.7) 0%, transparent 30%),
-        radial-gradient(circle at 75% 25%, rgba(50, 150, 255, 0.7) 0%, transparent 30%),
-        radial-gradient(circle at 50% 75%, rgba(255, 220, 50, 0.6) 0%, transparent 30%),
-        radial-gradient(circle at 25% 75%, rgba(50, 255, 200, 0.6) 0%, transparent 30%),
-        radial-gradient(circle at 75% 75%, rgba(200, 50, 255, 0.6) 0%, transparent 30%);
-      animation: colorWave 12s linear infinite;
-    }
-
-    @keyframes colorWave {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-
-      100% {
-        transform: translate(-50%, -50%) rotate(360deg);
-      }
-    }
-
-    /* Glassmorphism Styling */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-
-    /* Floating color orbs */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.7;
-      animation: floatBlob 25s ease-in-out infinite;
-    }
-
-    .blob-1 {
-      width: 60vw;
-      height: 60vw;
-      background: radial-gradient(circle, #ff006e 0%, #ff006e 20%, transparent 70%);
-      top: -20%;
-      left: -20%;
-      animation-duration: 30s;
-    }
-
-    .blob-2 {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #8338ec 0%, #8338ec 20%, transparent 70%);
-      top: 10%;
-      right: -15%;
-      animation-duration: 25s;
-      animation-delay: -8s;
-    }
-
-    .blob-3 {
-      width: 55vw;
-      height: 55vw;
-      background: radial-gradient(circle, #3a86ff 0%, #3a86ff 20%, transparent 70%);
-      bottom: -15%;
-      left: 20%;
-      animation-duration: 28s;
-      animation-delay: -12s;
-    }
-
-    .blob-4 {
-      width: 45vw;
-      height: 45vw;
-      background: radial-gradient(circle, #00f5d4 0%, #00f5d4 20%, transparent 70%);
-      bottom: 20%;
-      right: -10%;
-      animation-duration: 22s;
-      animation-delay: -5s;
-    }
-
-    .blob-5 {
-      width: 40vw;
-      height: 40vw;
-      background: radial-gradient(circle, #fb5607 0%, #fb5607 20%, transparent 70%);
-      top: 40%;
-      left: 30%;
-      animation-duration: 35s;
-      animation-delay: -15s;
-    }
-
-    .blob-6 {
-      width: 50vw;
-      height: 50vw;
-      background: radial-gradient(circle, #ffbe0b 0%, #ffbe0b 20%, transparent 70%);
-      top: 60%;
-      right: 30%;
-      animation-duration: 32s;
-      animation-delay: -20s;
-    }
-
-    @keyframes floatBlob {
-
-      0%,
-      100% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      20% {
-        transform: translate(10vw, -8vh) scale(1.1);
-      }
-
-      40% {
-        transform: translate(-8vw, 12vh) scale(0.9);
-      }
-
-      60% {
-        transform: translate(15vw, 5vh) scale(1.15);
-      }
-
-      80% {
-        transform: translate(-12vw, -10vh) scale(0.95);
-      }
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px 40px;
-      border-radius: 20px;
-      margin-top: 20px;
-      margin-bottom: 40px;
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .navbar span {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .nav-link {
-      color: white;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: all 0.6s ease;
-    }
-
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    /* Hero Section */
+    /* Page specific overrides or extra animations */
     .hero {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 100px 50px;
-      border-radius: 40px;
-      margin-bottom: 50px;
-      backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      padding: var(--spacing-lg) var(--spacing-md);
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    body {
-      animation: fadeIn 2s ease;
-    }
-
-    h1 {
-      color: white;
-      font-size: 56px;
-      margin-bottom: 15px;
-      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      font-weight: 900;
-      letter-spacing: -1px;
-      animation: bounceIn 2s ease;
-    }
-
-    @keyframes bounceIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-
-      50% {
-        transform: scale(1.05);
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+    .hero h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      margin-bottom: var(--spacing-sm);
+      letter-spacing: -2px;
     }
 
     .tagline {
-      color: #fff;
-      font-size: 24px;
-      margin-bottom: 20px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #fff, #ffd700, #ff69b4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .hero>p:last-of-type {
-      font-size: 18px;
-      margin-bottom: 30px;
-      color: #fff !important;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--text-dim);
+      margin-bottom: var(--spacing-md);
+      max-width: 800px;
     }
 
     .button-group {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    button {
-      padding: 16px 40px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      font-size: 17px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.5s, box-shadow 0.5s;
-      text-transform: uppercase;
-    }
-
-    button:nth-child(2) {
-      background: linear-gradient(135deg, #f093fb, #f5576c);
-    }
-
-    button:nth-child(3) {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-    }
-
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    button:active {
-      transform: translateY(-2px) scale(0.98);
-    }
-
-    /* About Us Section */
-    .about-section {
-      background: linear-gradient(135deg, rgba(255, 105, 180, 0.15) 0%, rgba(255, 192, 203, 0.1) 50%, rgba(255, 218, 185, 0.15) 100%);
-      padding: 60px 50px;
-      border-radius: 25px;
-      margin-bottom: 50px;
-      backdrop-filter: blur(15px);
-      text-align: left;
-      color: white;
-      border: 3px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
-      animation: fadeInUp 1.5s ease 0.4s both;
-    }
-
-    .about-section h2 {
-      font-size: 42px;
-      margin-bottom: 25px;
-      color: #ffffff;
-      border-bottom: 4px solid;
-      border-image: linear-gradient(90deg, #ff69b4, #ffd700, #ff1493) 1;
-      padding-bottom: 20px;
-      font-weight: 900;
-    }
-
-    .about-section>p {
-      font-size: 17px;
-      line-height: 1.9;
-      margin-bottom: 18px;
-      color: #f0f0f0 !important;
-      font-weight: 500;
-    }
-
-    .about-features {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-      margin-top: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--spacing-sm);
+      width: 100%;
+      max-width: 1000px;
+      margin-top: var(--spacing-md);
     }
 
     .feature-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
-      padding: 30px;
-      border-radius: 18px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: var(--spacing-md);
       text-align: center;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: var(--transition-slow);
     }
 
-    .feature-card:nth-child(1) {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.15));
-      border-color: rgba(76, 175, 80, 0.5);
-    }
-
-    .feature-card:nth-child(2) {
-      background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.15));
-      border-color: rgba(244, 67, 54, 0.5);
-    }
-
-    .feature-card:nth-child(3) {
-      background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(3, 169, 244, 0.15));
-      border-color: rgba(33, 150, 243, 0.5);
-    }
-
-    .feature-card:nth-child(4) {
-      background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(233, 30, 99, 0.15));
-      border-color: rgba(156, 39, 176, 0.5);
-    }
-
-    .feature-card:hover {
-      transform: translateY(-15px) scale(1.05);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .feature-card h3 {
-      font-size: 24px;
-      margin-bottom: 12px;
-      color: #ffd700;
-      font-weight: 800;
-    }
-
-    .feature-card p {
-      font-size: 15px;
-      color: #f0f0f0 !important;
-      margin-bottom: 0;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-
-    /* How It Works */
-    .about-section>div:last-child {
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 2px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .about-section>div:last-child h3 {
-      color: #ffd700;
-      margin-bottom: 25px;
-      font-size: 28px;
-      font-weight: 900;
-    }
-
-    .about-section>div:last-child>div {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      text-align: center;
-    }
-
-    .about-section>div:last-child>div>div {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-      padding: 25px;
-      border-radius: 15px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.8s ease;
-    }
-
-    .about-section>div:last-child>div>div:hover {
-      transform: translateY(-10px);
-      border-color: rgba(255, 255, 255, 0.5);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .about-section>div:last-child>div>div h4 {
-      color: #ffd700;
-      margin-bottom: 10px;
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .about-section>div:last-child>div>div p {
-      font-size: 14px;
-      color: #f0f0f0 !important;
-      font-weight: 500;
-    }
-
-    /* Contact Section */
-    .contact-section {
-      background: linear-gradient(135deg, rgba(100, 181, 246, 0.15) 0%, rgba(79, 195, 247, 0.1) 50%, rgba(129, 212, 250, 0.15) 100%);
-      padding: 60px 50px;
-      border-radius: 25px;
-      margin-bottom: 50px;
-      backdrop-filter: blur(15px);
-      color: white;
-      border: 3px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 20px 60px rgba(79, 195, 247, 0.2);
-      animation: fadeInUp 1.5s ease 0.6s both;
-    }
-
-    .contact-section h2 {
-      font-size: 42px;
-      margin-bottom: 20px;
-      color: #ffffff;
-      border-bottom: 4px solid;
-      border-image: linear-gradient(90deg, #00bcd4, #0097a7, #00838f) 1;
-      padding-bottom: 20px;
-      font-weight: 900;
-    }
-
-    .contact-section>p {
-      margin-bottom: 35px;
-      font-size: 18px;
-      color: #f0f0f0 !important;
-      font-weight: 500;
-    }
-
-    .contact-info {
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      gap: 25px;
-      flex-wrap: wrap;
-      margin: 35px 0;
-    }
-
-    .contact-item {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-      padding: 35px;
-      border-radius: 18px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      flex: 1;
-      min-width: 280px;
-      text-align: center;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .contact-item:nth-child(1) {
-      background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(255, 193, 7, 0.15));
-      border-color: rgba(255, 152, 0, 0.5);
-    }
-
-    .contact-item:nth-child(2) {
-      background: linear-gradient(135deg, rgba(233, 30, 99, 0.2), rgba(236, 64, 122, 0.15));
-      border-color: rgba(233, 30, 99, 0.5);
-    }
-
-    .contact-item:nth-child(3) {
-      background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(129, 199, 132, 0.15));
-      border-color: rgba(76, 175, 80, 0.5);
-    }
-
-    .contact-item:hover {
-      transform: translateY(-15px) scale(1.05);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .contact-item h3 {
-      font-size: 22px;
-      margin-bottom: 15px;
-      color: #ffd700;
-      font-weight: 800;
-    }
-
-    .contact-item p {
-      font-size: 15px;
-      color: #f0f0f0 !important;
-      margin-bottom: 20px;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-
-    .contact-email {
-      display: inline-block;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 12px 30px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      margin-top: 10px;
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-      text-transform: uppercase;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-    }
-
-    .contact-email:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
-      background: linear-gradient(135deg, #764ba2, #f093fb);
-    }
-
-    .contact-email:active {
-      transform: translateY(-1px) scale(0.98);
-    }
-
-    /* Primary Contact Box */
-    .contact-section>div:last-child {
-      margin-top: 35px;
-      padding: 30px;
-      background: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 152, 0, 0.15));
-      border-radius: 18px;
-      border: 3px dashed rgba(255, 193, 7, 0.5);
-      box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        box-shadow: 0 15px 40px rgba(255, 152, 0, 0.15);
-      }
-
-      50% {
-        box-shadow: 0 20px 50px rgba(255, 152, 0, 0.3);
-      }
-    }
-
-    .contact-section>div:last-child h3 {
-      color: #ffd700;
-      margin-bottom: 15px;
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-    .contact-section>div:last-child p:first-of-type {
-      font-size: 20px;
-      margin: 15px 0;
-      color: #fff !important;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .contact-section>div:last-child p:last-child {
-      font-size: 14px;
-      color: #f0f0f0 !important;
-      font-weight: 500;
-      margin: 0;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      color: #f0f0f0;
-      padding: 30px;
-      margin-top: 50px;
-      border-top: 2px solid rgba(255, 255, 255, 0.3);
-      animation: fadeInUp 1.5s ease 0.8s both;
-    }
-
-    .footer p {
-      margin: 8px 0;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-
-    .footer p:first-child {
-      font-size: 18px;
-      font-weight: 900;
-      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 36px;
-      }
-
-      .tagline {
-        font-size: 18px;
-      }
-
-      .button-group {
-        flex-direction: column;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .about-section,
-      .contact-section,
-      .hero {
-        padding: 30px 20px;
-      }
-
-      .navbar {
-        flex-direction: column;
-        padding: 15px 20px;
-      }
-
-      .about-section h2,
-      .contact-section h2 {
-        font-size: 28px;
-      }
+    .feature-card i {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-sm);
+      display: block;
     }
   </style>
+
 </head>
 
 <body>
-  <div class="aurora-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="blob blob-4"></div>
-    <div class="blob blob-5"></div>
-    <div class="blob blob-6"></div>
-  </div>
-  <!-- Navigation -->
-  <div class="navbar">
-    <span style="color: white; font-size: 20px; font-weight: bold;">🍽 Food To Need</span>
-    <a class="nav-link" onclick="scrollToSection('hero')">Home</a>
-    <a class="nav-link" onclick="scrollToSection('about')">About Us</a>
-    <a class="nav-link" onclick="scrollToSection('membership')">Memberships</a>
-    <a class="nav-link" onclick="scrollToSection('contact')">Contact</a>
-  </div>
+  <div class="aurora-bg"></div>
 
-  <div class="container">
+  <nav class="navbar">
+    <div class="nav-brand">Food To Need</div>
+    <div class="nav-links">
+      <a href="#hero" class="nav-link">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+  </nav>
+
+  <main class="container">
     <!-- Hero Section -->
-    <div class="hero" id="hero">
-      <h1>🍽 Food To Need</h1>
-      <p class="tagline">Connecting Food Surplus to Food Shortage</p>
-      <p style="font-size: 16px; margin-bottom: 20px;">A platform bridging restaurants with excess food to orphanages
-        and charitable organizations in need</p>
+    <section class="hero" id="hero" data-reveal>
+      <h1 class="gradient-text">No Food waste,<br>No One hungry.</h1>
+      <p class="tagline">Connecting restaurants with surplus food to charitable organizations in need. A sustainable
+        platform for a better tomorrow.</p>
 
       <div class="button-group">
-        <button onclick="location.href='restaurant.html'">🏨 Restaurant Portal</button>
-        <button onclick="location.href='user.html'">🏠 User Portal</button>
-        <button onclick="location.href='delivery.html'">🚚 Delivery Portal</button>
-        <button onclick="location.href='admin.html'">👨‍💼 Admin Dashboard</button>
-      </div>
-    </div>
-
-    <!-- About Us Section -->
-    <div class="about-section" id="about">
-      <h2>📖 About Us</h2>
-      <p>
-        <strong>Food To Need</strong> is a community-driven initiative designed to reduce food waste while fighting
-        hunger.
-        We connect restaurants, hotels, and food establishments with excess food to orphanages, old age homes, and
-        charitable
-        organizations that need it most.
-      </p>
-      <p>
-        Our mission is simple yet powerful: <strong>"No Food Should Go to Waste, No One Should Go Hungry"</strong>
-      </p>
-      <p>
-        By leveraging technology and community participation, we aim to create a sustainable ecosystem where:
-      </p>
-
-      <div class="about-features">
-        <div class="feature-card">
-          <h3>♻️ Sustainable</h3>
-          <p>Reduce food waste and environmental impact by redistributing surplus food responsibly</p>
-        </div>
-        <div class="feature-card">
-          <h3>💝 Compassionate</h3>
-          <p>Help feed vulnerable populations and support charitable organizations in your community</p>
-        </div>
-        <div class="feature-card">
-          <h3>💻 Digital</h3>
-          <p>Easy-to-use platform connecting donors and recipients instantly</p>
-        </div>
-        <div class="feature-card">
-          <h3>👥 Community</h3>
-          <p>Build stronger communities through collective action and social responsibility</p>
-        </div>
       </div>
 
-      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.2);">
-        <h3 style="color: #ffd700; margin-bottom: 15px;">How It Works</h3>
-        <div
-          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center;">
-          <div>
-            <h4>📝 Register</h4>
-            <p>Restaurants and acceptors register on the platform with their details</p>
+      <div class="feature-card"
+        style="background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(169, 169, 169, 0.15)); border-color: #c0c0c0; transform: scale(1.05); box-shadow: 0 15px 45px rgba(0,0,0,0.3);">
+        <h3 style="color: #e5e4e2;">🥈 Silver</h3>
+        <p style="font-size: 28px; font-weight: 800; color: #e5e4e2; margin: 15px 0;">$19/mo</p>
+        <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
+          <li style="margin-bottom: 10px;">✅ Verified Donor Badge</li>
+          <li style="margin-bottom: 10px;">🚀 Priority Pickup Notification</li>
+          <li style="margin-bottom: 10px;">📈 Monthly Impact Report</li>
+          <li style="margin-bottom: 10px;">🌟 Enhanced Visibility</li>
+        </ul>
+        <button onclick="location.href='restaurant.html'"
+          style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #bdc3c7, #2c3e50);">Upgrade
+          to Silver</button>
+      </div>
+
+      <div class="feature-card"
+        style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.15)); border-color: #ffd700;">
+        <h3 style="color: #ffd700;">🥇 Gold</h3>
+        <p style="font-size: 28px; font-weight: 800; color: #ffd700; margin: 15px 0;">$49/mo</p>
+        <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
+          <li style="margin-bottom: 10px;">🏆 Elite Partner Status</li>
+          <li style="margin-bottom: 10px;">🔥 Featured listing on Home</li>
+          <li style="margin-bottom: 10px;">📊 Advanced Analytics</li>
+          <li style="margin-bottom: 10px;">🤝 Dedicated Account Manager</li>
+        </ul>
+        <button onclick="location.href='restaurant.html'"
+          style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #ffd700, #ff8c00);">Become
+          Gold</button>
+      </div>
+      </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="contact-section" id="contact">
+        <h2>📧 Contact Us</h2>
+        <p style="margin-bottom: 30px;">Have questions, suggestions, or want to get involved? We'd love to hear from
+          you!
+        </p>
+
+        <div class="contact-info">
+          <div class="contact-item">
+            <h3>✉️ Email</h3>
+            <p>Send us your inquiries, feedback, or partnership proposals</p>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in" target="_blank"
+              class="contact-email">📬 Send Email</a>
           </div>
-          <div>
-            <h4>🍲 Submit</h4>
-            <p>Restaurants submit food availability; acceptors register their needs</p>
+
+          <div class="contact-item">
+            <h3>💬 Feedback</h3>
+            <p>Help us improve! Share your experience and suggestions</p>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Feedback"
+              target="_blank" class="contact-email">⭐ Share Feedback</a>
           </div>
-          <div>
-            <h4>✅ Verify</h4>
-            <p>Admin team verifies all submissions for authenticity and safety</p>
+
+          <div class="contact-item">
+            <h3>🤝 Partnerships</h3>
+            <p>Interested in partnering with us? Let's collaborate!</p>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Partnership%20Inquiry"
+              target="_blank" class="contact-email">🚀 Discuss Partnership</a>
           </div>
-          <div>
-            <h4>🤝 Connect</h4>
-            <p>Verified restaurants and acceptors are connected for food distribution</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Membership Section -->
-    <div class="about-section" id="membership"
-      style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 50%, rgba(240, 147, 251, 0.15) 100%); border-image: linear-gradient(90deg, #667eea, #764ba2, #f093fb) 1;">
-      <h2 style="border-image: linear-gradient(90deg, #667eea, #764ba2, #f093fb) 1;">💎 Membership Plans</h2>
-      <p>Join our premium network of donors and supporters. Choose a plan that fits your contribution level and get
-        exclusive benefits.</p>
-
-      <div class="about-features">
-        <div class="feature-card"
-          style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05)); border-color: rgba(255, 255, 255, 0.3);">
-          <h3 style="color: #fff;">⚪ Basic</h3>
-          <p style="font-size: 28px; font-weight: 800; color: #fff; margin: 15px 0;">Free</p>
-          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
-            <li style="margin-bottom: 10px;">✨ Standard Food Listing</li>
-            <li style="margin-bottom: 10px;">✨ Basic Support</li>
-            <li style="margin-bottom: 10px;">✨ Public Profile</li>
-          </ul>
-          <button onclick="location.href='restaurant.html'" style="width: 100%; padding: 12px; font-size: 14px;">Get
-            Started</button>
         </div>
 
-        <div class="feature-card"
-          style="background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(169, 169, 169, 0.15)); border-color: #c0c0c0; transform: scale(1.05); box-shadow: 0 15px 45px rgba(0,0,0,0.3);">
-          <h3 style="color: #e5e4e2;">🥈 Silver</h3>
-          <p style="font-size: 28px; font-weight: 800; color: #e5e4e2; margin: 15px 0;">$19/mo</p>
-          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
-            <li style="margin-bottom: 10px;">✅ Verified Donor Badge</li>
-            <li style="margin-bottom: 10px;">🚀 Priority Pickup Notification</li>
-            <li style="margin-bottom: 10px;">📈 Monthly Impact Report</li>
-            <li style="margin-bottom: 10px;">🌟 Enhanced Visibility</li>
-          </ul>
-          <button onclick="location.href='restaurant.html'"
-            style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #bdc3c7, #2c3e50);">Upgrade
-            to Silver</button>
-        </div>
-
-        <div class="feature-card"
-          style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.15)); border-color: #ffd700;">
-          <h3 style="color: #ffd700;">🥇 Gold</h3>
-          <p style="font-size: 28px; font-weight: 800; color: #ffd700; margin: 15px 0;">$49/mo</p>
-          <ul style="list-style: none; padding: 0; color: #f0f0f0; font-size: 14px; text-align: left; margin: 20px 0;">
-            <li style="margin-bottom: 10px;">🏆 Elite Partner Status</li>
-            <li style="margin-bottom: 10px;">🔥 Featured listing on Home</li>
-            <li style="margin-bottom: 10px;">📊 Advanced Analytics</li>
-            <li style="margin-bottom: 10px;">🤝 Dedicated Account Manager</li>
-          </ul>
-          <button onclick="location.href='restaurant.html'"
-            style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #ffd700, #ff8c00);">Become
-            Gold</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contact Section -->
-    <div class="contact-section" id="contact">
-      <h2>📧 Contact Us</h2>
-      <p style="margin-bottom: 30px;">Have questions, suggestions, or want to get involved? We'd love to hear from you!
-      </p>
-
-      <div class="contact-info">
-        <div class="contact-item">
-          <h3>✉️ Email</h3>
-          <p>Send us your inquiries, feedback, or partnership proposals</p>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in" target="_blank"
-            class="contact-email">📬 Send Email</a>
-        </div>
-
-        <div class="contact-item">
-          <h3>💬 Feedback</h3>
-          <p>Help us improve! Share your experience and suggestions</p>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Feedback"
-            target="_blank" class="contact-email">⭐ Share Feedback</a>
-        </div>
-
-        <div class="contact-item">
-          <h3>🤝 Partnerships</h3>
-          <p>Interested in partnering with us? Let's collaborate!</p>
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nrouthu@gitam.in&su=Food%20To%20Need%20-%20Partnership%20Inquiry"
-            target="_blank" class="contact-email">🚀 Discuss Partnership</a>
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+          <h3 style="color: #ffd700; margin-bottom: 10px;">Primary Contact</h3>
+          <p style="font-size: 18px; margin: 10px 0;">📧 <strong>nrouthu@gitam.in</strong></p>
+          <p style="font-size: 14px; color: #e6f7ff;">We typically respond within 24 hours</p>
         </div>
       </div>
 
-      <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
-        <h3 style="color: #ffd700; margin-bottom: 10px;">Primary Contact</h3>
-        <p style="font-size: 18px; margin: 10px 0;">📧 <strong>nrouthu@gitam.in</strong></p>
-        <p style="font-size: 14px; color: #e6f7ff;">We typically respond within 24 hours</p>
+      <!-- Footer -->
+      <div class="footer">
+        <p><strong>🍽 Food To Need</strong> - Building a Hunger-Free Community</p>
+        <p>&copy; 2026 Food To Need Initiative. All rights reserved.</p>
+        <p>Developed with ❤️ for a better tomorrow</p>
       </div>
-    </div>
+      </div>
 
-    <!-- Footer -->
-    <div class="footer">
-      <p><strong>🍽 Food To Need</strong> - Building a Hunger-Free Community</p>
-      <p>&copy; 2026 Food To Need Initiative. All rights reserved.</p>
-      <p>Developed with ❤️ for a better tomorrow</p>
-    </div>
-  </div>
-
-  <script>
-    function scrollToSection(sectionId) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  </script>
+      <script>
+        function scrollToSection(sectionId) {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      </script>
 </body>
 
 </html>

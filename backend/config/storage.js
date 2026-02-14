@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
-const path = require("path");
-const fs = require("fs");
+const dotenv = require("dotenv");
 
-const LOCAL_DB_PATH = path.join(__dirname, "../../db.json");
+dotenv.config();
+
+/**
+ * Modern Database Connection Manager
+ * Using Mongoose for MongoDB Atlas - The industry standard for NoSQL
+ */
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
-let systemStatus = "Initializing...";
+// In-memory fallback if no DB connection (for development flexibility)
 let memoryDB = {
     restaurants: [],
     acceptors: [],
@@ -13,42 +18,29 @@ let memoryDB = {
     activityLogs: []
 };
 
-// Load initial data
-if (fs.existsSync(LOCAL_DB_PATH)) {
-    try {
-        const data = fs.readFileSync(LOCAL_DB_PATH, "utf8");
-        memoryDB = { ...memoryDB, ...JSON.parse(data) };
-        console.log("📂 History loaded from db.json");
-    } catch (err) { }
-}
+const connectDB = async () => {
+    if (!MONGODB_URI) {
+        console.warn("⚠️ MONGODB_URI not found in environment variables.");
+        console.info("💡 Falling back to In-Memory storage (Non-persistent).");
+        return;
+    }
 
-const commitData = () => {
     try {
-        fs.writeFileSync(LOCAL_DB_PATH, JSON.stringify(memoryDB, null, 2));
-    } catch (e) { }
-};
-
-const connectDB = () => {
-    if (MONGODB_URI) {
-        mongoose
-            .connect(MONGODB_URI)
-            .then(() => {
-                systemStatus = "Connected to MongoDB Atlas (Persistent Mode)";
-            })
-            .catch((err) => {
-                systemStatus = "Cloud Error: " + err.message;
-            });
-    } else {
-        systemStatus = "Offline Mode (Local Backup Active)";
+        const conn = await mongoose.connect(MONGODB_URI, {
+            // Modern Mongoose options are mostly default now
+        });
+        console.log(`🚀 MongoDB Connected: ${conn.connection.host}`);
+    } catch (err) {
+        console.error(`❌ Error connecting to MongoDB: ${err.message}`);
+        process.exit(1);
     }
 };
 
 const isLive = () => mongoose.connection.readyState === 1;
 
 module.exports = {
-    memoryDB,
-    commitData,
     connectDB,
     isLive,
-    systemStatus,
+    memoryDB,
+    systemStatus: isLive() ? "Connected" : "Offline / Memory Mode"
 };

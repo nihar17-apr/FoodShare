@@ -36,3 +36,29 @@ exports.getDeliveries = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.addDelivery = async (req, res) => {
+    try {
+        const record = { ...req.body, _id: Date.now().toString(), isVerified: false, createdAt: new Date() };
+        if (isLive()) {
+            const dbData = await new Delivery(record).save();
+            return res.status(201).json({ success: true, data: dbData });
+        }
+        memoryDB.deliveryPersons.push(record);
+        commitData();
+        res.status(201).json({ success: true, data: record });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.deleteDelivery = async (req, res) => {
+    try {
+        if (isLive()) await Delivery.findByIdAndDelete(req.params.id);
+        else memoryDB.deliveryPersons = memoryDB.deliveryPersons.filter(x => x._id !== req.params.id);
+        commitData();
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
