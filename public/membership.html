@@ -1,48 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Delivery Membership</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Membership | Food To Need</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .form-container {
+      max-width: 500px;
+      margin: 4rem auto;
+    }
+
+    #msg {
+      margin-top: 1.5rem;
+      text-align: center;
+      display: none;
+      padding: 1rem;
+      border-radius: 14px;
+    }
+
+    .success {
+      background: oklch(70% 0.15 150 / 0.2);
+      color: oklch(85% 0.1 150);
+      border: 1px solid oklch(70% 0.15 150 / 0.3);
+    }
+  </style>
 </head>
+
 <body>
+  <div class="aurora-bg"></div>
+  <nav class="navbar">
+    <div class="nav-brand" onclick="location.href='index.html'" style="cursor: pointer">Food To Need</div>
+    <div class="nav-links"><a href="index.html" class="nav-link">Home</a></div>
+  </nav>
 
-<h2>🚚 Delivery Partner Registration</h2>
+  <main class="container">
+    <div class="glass-card form-container" data-reveal>
+      <div style="text-align: center; margin-bottom: 2rem">
+        <h2 class="gradient-text">💎 Join the Network</h2>
+        <p style="color: var(--text-dim)">Become a verified delivery partner today.</p>
+      </div>
 
-<form id="memberForm">
-  <input type="text" placeholder="Name" id="name" required><br><br>
-  <input type="text" placeholder="Phone" id="phone" required><br><br>
-  <input type="text" placeholder="Vehicle (Bike/Cycle)" id="vehicle" required><br><br>
-  <input type="text" placeholder="Area" id="area" required><br><br>
-  <input type="email" placeholder="Email" id="email"><br><br>
+      <form id="memberForm">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="name" required placeholder="Name">
+        </div>
+        <div class="grid-cols-2">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="phone" required placeholder="Phone">
+          </div>
+          <div class="form-group">
+            <label>Vehicle</label>
+            <input type="text" id="vehicle" required placeholder="Bike/Cycle">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Preferred Area</label>
+          <input type="text" id="area" required placeholder="Area Name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="email@example.com">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem">Apply for
+          Membership</button>
+      </form>
+      <p id="msg"></p>
+    </div>
+  </main>
 
-  <button type="submit">Apply for Membership</button>
-</form>
+  <script>
+    document.getElementById("memberForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = "Processing...";
 
-<p id="msg"></p>
-
-<script>
-document.getElementById("memberForm").addEventListener("submit", function(e){
-  e.preventDefault();
-
-  fetch("/memberships", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: name.value,
-      phone: phone.value,
-      vehicle: vehicle.value,
-      area: area.value,
-      email: email.value
-    })
-  })
-  .then(res => res.json())
-  .then(() => {
-    document.getElementById("msg").innerText =
-      "✅ Membership submitted. Wait for admin approval.";
-    document.getElementById("memberForm").reset();
-  });
-});
-</script>
-
+      fetch("/memberships", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.value,
+          phone: phone.value,
+          vehicle: vehicle.value,
+          area: area.value,
+          email: email.value
+        })
+      })
+        .then(res => res.json())
+        .then(() => {
+          const msg = document.getElementById("msg");
+          msg.innerText = "✅ Membership submitted. Wait for admin approval.";
+          msg.className = "success";
+          msg.style.display = "block";
+          e.target.reset();
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.textContent = "Apply for Membership";
+        });
+    });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    });
+  </script>
 </body>
-</html>
 
+</html>
